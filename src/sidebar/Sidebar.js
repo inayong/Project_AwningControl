@@ -1,58 +1,77 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CiViewList, CiLogout, CiIndent, CiDesktop, CiFloppyDisk, CiSquarePlus } from "react-icons/ci";
-import AddData from './AddData';
+import AddData from '../monitoring/AddData';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import SideMenu from '../component/SideMenu';
+import { useRecoilState } from 'recoil';
+import { LogAtom } from '../login/LogAtom';
+import { handleLogout } from '../login/Logout';
 
 const Sidebarcomm = ({ openModal }) => {
     const [close, setClose] = useState(true);
-    
+    const [clickMenu, setClickMenu] = useState();
+    const [isLogAtom, setIsLogAtom] = useRecoilState(LogAtom);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setIsLogAtom(localStorage.getItem("loginId"))
+    }, [isLogAtom])
+
+    const handleLogout = () => {
+        localStorage.removeItem("loginId");
+        localStorage.removeItem("token");
+        setIsLogAtom(false);
+        alert("로그아웃 완료");
+        navigate("/login");
+    };
 
 
 
     return (
         <div>
             <div className={`${close ? "sm:w-16" : "sm:w-60"} bg-slate-300 h-screen`}>
-                <div className={`flex ${close ? "justify-center" : "justify-end pr-2"} items-center pt-5`}>
+                <div className={`flex ${close ? "justify-center" : "justify-end pr-2"} items-center py-5`}>
+                    {close ? null : <div className='pr-9'>어닝 제어 시스템</div>}
                     <CiIndent onClick={() => setClose(!close)} size={30} />
                 </div>
-                <div className={`flex ${close ? "justify-center" : "justify-end pr-2"} items-center pt-5`}>
-                    <CiLogout size={30} color={`${close ? 'gray' : 'black'}`} />
+                <div className={`flex ${close ? "justify-center" : "justify-end pr-2"} items-center py-5`}>
+                    {isLogAtom && close ? null : <div className='pr-16'>{isLogAtom}</div>}
+                    <CiLogout size={30} color={`${close ? '#6b7280' : 'black'}`} onClick={handleLogout} className='cursor-pointer'/>
                 </div>
-                <div className={`flex ${close ? "justify-center" : "justify-start pl-2"} items-center pt-5`}>
-                    {close ? (<CiDesktop size={30} color={`${close ? 'black' : 'gray'}`} />
-                    ) : (
-                        <>
-                            <CiDesktop size={30} color={`${close ? 'black' : 'gray'}`} />
-                            <div className='pl-5'>모니터링</div>
-                        </>
-                    )}
-                </div>
-                <div className={`flex ${close ? "justify-center" : "justify-start pl-2"} items-center pt-5`}>
-                    {close ? (<CiFloppyDisk size={30} color={`${close ? 'black' : 'gray'}`} />
-                    ) : (
-                        <>
-                            <CiFloppyDisk size={30} color={`${close ? 'black' : 'gray'}`} />
-                            <div className='pl-5'>어닝상태</div>
-                        </>
-                    )}
-                </div>
-                <div className={`flex ${close ? "justify-center" : "justify-start pl-2"} items-center pt-5`}>
-                    {close ? (<CiViewList size={30} color={`${close ? 'black' : 'gray'}`} />
-                    ) : (
-                        <>
-                            <CiViewList size={30} color={`${close ? 'black' : 'gray'}`} />
-                            <div className='pl-5'>목록</div>
-                        </>
-                    )}
-                </div>
-                <div className={`flex ${close ? "justify-center" : "justify-start pl-2"} items-center pt-5`} onClick={openModal}>
-                    {close ? (<CiSquarePlus size={30} color={`${close ? 'black' : 'gray'}`} />
-                    ) : (
-                        <>
-                            <CiSquarePlus size={30} color={`${close ? 'black' : 'gray'}`} />
-                            <div className='pl-5'>추가</div>
-                        </>
-                    )}
-                </div>
+                <SideMenu 
+                    menuName="monitoring"
+                    clickMenu={clickMenu}
+                    setClickMenu={setClickMenu}
+                    close={close}
+                    icon={CiDesktop}
+                    label="모니터링"
+                />
+                <SideMenu 
+                    menuName="awningstate"
+                    clickMenu={clickMenu}
+                    setClickMenu={setClickMenu}
+                    close={close}
+                    icon={CiFloppyDisk}
+                    label="어닝상태"
+                />
+                <SideMenu 
+                    menuName="eventlist"
+                    clickMenu={clickMenu}
+                    setClickMenu={setClickMenu}
+                    close={close}
+                    icon={CiViewList}
+                    label="목록"
+                />
+                <SideMenu 
+                    menuName="add"
+                    clickMenu={clickMenu}
+                    setClickMenu={setClickMenu}
+                    close={close}
+                    icon={CiSquarePlus}
+                    label="추가"
+                    onModal={() => openModal()}
+                    isLink={false} 
+                />
             </div>
         </div>
     )

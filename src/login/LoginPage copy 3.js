@@ -34,18 +34,15 @@ const LoginPage = () => {
                 })
             })
                 .then((resp) => {
-                    if (resp.status === 200) {
-                        localStorage.setItem("token", resp.headers.get("Authorization"))
-                        localStorage.setItem("loginId", loginId)
-                        setLogAtom(true);
-                        navigate("/monitoring")
+                    if (resp.ok) {
+                        return resp.json();
                     } else {
-                        if (localStorage.getItem("loginId")) {
-                            setLogAtom(localStorage.getItem("loginId"))
-                        } else {
-                            alert("아이디 및 비밀번호를 다시 확인해주세요.")
-                        }
+                        throw new Error("로그인 실패")
                     }
+                })
+                .then((data) => {
+                    setLogAtom(true);
+                    navigate("/monitoring")
                 })
                 .catch((error) => {
                     console.error("로그인 시도 중 오류", error);

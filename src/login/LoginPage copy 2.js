@@ -34,7 +34,7 @@ const LoginPage = () => {
                 })
             })
                 .then((resp) => {
-                    if (resp.status === 200) {
+                    if (resp.ok) {
                         localStorage.setItem("token", resp.headers.get("Authorization"))
                         localStorage.setItem("loginId", loginId)
                         setLogAtom(true);

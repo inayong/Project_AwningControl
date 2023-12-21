@@ -1,9 +1,6 @@
-import React from 'react';
+export const Login = (loginId, password, setLogAtom, navigate) => {
 
-const Login = () => {
-  return (
-    <div>Login</div>
-  )
+  
+    
+  
 }
-
-export default Login;

@@ -19,7 +19,7 @@ const LoginPage = () => {
     }, []);
 
     const fetchLogin = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         if (loginId === "") {
             alert("아이디를 입력 해주세요.")
