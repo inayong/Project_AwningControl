@@ -23,20 +23,14 @@ const SideMenu = ({ menuName, clickMenu, setClickMenu, close, icon: Icon, label,
 
 
 
-    return isLink ? (
+    return (
         <Link to={`/${menuName}`} onClick={handleClickMenu}>
-            <div className={`w-full py-3 ${clickMenu === menuName ? 'bg-blue-500 text-white' : 'text-gray-700'}`}>
-                <div className={`flex ${close ? "justify-center" : "justify-start px-2"} items-center`}>
-                    {content}
-                </div>
-            </div>
-        </Link>
-    ) : (
-        <div onClick={handleClickMenu} className={`w-full py-3 ${clickMenu === menuName ? 'bg-blue-500 text-white' : 'text-gray-700'}`}>
+        <div className={`w-full py-3 ${clickMenu === menuName ? 'bg-blue-500 text-white' : 'text-gray-700'}`}>
             <div className={`flex ${close ? "justify-center" : "justify-start px-2"} items-center`}>
-                {content}
+                {isLink ? <Link to={`/${menuName}`}>{content}</Link> : <div onClick={handleClickMenu}>{content}</div>}
             </div>
         </div>
+        </Link>
     )
 }
 

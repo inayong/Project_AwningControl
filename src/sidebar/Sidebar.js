@@ -27,12 +27,13 @@ const Sidebarcomm = ({ openModal }) => {
 
 
 
+    //추가하거나 닫기하면 선택된거 초기화하기
     return (
         <div>
-            <div className={`${close ? "sm:w-16" : "sm:w-60"} bg-slate-300 h-screen`}>
+            <div className={`${close ? "sm:w-16" : "sm:w-60"} bg-white h-screen`}>
                 <div className={`flex ${close ? "justify-center" : "justify-end pr-2"} items-center py-5`}>
                     {close ? null : <div className='pr-9'>어닝 제어 시스템</div>}
-                    <CiIndent onClick={() => setClose(!close)} size={30} />
+                    <CiIndent onClick={() => setClose(!close)} size={30} className='cursor-pointer'/>
                 </div>
                 <div className={`flex ${close ? "justify-center" : "justify-end pr-2"} items-center py-5`}>
                     {isLogAtom && close ? null : <div className='pr-16'>{isLogAtom}</div>}

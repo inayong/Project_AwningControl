@@ -39,6 +39,7 @@ const LoginPage = () => {
                         localStorage.setItem("loginId", loginId)
                         setLogAtom(true);
                         navigate("/monitoring")
+                        alert("로그인 성공")
                     } else {
                         if (localStorage.getItem("loginId")) {
                             setLogAtom(localStorage.getItem("loginId"))

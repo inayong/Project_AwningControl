@@ -11,26 +11,31 @@ const SideMenu = ({ menuName, clickMenu, setClickMenu, close, icon: Icon, label,
     };
 
 
-    const content =
-        close ? (
-            <Icon size={30} className={`${clickMenu === menuName ? ' text-white' : 'text-gray-700'}`} />
-        ) : (
-            <div className='flex items-center'>
-                <Icon size={30} className={`${clickMenu === menuName ? ' text-white' : 'text-gray-700'}`} />
-                <div className='pl-5'>{label}</div>
-            </div>
-        );
-
-
-
-    return (
-        <Link to={`/${menuName}`} onClick={handleClickMenu}>
-        <div className={`w-full py-3 ${clickMenu === menuName ? 'bg-blue-500 text-white' : 'text-gray-700'}`}>
+    const content = (
+        <div className={`w-full py-3 ${clickMenu === menuName ? 'bg-gray-300 text-black' : 'text-gray-700'}`}>
             <div className={`flex ${close ? "justify-center" : "justify-start px-2"} items-center`}>
-                {isLink ? <Link to={`/${menuName}`}  >{content}</Link> : <div onClick={handleClickMenu}>{content}</div>}
+                {close ? (
+                    <Icon size={30} className={`${clickMenu === menuName ? ' text-white' : 'text-gray-600'}`} />
+                ) : (
+                    <div className='flex items-center'>
+                        <Icon size={30} className={`${clickMenu === menuName ? ' text-black' : 'text-gray-600'}`} />
+                        <div className='pl-5'>{label}</div>
+                    </div>
+                )}
             </div>
-        </div>
+        </div >
+    );
+
+
+
+    return isLink ? (
+        <Link to={`/${menuName}`} onClick={handleClickMenu}>
+            {content}
         </Link>
+    ) : (
+        <div onClick={handleClickMenu} className='cursor-pointer'>
+            {content}
+        </div>
     )
 }
 
