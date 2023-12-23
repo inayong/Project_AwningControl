@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CiViewList, CiLogout, CiIndent, CiDesktop, CiFloppyDisk, CiSquarePlus } from "react-icons/ci";
-import AddData from '../monitoring/AddData';
+import AddData from '../monitoring/AddDataModal';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import SideMenu from '../component/SideMenu';
 import { useRecoilState } from 'recoil';

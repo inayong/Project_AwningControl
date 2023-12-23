@@ -3,14 +3,14 @@ import './App.css';
 import MainMap from './monitoring/MainMap';
 import LoginPage from './login/LoginPage';
 import Sidebar from './sidebar/Sidebar';
-import AddData from './monitoring/AddData';
+import AddData from './monitoring/AddDataModal';
 import { useState } from 'react';
 import { RecoilRoot, useRecoilState } from 'recoil';
 import { SidebarState } from './sidebar/SidebarState';
 import AwningState from './monitoring/AwningState';
 import EventList from './monitoring/EventList';
 import AddDevice from './monitoring/AddDevice';
-import Notification from './sidebar/Notification';
+import Notification from './sidebar/NotificationBar';
 
 function App() {
   const [modal, setModal] = useState(false);

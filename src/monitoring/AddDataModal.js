@@ -1,4 +1,5 @@
 import React from 'react';
+import NaverMap from '../component/NaverMap';
 
 const AddData = ({ closeModal }) => {
     
@@ -7,6 +8,10 @@ const AddData = ({ closeModal }) => {
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 z-50 flex justify-center items-center">
       <div className="bg-white p-5 rounded-lg shadow-lg max-w-sm w-full mx-auto">
         <h2 className="text-lg font-bold mb-4">데이터 추가</h2>
+        <div>
+          <NaverMap  width={'100%'} height={'400px'} />
+          지도추가
+        </div>
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           추가
         </button>

@@ -44,8 +44,6 @@ const MainMap = () => {
                 zoom: 10
             });
 
-            
-
             mapData.forEach(item => {
                 const position = new naver.maps.LatLng(item.latitude, item.longitude);
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { FaCircle } from "react-icons/fa";
 
 const MainMap = () => {
     const { naver } = window;
@@ -31,6 +30,10 @@ const MainMap = () => {
         getData();
     }, [])
 
+    // const latMarker = mapData.map((item) => item.latitude);
+    // console.log("latMarker",latMarker);
+    // const lngMarker = mapData.map((item) => item.longitude);
+    // console.log("lngMarker",lngMarker);
 
     //지도 불러오기
     useEffect(() => {
@@ -41,15 +44,19 @@ const MainMap = () => {
 
             const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(mapData[0].latitude, mapData[0].longitude),
-                zoom: 10
+                zoom: 15
             });
-
-            
 
             mapData.forEach(item => {
                 const position = new naver.maps.LatLng(item.latitude, item.longitude);
 
-
+                // if (item.statusAwningExpand === 'on') {
+                //     markerUrl = 'https://i.ibb.co/ZK3jNk4/location-pin-green.png';
+                // } else if (item.statusAwningExpand === 'off') {
+                //     markerUrl = 'https://i.ibb.co/FDd05PD/location-pin-blue.png';
+                // } else if (item.statusConnected === 'off') {
+                //     markerUrl = 'https://i.ibb.co/q7C4qH8/location-pin-red.png';
+                // }
                 let markerUrl;
                 if (item.statusConnected === 'off') {
                     markerUrl = 'https://i.ibb.co/q7C4qH8/location-pin-red.png';
@@ -64,6 +71,9 @@ const MainMap = () => {
                         position: position.destinationPoint(90, 15),
                         map: map,
                         icon: {
+                            // url: "https://i.ibb.co/vZVRY0J/location-pin-red.png",
+                            // size: new naver.maps.Size(32, 32),
+                            // origin: new naver.maps.Point(0, 0),
                             content: `<div style="width: 40px; height: 40px; background-image: url('${markerUrl}'); background-size: cover;"></div>`, //64px
                             anchor: new naver.maps.Point(16, 32)
                         }
@@ -81,20 +91,6 @@ const MainMap = () => {
     return (
         <div className='flex'>
             <div id="map" style={{ width: '100%', height: '100vh' }}></div>
-            <div className='absolute bottom-10 right-10 z-10 w-32 h-32 bg-white flex flex-col justify-center items-center'>
-                <div className='flex items-center justify-center w-full'>
-                    <FaCircle size={25} className='fill-emerald-500' />
-                    <div className='text-lg pl-5'>열림</div> 
-                </div>
-                <div className='flex items-center justify-center w-full py-2'>
-                    <FaCircle size={25} className='fill-blue-500' />
-                    <div className='text-lg pl-5'>닫힘</div> 
-                </div>
-                <div className='flex items-center justify-center w-full'>
-                    <FaCircle size={25} className='fill-red-500' />
-                    <div className='text-lg pl-5'>끊김</div> 
-                </div>
-            </div>
         </div>
     )
 }
