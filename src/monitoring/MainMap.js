@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FaCircle } from "react-icons/fa";
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { NotiMapState } from '../sidebar/NotiMapState';
+import { SidebarState } from '../sidebar/SidebarState';
 
 const MainMap = () => {
     const { naver } = window;
@@ -10,6 +13,9 @@ const MainMap = () => {
     // const [map, setMap] = useState(null);
     // const [markers, setMarkers] = useState(null);
     const [mapData, setMapData] = useState();
+    const [markerOpen, setMarkerOpen] = useRecoilState(NotiMapState);
+    // const setMarkerOpen = useRecoilValue(NotiMapState);
+    // const setMarkerOpen = useRecoilState(SidebarState);
 
 
     const getData = () => {
@@ -68,11 +74,18 @@ const MainMap = () => {
                             anchor: new naver.maps.Point(16, 32)
                         }
                     });
+
+                    naver.maps.Event.addListener(marker, "click", () => {
+                        setMarkerOpen({isOpen: true, markerData: item});
+                        console.log("isOpen",markerOpen);
+                        // console.log("item",item);
+                        // window.location.href = 'login'
+                    })
                 }
 
             });
         }
-    }, [mapData]);
+    }, [mapData, setMarkerOpen]);
 
 
 

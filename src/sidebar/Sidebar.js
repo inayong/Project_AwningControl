@@ -64,6 +64,14 @@ const Sidebarcomm = ({ openModal }) => {
                     label="목록"
                 />
                 <SideMenu 
+                    menuName="adddevice"
+                    clickMenu={clickMenu}
+                    setClickMenu={setClickMenu}
+                    close={close}
+                    icon={CiSquarePlus}
+                    label="추가"
+                />
+                {/* <SideMenu 
                     menuName="add"
                     clickMenu={clickMenu}
                     setClickMenu={setClickMenu}
@@ -72,7 +80,7 @@ const Sidebarcomm = ({ openModal }) => {
                     label="추가"
                     onModal={() => openModal()}
                     isLink={false} 
-                />
+                /> */}
             </div>
         </div>
     )
