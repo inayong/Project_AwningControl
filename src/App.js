@@ -12,6 +12,7 @@ import EventList from './monitoring/EventList';
 import AddDevice from './monitoring/AddDevice';
 import Notification from './sidebar/NotificationBar';
 import { NotiMapState } from './sidebar/NotiMapState';
+// import SigunguData from './data/SigunguData';
 
 function App() {
   const [modal, setModal] = useState(false);
@@ -43,6 +44,7 @@ function App() {
             <Route path='/awningstate' element={<AwningState />} />
             <Route path='/eventlist' element={<EventList />} />
             <Route path='/adddevice' element={<AddDevice />} />
+            {/* <Route path='/data' element={<SigunguData />} /> */}
           </Routes>
         </div>
         {/* {modal && <AddData closeModal={closeModal} />} 상위 컴포넌트에서 실행되어야함 */}

@@ -34,7 +34,9 @@ const MainMap = () => {
             .catch(err => console.error(err))
     }
     useEffect(() => {
+        setMarkerOpen({isOpen: false, isOpen2: false})
         getData();
+
     }, [])
 
 
@@ -77,7 +79,7 @@ const MainMap = () => {
 
                     naver.maps.Event.addListener(marker, "click", () => {
                         setMarkerOpen({isOpen: true, markerData: item});
-                        console.log("isOpen",markerOpen);
+                        // console.log("isOpen",markerOpen);
                         // console.log("item",item);
                         // window.location.href = 'login'
                     })
@@ -87,7 +89,9 @@ const MainMap = () => {
         }
     }, [mapData, setMarkerOpen]);
 
-
+    // useEffect(() => {
+    //     console.log("useEffect isOpen",markerOpen);
+    // }, [markerOpen])
 
 
 
