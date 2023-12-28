@@ -3,22 +3,13 @@ import { RiSearch2Line, RiFilter3Line, RiCheckboxLine } from "react-icons/ri";
 import { GrPowerReset } from "react-icons/gr";
 import Pagination from 'react-js-pagination';
 import "../css/pagination.css";
-import "../css/statetable.css";
 
 
-const TableHead = ({ title, className, rowSpan, colSpan }) => {
+const TableHead = ({ title, className, rowSpan, colSpan }) => { //대문자로 시작
   return (
-    <th scope="col" className={`px-6 py-2 ${className || ''}`} rowSpan={rowSpan || undefined} colSpan={colSpan || undefined}>
+    <th scope="col" className={`px-6 py-3 ${className || ''}`} rowSpan={rowSpan || undefined} colSpan={colSpan || undefined}>
       {title}
     </th>
-  )
-};
-
-const TableBody = ({ content, className, scope }) => {
-  return (
-  <td className={`px-6 py-2 ${className || ''}`} scope={scope || undefined} >
-    {content}
-  </td>
   )
 };
 
@@ -111,8 +102,10 @@ const AwningState = () => {
       </div>
       <div className='flex justify-center h-1/2 mt-20'>
         <div className='bg-white w-5/6 '>
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg h-full hide-scrollbar">
-            <table className="w-full text-center text-gray-500 whitespace-nowrap">
+
+
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="p-4" rowSpan="2">
@@ -121,26 +114,63 @@ const AwningState = () => {
                       <label htmlFor="checkbox-all" className="sr-only">checkbox</label>
                     </div>
                   </th>
+                  {/* <th scope="col" className="px-6 py-3" rowSpan="2">
+                    상세
+                  </th> */}
                   <TableHead title="상세" rowSpan={2} />
-                  <TableHead title="관리번호" rowSpan={2} />
-                  <TableHead title="통신" rowSpan={2} />
-                  <TableHead title="조명" rowSpan={2} />
-                  <TableHead title="어닝" rowSpan={2} />
-                  <TableHead title="모드" rowSpan={2} />
-                  <TableHead title="배터리" rowSpan={2} />
-                  <TableHead title="관리구역" rowSpan={2} />
-                  <TableHead title="설치장소 메모" rowSpan={2} />
-                  <TableHead title="열림시간(좌/우)" rowSpan={2} />
-                  <TableHead title="풍속임계값" rowSpan={2} />
-                  <TableHead title="온도" rowSpan={2} />
-                  <TableHead title="풍속" rowSpan={2} />
-                  <TableHead title="고장진단" colSpan={3} />
-                  <TableHead title="열림예정시간" rowSpan={2} />
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    관리번호
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    통신
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    조명
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    어닝
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    모드
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    배터리
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    관리구역
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    설치장소 메모
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    열림시간(좌/우)
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    풍속 임계값
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    온도
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    풍속
+                  </th>
+                  <th scope="col" className="px-6 py-3" colSpan="3">
+                    고장진단
+                  </th>
+                  <th scope="col" className="px-6 py-3" rowSpan="2">
+                    열림예정시간
+                  </th>
                 </tr>
                 <tr>
-                  <TableHead title="조명" />
-                  <TableHead title="모터" />
-                  <TableHead title="배터리" />
+                  <th scope="col" className="px-6 py-3">
+                    조명
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    모터
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    배터리
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -152,23 +182,57 @@ const AwningState = () => {
                         <label htmlFor="checkbox-table-1" className="sr-only">checkbox</label>
                       </div>
                     </td>
-                    <TableBody scope="row" content="상세" />
-                    <TableBody content={items.managementNumber} />
-                    <TableBody content={items.statusConnected} />
-                    <TableBody content={items.statusLighting} />
-                    <TableBody content={items.statusAwningExpand} />
-                    <TableBody content={items.statusOperationMode} />
-                    <TableBody content={items.statusBatteryCharge} />
-                    <TableBody content={`${items.managementArea1} ${items.managementArea2}`} />
-                    <TableBody content={items.installationLocationMemo} />
-                    <TableBody content={`${items.awningOpenTimeLeft}/${items.awningOpenTimeRight}`} />
-                    <TableBody content={items.windSpeedThreshold} />
-                    <TableBody content={items.statusTemperature} />
-                    <TableBody content={items.statusWindSpeed} />
-                    <TableBody content={items.lightingCondition == 'normal' ? '정상' : '고장'} />
-                    <TableBody content={items.awningCondition == 'normal' ? '정상' : '고장'} />
-                    <TableBody content={items.batteryCondition == 'normal' ? '정상' : '고장'} />
-                    <TableBody content={items.awningOpenScheduleTime == null ? '-' : items.awningOpenScheduleTime} />
+                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      상세
+                    </th>
+                    <td className="px-6 py-4">
+                      {items.managementNumber}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.statusConnected}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.statusLighting}
+                    </td>
+                    <td className="px-6 py-4">
+                      <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">{items.statusAwningExpand}</a>
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.statusOperationMode}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.statusBatteryCharge}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.managementArea1} {items.managementArea2}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.installationLocationMemo}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.awningOpenTimeLeft}/{items.awningOpenTimeRight}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.windSpeedThreshold}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.statusTemperature}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.statusWindSpeed}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.lightingCondition}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.awningCondition}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.batteryCondition}
+                    </td>
+                    <td className="px-6 py-4">
+                      {items.awningOpenScheduleTime}
+                    </td>
                   </tr>
                 ))}
               </tbody>

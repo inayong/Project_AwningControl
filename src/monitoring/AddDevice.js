@@ -3,16 +3,16 @@ import { CiSearch } from "react-icons/ci";
 import { SigunguData } from '../data/SigunguData';
 
 
-const FormSection = ({ labelLeft, labelRight }) => {
+const FormSection = ({ labelLeft, labelRight, leftRef, rightRef }) => {
   return (
     <div className='flex py-4 pl-3 w-full'>
       <div className='flex flex-col w-1/2'>
         <div className=''>{labelLeft}</div>
-        <input className='w-48'></input>
+        <input className='w-48' ref={leftRef}></input>
       </div>
       <div className='flex flex-col w-1/2'>
         <div className=''>{labelRight}</div>
-        <input className='w-48'></input>
+        <input className='w-48' ref={rightRef}></input>
       </div>
     </div>
   );
@@ -134,11 +134,13 @@ const AddDevice = () => {
     setInstallDate(e.target.value)
     // console.log("iidate", e.target.value)
   }
+  // console.log("iidate", installDate);
   const handleExpireDateChange = (e) => {
     setExpireDate(e.target.value)
     // console.log("eedate", e.target.value)
   }
 
+  //select
   const { sigungu, si, gun, gu } = SigunguData();
   const selSiRef = useRef();
   const selGuRef = useRef();
@@ -167,7 +169,7 @@ const [selectedDong, setSelectedDong] = useState('');
     setSelectedDong('');
   }
 
-  const handleSelGun = () => {
+  const handleSelGu = () => {
     const selectSi = selSiRef.current.value;
     const selectGu = selGuRef.current.value;
 
@@ -180,10 +182,82 @@ const [selectedDong, setSelectedDong] = useState('');
     setDongSel(selDong);
     setSelectedGu(selGuRef.current.value);
     setSelectedDong('');
+    console.log("selSiRef", selSiRef.current.value)
+    console.log("selGuRef", selGuRef.current.value)
   }
 
-  const handleSelGu = () => {
-    setSelectedDong(selDongRef.current.value);
+  // const handleSelDong = () => {
+  //   setSelectedDong(selDongRef.current.value);
+  // }
+
+  //fetch
+  // const [latitude, setLatitude] = useState('');
+  // const [longitude, setLogitude] = useState('');
+  // const [managementArea1, setManagementArea1] = useState('');
+  // const [managementArea2, setManagementArea2] = useState('');
+  // const [startDate, setStartDate] = useState('');
+  // const [finishDate, setFinishDate] = useState('');
+  // const [manageNum, setManageNum] = useState('');
+  // const [locationMemo, setLocationMemo] = useState('');
+  // const [deviceId, setDeviceId] = useState('');
+  // const [controlId, setControlId] = useState('');
+  // const [openLeft, setOpenLeft] = useState('');
+  // const [openRight, setOpenRight] = useState('');
+  // const [windThreshold, setWindThreshold] = useState('');
+  // const [awningReopen, setAwningReopen] = useState('');
+  const manageNum = useRef();
+  const locationMemo = useRef();
+  const deviceId = useRef();
+  const controlId = useRef();
+  const openLeft = useRef();
+  const openRight = useRef();
+  const windThreshold = useRef();
+  const awningReopen = useRef();
+
+  const fetchAddDevice = () => {
+    fetch("http://10.125.121.206:8080/admin/device/add", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem("token")
+      },
+      body: JSON.stringify({
+        'latitude':  displayLocation.lat,
+        'longitude': displayLocation.lng,
+        'managementArea1': selSiRef.current.value,
+        'managementArea2': selGuRef.current.value,
+        'managementNumber': manageNum.current.value,
+        'installationLocationMemo': locationMemo.current.value,
+        'deviceId': deviceId.current.value,
+        'controlId': controlId.current.value,
+        'awningOpenTimeLeft': openLeft.current.value,
+        'awningOpenTimeRight': openRight.current.value,
+        'windSpeedThreshold': windThreshold.current.value,
+        'awningReopenTimeMinutes': awningReopen.current.value,
+        'startDate': installDate,
+        'finshDate': expireDate,
+      })
+    })
+      // .then((resp) => {
+      //   if (!resp.ok) {
+      //     throw new Error(`HTTP error! status: ${resp.status}`);
+      //   }
+      //   return resp.json();
+      // }) 받기로한 json이없으므로 syntax error
+      .then(() => {
+        console.log("성공")
+      })
+      .catch((err) => console.error("장치 추가 실패:", err))
+    
+  }
+
+  // 'startDate': new Date(installDate).toISOString().split('T')[0],
+  // 'finshDate': new Date(expireDate).toISOString().split('T')[0],
+
+  const handleSubmit = () => {
+    fetchAddDevice();
+    console.log("date", new Date(installDate).toISOString().split('T')[0])
+    console.log("locationMemo", locationMemo.current.value)
   }
 
   return (
@@ -204,8 +278,6 @@ const [selectedDong, setSelectedDong] = useState('');
                   <input type='text' value={inputAddress} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder='주소 입력' />
                   <button onClick={handleSearch}><CiSearch /></button>
                 </div>
-                {/* <div>위·경도 {searchLocation ? searchLocation.lat : location.lat} / {searchLocation ? searchLocation.lng : location.lng}</div> */}
-                {/* <div>위·경도 {location.lat} / {location.lng}</div> */}
                 <div>위·경도 {displayLocation.lat} / {displayLocation.lng}</div>
               </div>
               <div className='flex flex-col'>
@@ -221,29 +293,26 @@ const [selectedDong, setSelectedDong] = useState('');
                   <option key={items}>{items}</option>
                 ))}
               </select>
-              <select onChange={handleSelGun} ref={selGuRef} value={selectedGu} className='w-32 mr-3'>
+              <select onChange={handleSelGu} ref={selGuRef} value={selectedGu} className='w-32 mr-3'>
                 <option value=''>구</option>
                 {guSel.map((items) => (
                   <option key={items}>{items}</option>
                 ))}
               </select>
-              <select onChange={handleSelGu} ref={selDongRef} value={selectedDong} className='w-32'>
+              {/* <select onChange={handleSelDong} ref={selDongRef} value={selectedDong} className='w-32'>
                 <option>동</option>
                 {dongSel.map((items) => (
                   <option key={items}>{items}</option>
                 ))}
-              </select>
+              </select> */}
             </div>
-            {/* <div className='pb-6 pt-2 pl-3'>관리구역</div> */}
-            <FormSection labelLeft="관리번호" labelRight="설치장소 메모" />
-            <FormSection labelLeft="기구ID" labelRight="제어기ID" />
-            <FormSection labelLeft="어닝 열림시간 - 좌(초)" labelRight="어닝 열림시간 - 우(초)" />
-            <FormSection labelLeft="풍속 임계값" labelRight="어닝 재열림 시간(분)" />
-            {/* <FormSection labelLeft="설치일자" labelRight="계약만료기간" /> */}
+            <FormSection labelLeft="관리번호" leftRef={manageNum} labelRight="설치장소 메모" rightRef={locationMemo}/>
+            <FormSection labelLeft="기구ID" leftRef={deviceId} labelRight="제어기ID" rightRef={controlId} />
+            <FormSection labelLeft="어닝 열림시간 - 좌(초)" leftRef={openLeft} labelRight="어닝 열림시간 - 우(초)" rightRef={openRight} />
+            <FormSection labelLeft="풍속 임계값" leftRef={windThreshold} labelRight="어닝 재열림 시간(분)" rightRef={awningReopen} />
             <div className='flex py-4 pl-3 w-full'>
               <div className='flex flex-col w-1/2'>
                 <div className=''>설치일자</div>
-                {/* <DatePicker showIcon icon="fa fa-calendar" selected={date} onChange={(dt) => setDate(dt)} locale={ko} dateFormat="yyyy년 MM월 dd일" className='text-center'/> */}
                 <input type='date' value={installDate} onChange={handleInstallDateChange} className='w-48'></input>
               </div>
               <div className='flex flex-col w-1/2'>
@@ -253,7 +322,7 @@ const [selectedDong, setSelectedDong] = useState('');
             </div>
           </div>
           <div className='flex justify-center m-1'>
-            <button className='border mr-3 p-1'>추가</button>
+            <button onClick={handleSubmit} className='border mr-3 p-1'>추가</button>
             <button className='border ml-3 p-1'>취소</button>
           </div>
         </div>
