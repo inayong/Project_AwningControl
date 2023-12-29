@@ -92,7 +92,7 @@ const Notification = () => {
   // }, [markerOpen, settingOpen])
 
   return (
-    <div className="flex h-screen overflow-x-hidden">
+    <div className="flex h-screen overflow-x-hidden whitespace-nowrap">
       <button onClick={toggleNoti}
         className={`absolute top-0 mt-4 transition-transform ease-in-out ${notiOpen ? 'bg-black' : 'bg-white' } ${notiOpen || settingOpen ? 'right-72' : 'right-4 rounded-full'} p-3` }>
         <MdOutlineNotificationsActive size={30} className='fill-blue-600' />

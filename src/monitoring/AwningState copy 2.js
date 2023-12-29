@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { RiSearch2Line, RiFilter3Line, RiCheckboxLine, RiArrowUpCircleLine, RiArrowDownCircleLine } from "react-icons/ri";
+import React, { useEffect, useState } from 'react';
+import { RiSearch2Line, RiFilter3Line, RiCheckboxLine } from "react-icons/ri";
 import { GrPowerReset } from "react-icons/gr";
 import Pagination from 'react-js-pagination';
 import "../css/pagination.css";
@@ -19,13 +19,13 @@ const TableBody = ({ content, className, scope, deviceId }) => {
   return (
     <td className={`px-6 py-2 ${className || ''}`} scope={scope || undefined} >
       {content === "상세" ? (
-        <Link to={`detail/${deviceId}`}>
-          <button className='border p-1 rounded-full text-xs text-black shadow-sm'>상세</button>
-        </Link>
-      ) : (
-        content
-      )
-      }
+      <Link to={`detail/${deviceId}`}>
+        <button className='border p-1 rounded-full text-xs text-black shadow-sm'>상세</button>
+        </Link>  
+    ) : (
+      content
+    )
+    }
     </td>
   )
 };
@@ -35,14 +35,6 @@ const AwningState = () => {
   const [getStateData, setGetStateData] = useState([]); //데이터
   const [stateData, setStateData] = useState([]); //페이징 데이터
 
-  const [isOpen, setIsOpen] = useState(true);
-
-  const searchSel = useRef();
-  const searchKeyword = useRef();
-
-  const handleIsOpen = () => {
-    setIsOpen(!isOpen);
-  }
 
   const handlebutton = () => {
     console.log("input")
@@ -53,9 +45,7 @@ const AwningState = () => {
       fetch("http://10.125.121.206:8080/user/device/view", {
         method: "GET",
         headers: {
-          'Authorization': localStorage.getItem("token"),
-          'SearchTerm': encodeURIComponent(searchKeyword.current.value),
-          'SearchCriteria': encodeURIComponent(searchSel.current.value)
+          'Authorization': localStorage.getItem("token")
         }
       })
         .then(resp => resp.json())
@@ -86,7 +76,7 @@ const AwningState = () => {
 
   return (
     <div className='bg-slate-200 h-screen'>
-      <div className={`flex justify-center pt-14 ${isOpen ? 'h-[28%]' : 'h-32'} `}>
+      <div className='flex justify-center h-[28%] pt-14'>
         <div className='bg-white w-5/6'>
           <div className='flex justify-between'>
             <div className='flex p-3'>
@@ -94,52 +84,43 @@ const AwningState = () => {
                 <RiSearch2Line size={20} className='m-3 fill-gray-500' />
                 <div className='text-lg'>검색</div>
               </div>
-              <select ref={searchSel} className='bg-slate-200 w-36 pl-2 rounded-lg'>
-                <option value='전체'>전체</option>
-                <option value='관리번호'>관리번호</option>
-                <option value='설치장소'>설치장소</option>
+              <select className='bg-slate-200 w-36 pl-2 rounded-lg'>
+                <option value=''>전체</option>
               </select>
               <div className='flex bg-slate-300 ml-2 items-center rounded-lg'>
-                <input type='text' ref={searchKeyword} className='w-72 bg-slate-300' />
+                <input type='text' className='w-72 bg-slate-300' />
                 <button onClick={handlebutton} className='absolute ml-[260px]'><RiSearch2Line /></button>
               </div>
             </div>
-            <div className='flex pr-3'>
+            <div className='flex'>
               <button className='flex bg-gray-100 items-center mx-4 my-3 px-2 rounded-lg hover:bg-gray-200'>
                 <div className='pr-2'>초기화</div>
                 <GrPowerReset />
               </button>
-              <button onClick={handleIsOpen}>
-                {isOpen ? <RiArrowUpCircleLine size={30} className='fill-neutral-500' /> : <RiArrowDownCircleLine size={30} className='fill-neutral-500' />}
-              </button>
             </div>
           </div>
-          {isOpen && (
-            <div>
-              <div className='flex p-3'>
-                <div className='flex items-center w-48'>
-                  <RiFilter3Line size={20} className='m-3 fill-gray-500' />
-                  <div className='text-lg'>필터</div>
-                </div>
-                <select className='w-36 pl-2 rounded-lg'>
-                  <option value=''>전체</option>
-                </select>
-              </div>
-              <div className='flex p-3'>
-                <div className='flex items-center w-48'>
-                  <RiCheckboxLine size={20} className='m-3 fill-gray-500' />
-                  <div className='text-lg'>장치 관리</div>
-                </div>
-                <button className='hover:bg-gray-200 border rounded-lg px-2'>어닝 열림</button>
-              </div>
+          <div className='flex p-3'>
+            <div className='flex items-center w-48'>
+              <RiFilter3Line size={20} className='m-3 fill-gray-500' />
+              <div className='text-lg'>필터</div>
             </div>
-          )}
+            <select className='w-36 pl-2 rounded-lg'>
+              <option value=''>전체</option>
+            </select>
+          </div>
+          <div className='flex p-3'>
+            <div className='flex items-center w-48'>
+              <RiCheckboxLine size={20} className='m-3 fill-gray-500' />
+              <div className='text-lg'>장치 관리</div>
+            </div>
+            <button className='hover:bg-gray-200 border rounded-lg px-2'>어닝 열림</button>
+          </div>
         </div>
       </div>
       <div className='flex justify-center h-1/2 mt-20'>
         <div className='bg-white w-5/6'>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg h-full hide-scrollbar">
-            <table className="min-w-full text-center text-gray-500 whitespace-nowrap">
+            <table className="text-center text-gray-500 whitespace-nowrap">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="p-4" rowSpan="2">
@@ -172,14 +153,14 @@ const AwningState = () => {
               </thead>
               <tbody>
                 {stateData.map((items, index) => (
-                  <tr key={index} className="bg-white border-b hover:bg-gray-50 ">
+                  <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td className="w-4 p-4">
                       <div className="flex items-center">
-                        <input id="checkbox-table-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 " />
+                        <input id="checkbox-table-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                         <label htmlFor="checkbox-table-1" className="sr-only">checkbox</label>
                       </div>
                     </td>
-                    <TableBody scope="row" content="상세" deviceId={items.deviceId} />
+                    <TableBody scope="row" content="상세" deviceId={items.deviceId}/>
                     <TableBody content={items.managementNumber} />
                     <TableBody content={items.statusConnected} />
                     <TableBody content={items.statusLighting} />

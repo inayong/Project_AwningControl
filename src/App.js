@@ -12,47 +12,36 @@ import EventList from './monitoring/EventList';
 import AddDevice from './monitoring/AddDevice';
 import Notification from './sidebar/NotificationBar';
 import { NotiMapState } from './sidebar/NotiMapState';
+import AwningDetail from './monitoring/AwningDetail';
 // import SigunguData from './data/SigunguData';
 
 function App() {
-  const [modal, setModal] = useState(false);
   const [isSidebar, setSidebar] = useRecoilState(SidebarState);
-  // const [markerOpen, setMarkerOpen] = useRecoilState(NotiMapState);
 
+  // const mainContentMarginLeft = sidebarOpen ? 'ml-[사이드바 열린 너비]' : 'ml-0';
 
-  const openModal = () => {
-    setModal(true);
-  }
-
-  const closeModal = () => {
-    setModal(false);
-  }
 
   return (
     <div className='flex'>
-      {/* <RecoilRoot> */}
       <BrowserRouter>
-        <div>
-          {/* {isSidebar && <Sidebar openModal={openModal} />} */}
+        <div className=''>
           {isSidebar && <Sidebar />}
         </div>
+        {/* <div className='w-full'> */}
         <div className='w-full'>
           <Routes>
             <Route path='/login' element={<LoginPage />} />
-            {/* {markerOpen && <Route path='/monitoring' element={<MainMap />} />} */}
             <Route path='/monitoring' element={<MainMap />} />
             <Route path='/awningstate' element={<AwningState />} />
+            <Route path='/awningstate/detail/:deviceId' element={<AwningDetail />} />
             <Route path='/eventlist' element={<EventList />} />
             <Route path='/adddevice' element={<AddDevice />} />
-            {/* <Route path='/data' element={<SigunguData />} /> */}
           </Routes>
         </div>
-        {/* {modal && <AddData closeModal={closeModal} />} 상위 컴포넌트에서 실행되어야함 */}
         <div>
           {isSidebar && <Notification />}
         </div>
       </BrowserRouter>
-      {/* </RecoilRoot> */}
     </div>
   );
 }

@@ -31,8 +31,9 @@ const Sidebarcomm = ({ openModal }) => {
 
     //추가하거나 닫기하면 선택된거 초기화하기
     return (
-        <div>
+        <div >
             <div className={`${close ? "sm:w-16" : "sm:w-60"} bg-white h-screen`}>
+            {/* <div className={`fixed top-0 left-0 h-screen ${close ? "w-16" : "w-60"} bg-white`}> */}
                 <div className={`flex ${close ? "justify-center" : "justify-end pr-2"} items-center py-5`}>
                     {close ? null : <div className='pr-9'>어닝 제어 시스템</div>}
                     <CiIndent onClick={() => setClose(!close)} size={30} className='cursor-pointer' />
