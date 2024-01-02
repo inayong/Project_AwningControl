@@ -17,15 +17,10 @@ const TableHead = ({ title, className, rowSpan, colSpan }) => {
 
 const TableBody = ({ content, className, scope, deviceId }) => {
   let statusColor = 'text-gray-500';
-  // if (content === '정상' || content === '연결' || content === '켜짐' || content === '열림') {
-  //   statusColor = 'text-green-500';
-  // } else {
-  //   statusColor = 'text-gray-500';
-  // }
   if (['정상', '연결', '켜짐', '열림'].includes(content)) {
-    statusColor = 'text-green-500'; // 긍정적 상태일 때
+    statusColor = 'text-green-500';
   } else if (['고장', '끊김', '꺼짐', '닫힘'].includes(content)) {
-    statusColor = 'text-red-500'; // 부정적 상태일 때
+    statusColor = 'text-red-500';
   }
 
   return (
@@ -52,50 +47,72 @@ const AwningState = () => {
   const [checkboxCount, setCheckboxCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchCriteria, setSearchCriteria] = useState('');
+  const [currentSearchTerm, setCurrentSearchTerm] = useState('');
+  const [currentSearchCriteria, setCurrentSearchCriteria] = useState('');
 
   const searchSel = useRef();
   const searchKeyword = useRef();
   const filterSel = useRef();
 
 
-  const handleSearchbutton = () => {
-    console.log("input")
-  }
-  
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
   }
 
   const filterResetButton = () => {
-    searchSel.current.value = '';
+    searchSel.current.value = 'full';
     searchKeyword.current.value = '';
     filterSel.current.value = '';
+
+    setSearchTerm('');
+    setSearchCriteria('');
+
+    // fetchAwningState();
+  }
+
+
+  const fetchAwningState = () => {
+    const url = `http://10.125.121.206:8080/user/device/view?searchTerm=${searchTerm}&searchCriteria=${searchCriteria}`
+    console.log("url", url)
+    fetch(url, {
+      method: "GET",
+      headers: {
+        'Authorization': localStorage.getItem("token"),
+      }
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        setGetStateData(data);
+        const checkedState = data.reduce((acc, item) => {
+          acc[item.deviceId] = false;
+          return acc;
+        }, {});
+        setCheckBox(checkedState);
+        console.log("statedata", data)
+      })
+      .catch(err => console.error(err))
   }
 
   useEffect(() => {
-    const fetchAwningState = () => {
-      fetch("http://10.125.121.206:8080/user/device/view", {
-        method: "GET",
-        headers: {
-          'Authorization': localStorage.getItem("token"),
-          // 'SearchTerm': encodeURIComponent(searchKeyword.current.value),
-          // 'SearchCriteria': encodeURIComponent(searchSel.current.value)
-        }
-      })
-        .then(resp => resp.json())
-        .then(data => {
-          setGetStateData(data);
-          const checkedState = data.reduce((acc, item) => {
-            acc[item.deviceId] = false;
-            return acc;
-          }, {});
-          setCheckBox(checkedState);
-          console.log("statedata", data)
-        })
-        .catch(err => console.error(err))
-    }
     fetchAwningState();
-  }, [])
+  }, [searchTerm, searchCriteria])
+
+  // const handleSearchSel = () => {
+  //   setSearchTerm(searchKeyword.current.value);
+  //   setSearchCriteria(searchSel.current.value);
+  // }
+
+  const handleSearchbutton = () => {
+    console.log("input")
+    setSearchTerm(searchKeyword.current.value);
+    setSearchCriteria(searchSel.current.value);
+    // fetchAwningState();
+  }
+  const searchKeyDown = (e) => {
+    if (e.key === 'Enter') handleSearchbutton();
+  }
 
   //페이징
   const [page, setPage] = useState(1);
@@ -115,37 +132,33 @@ const AwningState = () => {
 
   //checkbox 단일 선택
   const handleSingleCheck = (checked, deviceId) => {
-    // setCheckBox(prev => {
-    //   const newChecked = new Map(prev);
-    //   newChecked.set(deviceId, checked);
-    //   //선택된 항목 수 업데이트
-    //   setCheckboxCount(Array.from(newChecked.values()).filter(val => val).length);
-    //   return newChecked;
-    // });
+
     setCheckBox(prev => ({ ...prev, [deviceId]: checked }));
+    // console.log("single", deviceId)
   };
 
 
   //checkbox 전체 선택
   const handleAllCheck = (checked) => {
-    // const newChecked = new Map();
-    // stateData.forEach(items => {
-    //   newChecked.set(items.deviceId, checked);
-    // });
-    // setCheckBox(newChecked);
-    // //선택 수 업데이트
-    // setCheckboxCount(checked ? stateData.length : 0);
+
     const newChecked = { ...checkbox };
     stateData.forEach(items => {
       newChecked[items.deviceId] = checked;
     });
     setCheckBox(newChecked);
+    // console.log("all", checked)
   };
 
   //체크박스 개수
   useEffect(() => {
     const count = Object.values(checkbox).filter(checked => checked).length;
     setCheckboxCount(count);
+    // console.log(checkbox)
+    // const deviceIds = Object.entries(checkbox)
+    //   .filter(([_, isChecked]) => isChecked)
+    //   .map(([deviceId]) => deviceId);
+    // console.log("didid", deviceIds)
+
   }, [checkbox])
 
   const checkboxResetButton = () => {
@@ -155,42 +168,42 @@ const AwningState = () => {
 
   //checkbox선택시 삭제 버튼 나타내기
   const checkboxAwningDelete = () => {
-    console.log("선택된 항목 삭제:", checkbox);
+    // console.log("선택된 항목 삭제:", checkbox);
     setShowModal(true);
 
   }
 
-  const awningDeleteConfirm = () => {
-    //   const fetchAwningDelete = () => {
-    //   fetch(`http://10.125.121.206:8080/admin/device/del/${deviceId}`, {
-    //     method: "DELETE",
-    //     headers: {
-    //       'Authorization': localStorage.getItem("token")
-    //     }
-    //   })
-    //   .then((resp) => {
-    //     if (resp.ok) {
-    //       alert("삭제 완료")
+  // const awningDeleteConfirm = () => {
+  const fetchAwningDelete = () => {
+    const deviceIds = Object.entries(checkbox)
+      .filter(([_, isChecked]) => isChecked)
+      .map(([deviceId]) => deviceId);
+    console.log("deviceIds", deviceIds)
 
-    //     }
-    //   })
-    // }
+    fetch("http://10.125.121.206:8080/admin/device/del", {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem("token")
+      },
+      body: JSON.stringify(deviceIds)
+    })
+      .then((resp) => {
+        if (resp.ok) {
+          alert("삭제 완료")
+          setShowModal(false)
+          window.location.reload();
+        } else {
+          alert("삭제 실패")
+        }
+      })
+      .catch((err) => console.error("어닝 삭제 오류:", err))
   }
+  // }
 
 
   return (
     <div className='bg-slate-200 h-screen'>
-      {/* {showModal && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-16 rounded-md">
-            <p className='text-2xl'>삭제하시겠습니까?</p>
-            <div className="flex justify-center mt-4 pt-3">
-              <button className="px-3 py-1 bg-red-500 text-white rounded-md">삭제</button>
-              <button onClick={() => setShowModal(false)} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
-            </div>
-          </div>
-        </div>
-      )} */}
       <div className={`flex justify-center pt-14 ${isOpen ? 'h-[28%]' : 'h-32'} `}>
         <div className='bg-white w-5/6 rounded-lg shadow-md'>
           <div className='flex justify-between'>
@@ -200,12 +213,12 @@ const AwningState = () => {
                 <div className='text-lg'>검색</div>
               </div>
               <select ref={searchSel} className='bg-slate-200 w-36 pl-2 rounded-lg'>
-                <option value=''>전체</option>
-                <option value='관리번호'>관리번호</option>
-                <option value='설치장소'>설치장소</option>
+                <option value='full'>전체</option>
+                <option value='managementNumber'>관리번호</option>
+                <option value='installationLocationMemo'>설치장소</option>
               </select>
               <div className='flex bg-slate-300 ml-2 items-center rounded-lg'>
-                <input type='text' ref={searchKeyword} className='w-72 bg-slate-300' />
+                <input type='text' ref={searchKeyword} onKeyDown={searchKeyDown} className='w-72 bg-slate-300' />
                 <button onClick={handleSearchbutton} className='absolute ml-[260px]'><RiSearch2Line /></button>
               </div>
             </div>
@@ -239,6 +252,17 @@ const AwningState = () => {
                 </div>
                 {checkboxCount > 0 && (
                   <button onClick={checkboxAwningDelete} className='hover:bg-red-100 border-4 border-red-400 rounded-lg px-2 mr-2'>어닝삭제</button>
+                )}
+                {showModal && (
+                  <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-16 rounded-md">
+                      <p className='text-2xl'>삭제하시겠습니까?</p>
+                      <div className="flex justify-center mt-4 pt-3">
+                        <button onClick={fetchAwningDelete} className="px-3 py-1 bg-red-500 text-white rounded-md">삭제</button>
+                        <button onClick={() => setShowModal(false)} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
+                      </div>
+                    </div>
+                  </div>
                 )}
                 <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>조명 on</button>
                 <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>조명 off</button>

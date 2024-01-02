@@ -30,6 +30,7 @@ const AddDevice = () => {
   // const [date, setDate] = useState(new Date());
   const [installDate, setInstallDate] = useState(''); //유효한 기본값 제공해아함
   const [expireDate, setExpireDate] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const handleMapClick = (lat, lng) => {
     setLocation({ lat, lng });
@@ -150,13 +151,13 @@ const AddDevice = () => {
   const [dongSel, setDongSel] = useState([]);
   //초기화
   const [selectedSi, setSelectedSi] = useState('');
-const [selectedGu, setSelectedGu] = useState('');
-const [selectedDong, setSelectedDong] = useState('');
+  const [selectedGu, setSelectedGu] = useState('');
+  const [selectedDong, setSelectedDong] = useState('');
 
   const handleSelSi = () => {
     // console.log("selref", selSiRef.current.value)
     const selectSi = selSiRef.current.value;
-    
+
     const selgufil = sigungu
       .filter((items) => items.address.split(" ")[0] === selectSi)
       .map((item) => item.address.split(" ")[1]);
@@ -191,20 +192,6 @@ const [selectedDong, setSelectedDong] = useState('');
   // }
 
   //fetch
-  // const [latitude, setLatitude] = useState('');
-  // const [longitude, setLogitude] = useState('');
-  // const [managementArea1, setManagementArea1] = useState('');
-  // const [managementArea2, setManagementArea2] = useState('');
-  // const [startDate, setStartDate] = useState('');
-  // const [finishDate, setFinishDate] = useState('');
-  // const [manageNum, setManageNum] = useState('');
-  // const [locationMemo, setLocationMemo] = useState('');
-  // const [deviceId, setDeviceId] = useState('');
-  // const [controlId, setControlId] = useState('');
-  // const [openLeft, setOpenLeft] = useState('');
-  // const [openRight, setOpenRight] = useState('');
-  // const [windThreshold, setWindThreshold] = useState('');
-  // const [awningReopen, setAwningReopen] = useState('');
   const manageNum = useRef();
   const locationMemo = useRef();
   const deviceId = useRef();
@@ -222,7 +209,7 @@ const [selectedDong, setSelectedDong] = useState('');
         'Authorization': localStorage.getItem("token")
       },
       body: JSON.stringify({
-        'latitude':  displayLocation.lat,
+        'latitude': displayLocation.lat,
         'longitude': displayLocation.lng,
         'managementArea1': selSiRef.current.value,
         'managementArea2': selGuRef.current.value,
@@ -238,26 +225,81 @@ const [selectedDong, setSelectedDong] = useState('');
         'finshDate': expireDate,
       })
     })
-      // .then((resp) => {
-      //   if (!resp.ok) {
-      //     throw new Error(`HTTP error! status: ${resp.status}`);
-      //   }
-      //   return resp.json();
-      // }) 받기로한 json이없으므로 syntax error
-      .then(() => {
-        console.log("성공")
+      .then((resp) => {
+        if (resp.ok) {
+          alert("장치 추가 완료")
+          setShowModal(false);
+          window.location.reload();
+        } else {
+          alert("입력을 다시 해주세요")
+          setShowModal(false);
+        }
       })
       .catch((err) => console.error("장치 추가 실패:", err))
-    
+
   }
 
-  // 'startDate': new Date(installDate).toISOString().split('T')[0],
-  // 'finshDate': new Date(expireDate).toISOString().split('T')[0],
 
-  const handleSubmit = () => {
+  const handleAddSubmit = () => {
+    const requiredFields = [
+      { value: selectedSi, name: "관리구역(시)" },
+      { value: selectedGu, name: "관리구역(구)" },
+      { ref: manageNum, name: "관리번호" },
+      { ref: locationMemo, name: "설치장소" },
+      { ref: deviceId, name: "기구ID" },
+      { ref: controlId, name: "제어기ID" },
+      { ref: openLeft, name: "어닝 열림시간 - 좌" },
+      { ref: openRight, name: "어닝 열림시간 - 우" },
+      { ref: windThreshold, name: "풍속 임계값" },
+      { ref: awningReopen, name: "어닝 재열림 시간" },
+      { value: installDate, name: "설치일자" },
+      { value: expireDate, name: "계약만료기간" },
+    ];
+
+    if (!displayLocation.lat || !displayLocation.lng) {
+      alert("위/경도를 입력해주세요")
+      return;
+    }
+  
+    // 필수 필드 검사
+    for (const field of requiredFields) {
+      if (field.ref) {
+        if (!field.ref.current || !field.ref.current.value.trim()) {
+          alert(`${field.name}을(를) 입력해주세요.`);
+          return;
+        }
+      } else {
+        if (!field.value.trim()) {
+          alert(`${field.name}을(를) 입력해주세요.`);
+          return;
+        }
+      }
+    }
+    setShowModal(true);
+    // console.log("date", new Date(installDate).toISOString().split('T')[0])
+    // console.log("locationMemo", locationMemo.current.value)
+  }
+
+  const AddDeviceConfirm = () => {
     fetchAddDevice();
-    console.log("date", new Date(installDate).toISOString().split('T')[0])
-    console.log("locationMemo", locationMemo.current.value)
+  }
+
+  const cancleButton = () => {
+    setInputAddress('');
+    setDisplayLocation('');
+    setDisplayAddress('');
+    setSelectedSi('');
+    setSelectedGu('');
+    manageNum.current.value = '';
+    locationMemo.current.value = '';
+    deviceId.current.value = '';
+    controlId.current.value = '';
+    openLeft.current.value = '';
+    openRight.current.value = '';
+    windThreshold.current.value = ''
+    awningReopen.current.value = ''
+    setInstallDate('');
+    setExpireDate('');
   }
 
   return (
@@ -306,7 +348,7 @@ const [selectedDong, setSelectedDong] = useState('');
                 ))}
               </select> */}
             </div>
-            <FormSection labelLeft="관리번호" leftRef={manageNum} labelRight="설치장소 메모" rightRef={locationMemo}/>
+            <FormSection labelLeft="관리번호" leftRef={manageNum} labelRight="설치장소" rightRef={locationMemo} />
             <FormSection labelLeft="기구ID" leftRef={deviceId} labelRight="제어기ID" rightRef={controlId} />
             <FormSection labelLeft="어닝 열림시간 - 좌(초)" leftRef={openLeft} labelRight="어닝 열림시간 - 우(초)" rightRef={openRight} />
             <FormSection labelLeft="풍속 임계값" leftRef={windThreshold} labelRight="어닝 재열림 시간(분)" rightRef={awningReopen} />
@@ -322,8 +364,19 @@ const [selectedDong, setSelectedDong] = useState('');
             </div>
           </div>
           <div className='flex justify-center m-1'>
-            <button onClick={handleSubmit} className='border mr-3 p-1'>추가</button>
-            <button className='border ml-3 p-1'>취소</button>
+            <button onClick={handleAddSubmit} className='border mr-3 p-1'>추가</button>
+            {showModal && (
+                  <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-16 rounded-md">
+                      <p className='text-2xl'>추가하시겠습니까?</p>
+                      <div className="flex justify-center mt-4 pt-3">
+                        <button onClick={AddDeviceConfirm} className="px-3 py-1 bg-red-500 text-white rounded-md">확인</button>
+                        <button onClick={() => setShowModal(false)} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+            <button onClick={cancleButton} className='border ml-3 p-1'>취소</button>
           </div>
         </div>
       </div>
