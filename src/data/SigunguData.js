@@ -15,10 +15,10 @@ export const SigunguData = () => {
   const si = [...new Set (sigungu.map(item => item.address.split(" ")[0]))]; //공백기준으로 첫번째
   // console.log("si", si)
 
-  const gun = [...new Set (sigungu.map(item => item.address.split(" ")[1]))];
-  const gu = [...new Set (sigungu.map(item => item.address.split(" ")[2]))];
+  const gu = [...new Set (sigungu.map(item => item.address.split(" ")[1]))];
+  const dong = [...new Set (sigungu.map(item => item.address.split(" ")[2]))];
 
-  return { sigungu, si, gun, gu };
+  return { sigungu, si, gu, dong };
 };
 
 // export default SigunguData;

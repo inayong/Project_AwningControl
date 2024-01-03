@@ -5,7 +5,6 @@ import Pagination from 'react-js-pagination';
 import "../css/pagination.css";
 import "../css/statetable.css";
 import { Link } from 'react-router-dom';
-import { SigunguData } from '../data/SigunguData';
 
 
 const TableHead = ({ title, className, rowSpan, colSpan }) => {
@@ -73,9 +72,6 @@ const AwningState = () => {
   const [showSelect, setShowSelect] = useState(false);
   const [filterSel, setFilterSel] = useState('');
 
-  const { sigungu, si } = SigunguData();
-  const [gu, setGu] = useState([]);
-  
   const searchSel = useRef();
   const searchKeyword = useRef();
   // const filterSel = useRef();
@@ -159,17 +155,9 @@ const AwningState = () => {
 
   const filterSelChange = (e) => {
     setFilterSel(e.target.value)
-    setStatusConnected('');
-    setStatusLighting('');
-    setStatusAwningExpand('');
-    setManagementArea1('');
-    setManagementArea2('');
-    setLightingCondition('');
-    setMotorCondition('');
-    setBatteryCondition('');
   }
 
-  const filterOptionChange = (e) => {
+  const filterOptionChange = () => {
     if (filterConn.current) {
       setStatusConnected(filterConn.current.value);
     }
@@ -195,25 +183,15 @@ const AwningState = () => {
       setBatteryCondition(filterBattery.current.value);
     }
     
-    if (e.target.name === 'siSelect') {
-      const selectGu = sigungu
-      .filter((items) => items.address.split(" ")[0] === filterArea1.current.value)
-      .map((item) => item.address.split(" ")[1]);
-
-      const selGu = [...new Set(selectGu)];
-      setGu(selGu);
-      setManagementArea1(filterArea1.current.value);
-      setManagementArea2('');
-    } else if (e.target.name === 'guSelect') {
-      setManagementArea2(filterArea2.current.value);
-    }
-    
-    
+    // setStatusConnected(filterConn.current.value);
+    // setStatusLighting(filterLight.current.value);
+    // setStatusAwningExpand(filterAwining.current.value);
+    // setManagementArea1(filterArea1.current.value);
+    // setManagementArea2(filterArea2.current.value);
+    // setLightingCondition(filterLightCond.current.value);
+    // setMotorCondition(filterMotor.current.value);
+    // setBatteryCondition(filterBattery.current.value);
   }
-
-  //시군구 셀렉트
-  
-
 
   //페이징
   const [page, setPage] = useState(1);
@@ -367,21 +345,19 @@ const AwningState = () => {
                 </select>
                 )}
                 {filterSel === 'managementArea' && (
-                <select name='siSelect' ref={filterArea1} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  {si.map((items) => (
-                  <option key={items} value={items}>{items}</option>
-                ))}
+                <select ref={filterArea1} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <option value='full'>전체1</option>
+                  <option value='on'>연결1</option>
+                  <option value='off'>끊김1</option>
                 </select>
                 )}
-                {managementArea1 && (
-                <select name='guSelect' ref={filterArea2} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  {gu.map((items) => (
-                  <option key={items} value={items}>{items}</option>
-                ))}
+                {/* {managementArea1 && (
+                <select ref={filterArea1} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <option value='full'>전체2</option>
+                  <option value='on'>연결2</option>
+                  <option value='off'>끊김2</option>
                 </select>
-                )}
+                )} */}
                 {filterSel === 'lightingCondition' && (
                 <select ref={filterLightCond} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
                   <option value='full'>전체</option>

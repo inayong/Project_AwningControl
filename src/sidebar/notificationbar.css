@@ -1,0 +1,4 @@
+.text-container {
+    overflow-wrap: break-word;
+    width: 200px; /* 예시 너비 */
+  }

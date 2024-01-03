@@ -60,11 +60,15 @@ const MainMap = () => {
 
                 let markerUrl;
                 if (item.statusConnected === 'off') {
-                    markerUrl = 'https://i.ibb.co/q7C4qH8/location-pin-red.png';
+                    // markerUrl = 'https://i.ibb.co/q7C4qH8/location-pin-red.png';
+                    // markerUrl = 'https://i.ibb.co/Ns3B5BY/location-pin-red-32.png';
+                    markerUrl = 'https://i.ibb.co/5MqN3j7/location-pin-red-64.png';
                 } else if (item.statusAwningExpand === 'on') {
-                    markerUrl = 'https://i.ibb.co/ZK3jNk4/location-pin-green.png';
+                    // markerUrl = 'https://i.ibb.co/ZK3jNk4/location-pin-green.png';
+                    markerUrl = 'https://i.ibb.co/nr90vdz/location-pin-green-64.png';
                 } else if (item.statusAwningExpand === 'off') {
-                    markerUrl = 'https://i.ibb.co/FDd05PD/location-pin-blue.png';
+                    // markerUrl = 'https://i.ibb.co/FDd05PD/location-pin-blue.png';
+                    markerUrl = 'https://i.ibb.co/4V14zHY/location-pin-blue-64.png';
                 }
 
                 if (markerUrl) {
@@ -79,8 +83,9 @@ const MainMap = () => {
 
                     naver.maps.Event.addListener(marker, "click", () => {
                         setMarkerOpen({isOpen: true, markerData: item});
-                        // console.log("isOpen",markerOpen);
-                        // console.log("item",item);
+                        
+                        console.log("isOpen",markerOpen);
+                        console.log("item",item);
                         // window.location.href = 'login'
                     })
                 }
@@ -98,7 +103,7 @@ const MainMap = () => {
     return (
         <div className='flex'>
             <div id="map" style={{ width: '100%', height: '100vh' }}></div>
-            <div className='absolute bottom-10 right-10 z-10 w-32 h-32 bg-white flex flex-col justify-center items-center'>
+            {/* <div className='absolute bottom-10 right-10 z-10 w-32 h-32 bg-white flex flex-col justify-center items-center'>
                 <div className='flex items-center justify-center w-full'>
                     <FaCircle size={25} className='fill-emerald-500' />
                     <div className='text-lg pl-5'>열림</div> 
@@ -111,7 +116,7 @@ const MainMap = () => {
                     <FaCircle size={25} className='fill-red-500' />
                     <div className='text-lg pl-5'>끊김</div> 
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

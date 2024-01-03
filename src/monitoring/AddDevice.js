@@ -142,7 +142,8 @@ const AddDevice = () => {
   }
 
   //select
-  const { sigungu, si, gun, gu } = SigunguData();
+  // const { sigungu, si, gun, gu } = SigunguData();
+  const { sigungu, si } = SigunguData();
   const selSiRef = useRef();
   const selGuRef = useRef();
   const selDongRef = useRef();

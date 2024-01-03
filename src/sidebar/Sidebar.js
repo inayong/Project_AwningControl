@@ -7,9 +7,10 @@ import { useRecoilState } from 'recoil';
 import { LogAtom } from '../login/LogAtom';
 import { handleLogout } from '../login/Logout';
 
-const Sidebarcomm = ({ openModal }) => {
+const Sidebarcomm = () => {
     const [close, setClose] = useState(true);
     const [clickMenu, setClickMenu] = useState();
+    const [clickSubMenu, setClickSubMenu] = useState(false);
     const [isLogAtom, setIsLogAtom] = useRecoilState(LogAtom);
     const navigate = useNavigate();
 
@@ -49,6 +50,8 @@ const Sidebarcomm = ({ openModal }) => {
                     close={close}
                     icon={CiDesktop}
                     label="모니터링"
+                    clickSubMenu={clickSubMenu}
+                    setClickSubMenu={setClickSubMenu}
                 />
                 <SideMenu
                     menuName="awningstate"
@@ -57,6 +60,8 @@ const Sidebarcomm = ({ openModal }) => {
                     close={close}
                     icon={CiFloppyDisk}
                     label="어닝상태"
+                    clickSubMenu={clickSubMenu}
+                    setClickSubMenu={setClickSubMenu}
                 />
                 <SideMenu
                     menuName="eventlist"
@@ -65,6 +70,8 @@ const Sidebarcomm = ({ openModal }) => {
                     close={close}
                     icon={CiViewList}
                     label="목록"
+                    clickSubMenu={clickSubMenu}
+                    setClickSubMenu={setClickSubMenu}
                 />
                 <SideMenu
                     menuName="adddevice"
@@ -73,17 +80,9 @@ const Sidebarcomm = ({ openModal }) => {
                     close={close}
                     icon={CiSquarePlus}
                     label="추가"
+                    clickSubMenu={clickSubMenu}
+                    setClickSubMenu={setClickSubMenu}
                 />
-                {/* <SideMenu 
-                    menuName="add"
-                    clickMenu={clickMenu}
-                    setClickMenu={setClickMenu}
-                    close={close}
-                    icon={CiSquarePlus}
-                    label="추가"
-                    onModal={() => openModal()}
-                    isLink={false} 
-                /> */}
             </div>
         </div>
     )

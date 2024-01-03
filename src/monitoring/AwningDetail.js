@@ -70,29 +70,31 @@ const AwningDetail = () => {
       <div className='h-screen'>
         <div className='w-full h-full'>
           <div className='bg-gray-100 pt-10'>
-            <div className='flex justify-between p-1 border-b px-4'>
-              <div className='flex pb-1 items-center'>
-                <div className='text-2xl pr-7'>상세정보</div>
-                {isEdited ? (
-                  <div>
-                    <button className='border p-1 bg-white rounded-lg shadow-md mr-3'>수정완료</button>
-                    <button onClick={openEditCancle} className='border p-1 bg-white rounded-lg shadow-md'>수정취소</button>
-                  </div>
-                ) : (
-                  <button onClick={openEdit} className='border p-1 bg-white rounded-lg shadow-md'>수정하기</button>
+            <div className='px-4 p-1'>
+              <div className='flex justify-between border-b-2'>
+                <div className='flex pb-1 items-center'>
+                  <div className='text-2xl pr-7'>상세정보</div>
+                  {isEdited ? (
+                    <div>
+                      <button className='border p-1 bg-white rounded-lg shadow-md mr-3'>수정완료</button>
+                      <button onClick={openEditCancle} className='border p-1 bg-white rounded-lg shadow-md'>수정취소</button>
+                    </div>
+                  ) : (
+                    <button onClick={openEdit} className='border p-1 bg-white rounded-lg shadow-md'>수정하기</button>
 
-                )}
-              </div>
-              <div className='flex pb-1 pr-16'>
-                <div className='pr-2'>설치일자 :</div>
-                <div>{startDate}</div>
-                <div className='px-1'>/</div>
-                <div className='pr-2'>계약만료기간 :</div>
-                <div>{finishDate}</div>
+                  )}
+                </div>
+                <div className='flex pb-1 pr-16'>
+                  <div className='pr-2'>설치일자 :</div>
+                  <div>{startDate}</div>
+                  <div className='px-1'>/</div>
+                  <div className='pr-2'>계약만료기간 :</div>
+                  <div>{finishDate}</div>
+                </div>
               </div>
             </div>
             <div className='pt-3'>
-              <div className='flex flex-col bg-orange-100'>
+              <div className='flex flex-col'>
                 <div className='flex p-4'>
                   <div className='pr-3'>관리구역</div>
                   <div className='pr-3'>{`${awningDetailData['managementArea1']} ${awningDetailData['managementArea2']}`}</div>
