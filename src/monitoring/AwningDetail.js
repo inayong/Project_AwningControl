@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import UpdateAwning from '../component/UpdateAwning';
 
 const TableBody = ({ leftLabel, leftContent, rightLabel, rightContent }) => {
   return (
@@ -21,6 +22,7 @@ const AwningDetail = () => {
 
   const [awningDetailData, setAwningDetailData] = useState([]);
   const [isEdited, setIsEdited] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
 
   useEffect(() => {
@@ -56,12 +58,18 @@ const AwningDetail = () => {
   const lastReportedDate = toIsoDateString(awningDetailData['lastReportedDate']);
 
   const openEdit = () => {
-    setIsEdited(true);
+    // setIsEdited(true);
+    setShowModal(true);
   }
 
-  const openEditCancle = () => {
-    setIsEdited(false);
-  }
+  // const openEditCancle = () => {
+  //   setIsEdited(false);
+  // }
+
+  // const handleUpdate = (updateData) => {
+  //   setAwningDetailData(updateData);
+  //   setShowModal(false);
+  // }
 
 
 
@@ -74,7 +82,7 @@ const AwningDetail = () => {
               <div className='flex justify-between border-b-2'>
                 <div className='flex pb-1 items-center'>
                   <div className='text-2xl pr-7'>상세정보</div>
-                  {isEdited ? (
+                  {/* {isEdited ? (
                     <div>
                       <button className='border p-1 bg-white rounded-lg shadow-md mr-3'>수정완료</button>
                       <button onClick={openEditCancle} className='border p-1 bg-white rounded-lg shadow-md'>수정취소</button>
@@ -82,6 +90,21 @@ const AwningDetail = () => {
                   ) : (
                     <button onClick={openEdit} className='border p-1 bg-white rounded-lg shadow-md'>수정하기</button>
 
+                  )} */}
+                  <button onClick={openEdit} className='border p-1 bg-white rounded-lg shadow-md'>수정하기</button>
+                  {showModal && (
+                    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-25 flex justify-center items-center py-14">
+                      <div className="bg-white p-3 rounded-md w-1/2 h-full">
+                        <div>
+                          <div className='text-2xl pb-1'>수정</div>
+                          <UpdateAwning data={awningDetailData} onClose={() => setShowModal(false)} />
+                          {/* <div className="flex justify-center mt-4 pt-3">
+                            <button className="px-3 py-1 bg-red-500 text-white rounded-md">수정</button>
+                            <button onClick={() => setShowModal(false)} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
+                          </div> */}
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
                 <div className='flex pb-1 pr-16'>

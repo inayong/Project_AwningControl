@@ -13,6 +13,7 @@ export const SigunguData = () => {
   // console.log("split", sigungu)
 
   const si = [...new Set (sigungu.map(item => item.address.split(" ")[0]))]; //공백기준으로 첫번째
+  // const si = [...siMap].sort();
   // console.log("si", si)
 
   const gu = [...new Set (sigungu.map(item => item.address.split(" ")[1]))];
