@@ -163,7 +163,7 @@ const AddDevice = () => {
       .filter((items) => items.address.split(" ")[0] === selectSi)
       .map((item) => item.address.split(" ")[1]);
 
-    const selGu = [...new Set(selgufil)];
+    const selGu = [...new Set(selgufil)].sort();
     setGuSel(selGu);
     // console.log("selsi", siSel)
     setSelectedSi(selSiRef.current.value)

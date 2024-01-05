@@ -13,10 +13,14 @@ import AddDevice from './monitoring/AddDevice';
 import Notification from './sidebar/NotificationBar';
 import { NotiMapState } from './sidebar/NotiMapState';
 import AwningDetail from './monitoring/AwningDetail';
-// import SigunguData from './data/SigunguData';
+import { DetailBarState } from './sidebar/DetailBarState';
+import DetailBar from './sidebar/DetailBar';
+import DisplayTest from './sidebar/DisplayTest';
+import AwningDashBoard from './monitoring/AwningDashBoard';
 
 function App() {
-  const [isSidebar, setSidebar] = useRecoilState(SidebarState);
+  const [isSidebar, setIsSidebar] = useRecoilState(SidebarState);
+  const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
 
   // const mainContentMarginLeft = sidebarOpen ? 'ml-[사이드바 열린 너비]' : 'ml-0';
 
@@ -27,16 +31,25 @@ function App() {
         <div className=''>
           {isSidebar && <Sidebar />}
         </div>
-        {/* <div className='w-full'> */}
         <div className='w-full'>
-          <Routes>
-            <Route path='/login' element={<LoginPage />} />
-            <Route path='/monitoring' element={<MainMap />} />
-            <Route path='/awningstate' element={<AwningState />} />
-            <Route path='/awningstate/detail/:deviceId' element={<AwningDetail />} />
-            <Route path='/eventlist' element={<EventList />} />
-            <Route path='/adddevice' element={<AddDevice />} />
-          </Routes>
+          <div>
+            <Routes>
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/monitoring' element={<MainMap />} />
+              <Route path='/awningstate' element={<AwningState />} />
+              <Route path='/awningstate/detail/:deviceId' element={<AwningDetail />} />
+              <Route path='/eventlist' element={<EventList />} />
+              <Route path='/adddevice' element={<AddDevice />} />
+              <Route path='/dashboard' element={<AwningDashBoard />} />
+              <Route path='/test' element={<DisplayTest />} />
+            </Routes>
+          </div>
+          {/* {isDetailBar && (
+            // <div className={`absolute bottom-0 ${isSidebar ? 'left-60' : 'left-16'} right-0 h-1/4`}>
+            <div className='absolute bottom-0 h-1/4'>
+              <DetailBar />
+            </div>
+          )} */}
         </div>
         <div>
           {isSidebar && <Notification />}

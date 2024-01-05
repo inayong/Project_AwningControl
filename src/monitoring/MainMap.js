@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FaCircle } from "react-icons/fa";
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { NotiMapState } from '../sidebar/NotiMapState';
 import { SidebarState } from '../sidebar/SidebarState';
+import DetailBar from '../sidebar/DetailBar';
+import { DetailBarState } from '../sidebar/DetailBarState';
 
 const MainMap = () => {
     const { naver } = window;
@@ -16,7 +18,9 @@ const MainMap = () => {
     const [markerOpen, setMarkerOpen] = useRecoilState(NotiMapState);
     // const setMarkerOpen = useRecoilValue(NotiMapState);
     // const setMarkerOpen = useRecoilState(SidebarState);
-
+    // const [isDetailBarOpen, setIsDetailBarOpen] = useState(false);
+    // const setIsDetailBar = useSetRecoilState(DetailBarState);
+    const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
 
     const getData = () => {
         // console.log("token", localStorage.getItem("token"))
@@ -60,14 +64,10 @@ const MainMap = () => {
 
                 let markerUrl;
                 if (item.statusConnected === 'off') {
-                    // markerUrl = 'https://i.ibb.co/q7C4qH8/location-pin-red.png';
-                    // markerUrl = 'https://i.ibb.co/Ns3B5BY/location-pin-red-32.png';
                     markerUrl = 'https://i.ibb.co/5MqN3j7/location-pin-red-64.png';
                 } else if (item.statusAwningExpand === 'on') {
-                    // markerUrl = 'https://i.ibb.co/ZK3jNk4/location-pin-green.png';
                     markerUrl = 'https://i.ibb.co/nr90vdz/location-pin-green-64.png';
                 } else if (item.statusAwningExpand === 'off') {
-                    // markerUrl = 'https://i.ibb.co/FDd05PD/location-pin-blue.png';
                     markerUrl = 'https://i.ibb.co/4V14zHY/location-pin-blue-64.png';
                 }
 
@@ -83,7 +83,8 @@ const MainMap = () => {
 
                     naver.maps.Event.addListener(marker, "click", () => {
                         setMarkerOpen({isOpen: true, markerData: item});
-                        
+                        // setIsDetailBarOpen(true);
+                        setIsDetailBar(true);
                         console.log("isOpen",markerOpen);
                         console.log("item",item);
                         // window.location.href = 'login'
@@ -94,29 +95,18 @@ const MainMap = () => {
         }
     }, [mapData, setMarkerOpen]);
 
-    // useEffect(() => {
-    //     console.log("useEffect isOpen",markerOpen);
-    // }, [markerOpen])
 
 
 
     return (
-        <div className='flex'>
+        <div className='flex flex-col h-screen'>
             <div id="map" style={{ width: '100%', height: '100vh' }}></div>
-            {/* <div className='absolute bottom-10 right-10 z-10 w-32 h-32 bg-white flex flex-col justify-center items-center'>
-                <div className='flex items-center justify-center w-full'>
-                    <FaCircle size={25} className='fill-emerald-500' />
-                    <div className='text-lg pl-5'>열림</div> 
+            {isDetailBar && (
+                <div className='h-72'>
+                    {/* 마커 상세정보 여기서 probs처럼 들고 와도 되는거 아님? */}
+                    <DetailBar />
                 </div>
-                <div className='flex items-center justify-center w-full py-2'>
-                    <FaCircle size={25} className='fill-blue-500' />
-                    <div className='text-lg pl-5'>닫힘</div> 
-                </div>
-                <div className='flex items-center justify-center w-full'>
-                    <FaCircle size={25} className='fill-red-500' />
-                    <div className='text-lg pl-5'>끊김</div> 
-                </div>
-            </div> */}
+            )}
         </div>
     )
 }

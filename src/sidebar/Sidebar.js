@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CiViewList, CiLogout, CiIndent, CiDesktop, CiFloppyDisk, CiSquarePlus } from "react-icons/ci";
+import { CiViewList, CiLogout, CiIndent, CiDesktop, CiFloppyDisk, CiSquarePlus, CiViewBoard } from "react-icons/ci";
 import AddData from '../monitoring/AddDataModal';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import SideMenu from '../component/SideMenu';
@@ -80,6 +80,16 @@ const Sidebarcomm = () => {
                     close={close}
                     icon={CiSquarePlus}
                     label="추가"
+                    clickSubMenu={clickSubMenu}
+                    setClickSubMenu={setClickSubMenu}
+                />
+                <SideMenu
+                    menuName="dashboard"
+                    clickMenu={clickMenu}
+                    setClickMenu={setClickMenu}
+                    close={close}
+                    icon={CiViewBoard}
+                    label="대시보드"
                     clickSubMenu={clickSubMenu}
                     setClickSubMenu={setClickSubMenu}
                 />

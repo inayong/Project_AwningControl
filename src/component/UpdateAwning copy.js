@@ -31,8 +31,6 @@ const UpdateAwning = ({ data, onClose }) => {
     const [installDate, setInstallDate] = useState(''); //유효한 기본값 제공해아함
     const [expireDate, setExpireDate] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const [confirmModal, setConfirmModal] = useState(false);
-    const [changedFields, setChangedFields] = useState([]);
     const markerRef = useRef();
 
     const manageNum = useRef();
@@ -46,18 +44,7 @@ const UpdateAwning = ({ data, onClose }) => {
 
     const selSiRef = useRef();
     const selGuRef = useRef();
-    // const [guSel, setGuSel] = useState([]);
-    const [guSel, setGuSel] = useState(() => {
-        if (formData.managementArea1) {
-            const initialSi = formData.managementArea1;
-            const filteredGu = sigungu
-                .filter(item => item.address.split(" ")[0] === initialSi)
-                .map(item => item.address.split(" ")[1]);
-            return [...new Set(filteredGu)].sort();
-        }
-        return [];
-    });
-
+    const [guSel, setGuSel] = useState([]);
     const [selectSi, setSelectSi] = useState('');
     const [selectGu, setSelectGu] = useState('');
 
@@ -86,7 +73,15 @@ const UpdateAwning = ({ data, onClose }) => {
         naver.maps.Event.addListener(map, 'click', function (e) {
             const clickLatLng = e.coord;
             handleMapClick(clickLatLng.y, clickLatLng.x);
+            // const lat = clickLatLng.y;
+            // const lng = clickLatLng.x;
 
+            // let marker = newMarker || new naver.maps.Marker({
+            //   position: clickLatLng,
+            //   map: map
+            // })
+
+            // setLocation({ lat, lng });
             setLocation({ lat: clickLatLng.y, lng: clickLatLng.x })
             // console.log("location", location)
             marker.setPosition(clickLatLng);
@@ -154,36 +149,87 @@ const UpdateAwning = ({ data, onClose }) => {
     }
 
     //select
+    // const handleSelSi = (e) => {
+
+    //     // const selectSi = sigungu
+    //     //     .filter((items) => items.address.split(" ")[0] === selSiRef.current.value)
+    //     //     .map((items) => items.address.split(" ")[1]);
+
+    //     // const selGuu = [...new Set(selectSi)];
+    //     // const selGu = [...selGuu].sort();
+    //     // setGuSel(selGu);
+    //     // setSelectSi(selSiRef.current.value);
+    //     // setSelectGu('');
+    //     const filterGu = sigungu
+    //         .filter(item => item.si === e.target.value)
+    //         .map(item => item.gu)
+
+    //         setGuSel(filterGu);
+    //         setSelectSi(e.target.value)
+    //         setSelectGu('');
+    // }
+
     const handleSelSi = (event) => {
+        // const selectedSi = event.target.value;
+
+        // // 선택된 "시"에 따라 "구" 목록 필터링
+        // const filteredGu = sigungu
+        //     .filter(item => item.address.split(" ")[0] === data.managementArea1)
+        //     .map(item => item.address.split(" ")[1]);
+        //     const selGuu = [...new Set(filteredGu)];
+        //     const selGu = [...selGuu].sort();
+        // setGuSel(selGu);
+        // setSelectSi(selectedSi)
+        // // setSelectGu('');
+
+        // // formData 상태 업데이트
+        // setFormData(prevFormData => ({
+        //     ...prevFormData,
+        //     managementArea1: selectedSi,
+        //     managementArea2: '' // "구" 선택을 초기화
+        // }));
+        // console.log("selectedSi",selectedSi)
+
         const selectedSi = event.target.value;
-        setSelectSi(selectedSi);
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            managementArea1: selectedSi,
-            managementArea2: '' // "구" 선택을 초기화
-        }));
+    setSelectSi(selectedSi);
+    setFormData(prevFormData => ({
+        ...prevFormData,
+        managementArea1: selectedSi,
+        managementArea2: '' // "구" 선택을 초기화
+    }));
 
-        const filteredGu = sigungu
-            .filter(item => item.address.split(" ")[0] === selectedSi)
-            .map(item => item.address.split(" ")[1]);
-        const selGu = [...new Set(filteredGu)].sort();
-        setGuSel(selGu);
+    // "구" 목록 업데이트
+    const filteredGu = sigungu
+        .filter(item => item.si === selectedSi)
+        .map(item => item.gu);
+    setGuSel(filteredGu);
+    setSelectGu(''); // "구" 선택 초기화
     };
+    
 
-    console.log("data.managementArea1", data.managementArea1)
+    console.log("data.managementArea1",data.managementArea1)
 
     const handleSelGu = (event) => {
         setSelectGu(selGuRef.current.value);
         const selectedGu = event.target.value;
-        setSelectGu(selectedGu);
+    setSelectGu(selectedGu);
 
-        // formData 상태 업데이트
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            managementArea2: selectedGu
-        }));
+    // formData 상태 업데이트
+    setFormData(prevFormData => ({
+        ...prevFormData,
+        managementArea2: selectedGu
+    }));
     }
 
+    const handleInstallDateChange = (e) => {
+        setInstallDate(e.target.value)
+        // console.log("iidate", e.target.value)
+    }
+    // console.log("iidate", installDate);
+    const handleExpireDateChange = (e) => {
+        setExpireDate(e.target.value)
+        // console.log("eedate", e.target.value)
+    }
 
     const installedDate = formData.startDate ? new Date(formData.startDate).toISOString().split('T')[0] : '';
     const expiredDate = formData.finshDate ? new Date(formData.startDate).toISOString().split('T')[0] : '';
@@ -199,8 +245,7 @@ const UpdateAwning = ({ data, onClose }) => {
     // console.log("displayAddress", displayAddress)
     // console.log("formDatalatitude", formData.latitude)
     // console.log("formDatalongitude", formData.longitude)
-    console.log("formDataArea2", formData.managementArea2)
-    console.log("DataArea2", data.managementArea2)
+    console.log("formDatamanagementArea2", formData.managementArea2)
 
 
     const locationReset = () => {
@@ -216,75 +261,21 @@ const UpdateAwning = ({ data, onClose }) => {
     }
 
 
-    const handleUpdateSubmit = () => {
-        fetch("http://10.125.121.206:8080/admin/device/mod", {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem("token")
-            },
-            body: JSON.stringify(formData)
-        })
-            .then((resp) => {
-                if (resp.ok) {
-                    alert("장치 수정 완료")
-                    setConfirmModal(false);
-                    setShowModal(false);
-                    window.location.reload();
-                } else {
-                    alert("장치 수정 실패")
-                }
-            })
-            .catch((err) => {
-                console.log("장치 수정 중 오류:", err)
-            })
-    };
+    // const handleUpdateSubmit = () => {
+    //     fetch("http://10.125.121.206:8080/admin/device/mod", {
+    //         method: "PUT",
+    //         headers: {
+    //             'Authorization': localStorage.getItem("token")
+    //         },
+    //         body: JSON.stringify({
+    //             data.awningId,
+    //             'latitude': displayLocation.lat, 
+    //         })
+    //     })
 
-    const fieldNames = {
-        awningOpenTimeLeft: "어닝 열림시간 - 좌",
-        awningOpenTimeRight: "어닝 열림시간 - 우",
-        windSpeedThreshold: "풍속 임계값",
-        latitude: "위도",
-        longitude: "경도",
-        awningReopenTimeMinutes: "어닝 재열림 시간",
-        controlId: "제어기ID",
-        deviceId: "기구ID",
-        finshDate: "계약만료기간",
-        startDate: "설치일자",
-        installationLocationMemo: "설치장소",
-        managementNumber: "관리번호",
-        managementArea1: "관리구역",
-        managementArea2: "관리구역"
-    };
-
-    const contentChange = () => {
-        const changes = Object.keys(formData).filter(key => formData[key] !== data[key]);
-        const uniqueChanges = new Set(changes.map(key => fieldNames[key] || key));
-        return Array.from(uniqueChanges)
-    }
-
-    const updateConfirm = () => {
-        if (formData.managementArea1 && !formData.managementArea2) {
-            alert("관리구역에서 '구'를 선택해주세요.")
-            return;
-        }
-
-        const changes = contentChange();
-        if (changes.length > 0) {
-            setConfirmModal(true);
-            setChangedFields(changes);
-        } else {
-            alert("수정 항목이 없습니다.")
-        }
-        
-    }
-
-    const confirmCancle = () => {
-        setConfirmModal(false);
-    }
-
-
-
+    // }
+    
+    
 
 
     return (
@@ -320,11 +311,14 @@ const UpdateAwning = ({ data, onClose }) => {
                             <option key={items}>{items}</option>
                         ))}
                     </select>
-                    <select onChange={handleSelGu} name='managementArea2' ref={selGuRef} value={formData.managementArea2} className='w-32 mr-3'>
+                    {/* <select onChange={handleSelGu} name='managementArea2' ref={selGuRef} value={formData.managementArea2} className='w-32 mr-3'>
                         <option value=''>구</option>
                         {guSel.map((items) => (
                             <option key={items}>{items}</option>
                         ))}
+                    </select> */}
+                    <select onChange={handleSelGu} name='managementArea2' ref={selGuRef} value={formData.managementArea2} className='w-32 mr-3'>
+                        <option value=''>구</option>
                     </select>
                 </div>
                 {/* </div> */}
@@ -347,19 +341,7 @@ const UpdateAwning = ({ data, onClose }) => {
                 </div>
             </div>
             <div className="flex justify-center mt-4 pt-3">
-                <button onClick={updateConfirm} className="px-3 py-1 bg-red-500 text-white rounded-md">수정</button>
-                {confirmModal && (
-                    <div className="fixed top-0 left-0 z-20 w-full h-full bg-black bg-opacity-25 flex justify-center items-center py-14">
-                        <div className="bg-white p-3 rounded-md">
-                            {changedFields && changedFields.map((item, idx) => (
-                            <div key={idx}>{item}</div>
-                            ))}
-                            <div>수정하시겠습니까?</div>
-                            <button onClick={handleUpdateSubmit} className="px-3 py-1 bg-red-500 text-white rounded-md">확인</button>
-                            <button onClick={confirmCancle} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
-                        </div>
-                    </div>
-                )}
+                <button className="px-3 py-1 bg-red-500 text-white rounded-md">수정</button>
                 <button onClick={onClose} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
             </div>
         </div>
