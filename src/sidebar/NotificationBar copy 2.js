@@ -7,7 +7,7 @@ import { SidebarState } from './SidebarState';
 import { FaCircle } from "react-icons/fa";
 import { DetailBarState } from './DetailBarState';
 
-const Notification = () => {
+const Notification = ({ mapData }) => {
   const [notiOpen, setNotiOpen] = useState(false);
   const [settingOpen, setSettingOpen] = useState(false);
   const [markerOpen, setMarkerOpen] = useRecoilState(NotiMapState);
@@ -92,7 +92,7 @@ const Notification = () => {
       <div className={`fixed inset-y-0 right-0 w-96 h-full bg-white shadow-md z-20 transform transition-transform duration-0 ${notiOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
         style={{ height: isDetailBar ? 'calc(100% - 18rem)' : '100%' }}>
         <div className="p-4">
-          <h2 className="text-lg font-semibold">Notification</h2>
+          <div className="text-lg font-semibold">Notification</div>
           <div>알림 내용</div>
         </div>
       </div>
@@ -100,14 +100,30 @@ const Notification = () => {
         <div className={`fixed inset-y-0 right-0 w-96 bg-white shadow-md z-20 transform transition-transform duration-0 ${settingOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
           style={{ height: isDetailBar ? 'calc(100% - 18rem)' : '100%' }}>
           <div className="p-4">
-            <h2 className="text-lg font-semibold">Control</h2>
+            <div className="text-lg font-semibold">Control</div>
             <div>어닝 정보</div>
             <div>
-              {currentMarkerData ? (
-                <div className='whitespace-pre-wrap'>정보 내용2: {currentMarkerData.installationLocationMemo}</div>
-              ) : (
-                <div className='whitespace-pre-wrap'>정보 없음</div>
-              )}
+              <div className='flex'>
+                <div>통신</div>
+                <div>관리번호</div>
+                <div>설치장소</div>
+                <div>버튼</div>
+              </div>
+              {mapData.map((item, idx) => (
+              <div key={idx}>
+                <div>{item.statusConnected}</div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              ))}
+              <div className='flex'>
+                <div>조명</div>
+                <div>어닝</div>
+                <div>온도</div>
+                <div>풍속</div>
+                <div>배터리</div>
+              </div>
             </div>
           </div>
         </div>

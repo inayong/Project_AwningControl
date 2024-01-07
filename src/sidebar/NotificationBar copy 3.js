@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { MdOutlineNotificationsActive, MdDisplaySettings, MdMoreVert, MdExpandLess } from "react-icons/md";
+import React, { useEffect, useState } from 'react';
+import { MdOutlineNotificationsActive, MdDisplaySettings, MdMoreVert } from "react-icons/md";
 import { useLocation } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { NotiMapState } from './NotiMapState';
@@ -7,26 +7,12 @@ import { SidebarState } from './SidebarState';
 import { FaCircle } from "react-icons/fa";
 import { DetailBarState } from './DetailBarState';
 
-// const isTextOverflowing = (text, maxWidth) => {
-//   // 가상 요소를 생성하고 스타일을 설정합니다.
-//   const canvas = document.createElement("canvas");
-//   const context = canvas.getContext("2d");
-//   context.font = "16px Arial"; // 실제 텍스트와 동일한 폰트와 사이즈를 사용해야 합니다.
-
-//   // 텍스트의 너비를 측정합니다.
-//   const textWidth = context.measureText(text).width;
-
-//   // 너비가 maxWidth를 초과하는지 검사합니다.
-//   return textWidth > maxWidth;
-// };
-
 const Notification = ({ mapData }) => {
   const [notiOpen, setNotiOpen] = useState(false);
-  const [settingOpen, setSettingOpen] = useState(true);
+  const [settingOpen, setSettingOpen] = useState(false);
   const [markerOpen, setMarkerOpen] = useRecoilState(NotiMapState);
   const [currentMarkerData, setCurrentMarkerData] = useState();
   const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
-  // const [topButton, setTopButton] = useState(false);
 
 
   const location = useLocation();
@@ -45,12 +31,7 @@ const Notification = ({ mapData }) => {
   //페이지 이동시 알림창 닫기
   useEffect(() => {
     setNotiOpen(false);
-    if (location.pathname === '/monitoring') {
-      setSettingOpen(true);
-    } else {
-      setSettingOpen(false);
-    }
-    // setSettingOpen(true);
+    setSettingOpen(false);
   }, [location])
 
 
@@ -82,38 +63,6 @@ const Notification = ({ mapData }) => {
   //   whiteSpace: 'nowrap',
   //   textOverflow: 'ellipsis',
   // };
-
-  //TopTo
-  // const scrollRef = useRef(0);
-
-  // const scrollToTop = () => {
-  //   window.scroll({
-  //     top: 0,
-  //     behavior: 'smooth'
-  //   })
-  // }
-
-  // const handleScroll = () => {
-  //   // const { scrollY } = window;
-  //   // scrollY > 900 ? setTopButton(true) : setTopButton(false);
-  //   if (window.scrollY > scrollRef.current) {
-  //     setTopButton(true);
-  //     console.log("scroo", window.scrollY)
-  //   } else {
-  //     setTopButton(false);
-  //   }
-  //   scrollRef.current = window.scrollY;
-  // };
-
-  // console.log("scroll", window.scrollY)
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   }
-  // }, []);
-
 
 
   return (
@@ -159,35 +108,29 @@ const Notification = ({ mapData }) => {
             <div className="text-lg font-semibold">Control</div>
             <div>어닝 정보</div>
             <div className="space-y-4">
-              {mapData.map((item, idx) => (
+              {Array.isArray(mapData) && mapData.map((item, idx) => (
                 <div key={idx} className="bg-white shadow-md rounded-lg">
                   <div className="flex items-center justify-between p-4 border-b">
                     <span className={`px-3 py-1 text-white text-sm font-bold rounded-full ${item.statusConnected === 'off' ? 'bg-red-500' : 'bg-green-500'}`}>
                       {item.statusConnected.toUpperCase()}
                     </span>
+                    {/* <div className="flex-grow flex flex-col flex-shrink min-w-0 justify-center items-center">
+                      <span className="font-bold truncate">{item.managementNumber}</span>
+                      <span className="text-sm truncate">{item.installationLocationMemo}</span>
+                    </div> */}
                     <div className="flex-1 min-w-0 group">
-                      {/* <span className="truncate block text-center font-bold">{item.managementNumber}</span>
+                      <span className="truncate block text-center font-bold">{item.managementNumber}</span>
                       <span className="truncate block text-center text-sm">{item.installationLocationMemo}</span>
                       <div className="hidden group-hover:block absolute z-10 bg-gray-600 text-white text-xs px-2 py-1 rounded whitespace-pre-wrap">
                         {item.installationLocationMemo}
                       </div>
-                    </div> */}
-                      <span className="block text-center font-bold">{item.managementNumber}</span>
-
-                      {/* 설치 위치 메모 */}
-                      <div className="relative text-center">
-                        <span className="truncate block text-sm">{item.installationLocationMemo}</span>
-                        {/* <span className="absolute z-10 left-0 bg-gray-600 text-white text-xs p-2 rounded hidden group-hover:block whitespace-pre-wrap">
-                          {item.installationLocationMemo}
-                        </span> */}
-                        {/* {isTextOverflowing(item.installationLocationMemo, 200) && ( */}
-                        {item.installationLocationMemo.length > 20 && (
-                          <span className="absolute z-10 left-0 bg-gray-600 text-white text-xs p-2 rounded hidden group-hover:block whitespace-pre-wrap">
-                            {item.installationLocationMemo}
-                          </span>
-                        )}
-                      </div>
                     </div>
+                    {/* <div className="group w-44 cursor-pointer">
+                      <span className="truncate">{item.managementNumber}</span>
+                      <div className="hidden group-hover:block absolute z-10 bg-gray-600 text-white text-xs px-2 py-1 rounded">
+                        {item.installationLocationMemo}
+                      </div>
+                    </div> */}
                     <button className="text-lg "><MdMoreVert /></button>
                   </div>
                   <div className="p-4 grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -219,13 +162,7 @@ const Notification = ({ mapData }) => {
                 </div>
               ))}
             </div>
-              {/* {topButton && (
-              <div className='fixed bottom-10 right-96 cursor-pointer z-50'>
-                <button onClick={scrollToTop} className="bg-blue-500 text-white p-2 rounded-full">
-                  <MdExpandLess size={30} />
-                </button>
-              </div>
-            )} */}
+
           </div>
         </div>
       )}

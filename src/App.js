@@ -4,7 +4,7 @@ import MainMap from './monitoring/MainMap';
 import LoginPage from './login/LoginPage';
 import Sidebar from './sidebar/Sidebar';
 import AddData from './monitoring/AddDataModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RecoilRoot, useRecoilState } from 'recoil';
 import { SidebarState } from './sidebar/SidebarState';
 import AwningState from './monitoring/AwningState';
@@ -17,12 +17,32 @@ import { DetailBarState } from './sidebar/DetailBarState';
 import DetailBar from './sidebar/DetailBar';
 import DisplayTest from './sidebar/DisplayTest';
 import AwningDashBoard from './monitoring/AwningDashBoard';
+import ScrollButton from './component/ScrollButton';
 
 function App() {
   const [isSidebar, setIsSidebar] = useRecoilState(SidebarState);
   const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
+  const [mapData, setMapData] = useState([]);
 
-  // const mainContentMarginLeft = sidebarOpen ? 'ml-[사이드바 열린 너비]' : 'ml-0';
+  useEffect(() => {
+    const getMapData = () => {
+      fetch("http://10.125.121.206:8080/user/map", {
+            method: "POST",
+            headers: {
+                "Authorization": localStorage.getItem("token")
+            }
+        })
+            .then(resp => resp.json())
+            .then(data => {
+                setMapData(data);
+                console.log("map", data)
+            })
+            .catch(err => console.error(err))
+    }
+    
+    getMapData();
+  }, []);
+  
 
 
   return (
@@ -35,7 +55,7 @@ function App() {
           <div>
             <Routes>
               <Route path='/login' element={<LoginPage />} />
-              <Route path='/monitoring' element={<MainMap />} />
+              <Route path='/monitoring' element={<MainMap mapData={mapData} />} />
               <Route path='/awningstate' element={<AwningState />} />
               <Route path='/awningstate/detail/:deviceId' element={<AwningDetail />} />
               <Route path='/eventlist' element={<EventList />} />
@@ -44,15 +64,10 @@ function App() {
               <Route path='/test' element={<DisplayTest />} />
             </Routes>
           </div>
-          {/* {isDetailBar && (
-            // <div className={`absolute bottom-0 ${isSidebar ? 'left-60' : 'left-16'} right-0 h-1/4`}>
-            <div className='absolute bottom-0 h-1/4'>
-              <DetailBar />
-            </div>
-          )} */}
         </div>
         <div>
-          {isSidebar && <Notification />}
+          {isSidebar && <Notification mapData={mapData} />}
+          {/* <ScrollButton /> */}
         </div>
       </BrowserRouter>
     </div>

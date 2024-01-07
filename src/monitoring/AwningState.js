@@ -119,8 +119,6 @@ const AwningState = () => {
     let url = `http://10.125.121.206:8080/user/device/view?searchTerm=${searchTerm}&searchCriteria=${searchCriteria}&batteryCondition=${batteryCondition}`;
     url = url + `&motorCondition=${motorCondition}&lightingCondition=${lightingCondition}&managementArea2=${managementArea2}&managementArea1=${managementArea1}`;
     url = url + `&statusAwningExpand=${statusAwningExpand}&statusLighting=${statusLighting}&statusConnected=${statusConnected}`;
-    // const url = `http://10.125.121.206:8080/user/device/view?searchTerm=${searchTerm}&searchCriteria=${searchCriteria}`;
-    // const url = `http://10.125.121.206:8080/user/device/view?searchTerm=${searchTerm}&searchCriteria=${searchCriteria}&batteryCondition=${batteryCondition}&motorCondition=${motorCondition}&lightingCondition=${lightingCondition}&managementArea2=${managementArea2}&managementArea1=${managementArea1}&statusAwningExpand=${statusAwningExpand}&statusLighting=${statusLighting}&statusConnected=${statusConnected}`;
     console.log("url", url)
     fetch(url, {
       method: "GET",

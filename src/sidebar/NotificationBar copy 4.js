@@ -26,7 +26,7 @@ const Notification = ({ mapData }) => {
   const [markerOpen, setMarkerOpen] = useRecoilState(NotiMapState);
   const [currentMarkerData, setCurrentMarkerData] = useState();
   const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
-  // const [topButton, setTopButton] = useState(false);
+  const [topButton, setTopButton] = useState(false);
 
 
   const location = useLocation();
@@ -84,37 +84,33 @@ const Notification = ({ mapData }) => {
   // };
 
   //TopTo
-  // const scrollRef = useRef(0);
+  const NotificationRef = useRef();
 
-  // const scrollToTop = () => {
-  //   window.scroll({
-  //     top: 0,
-  //     behavior: 'smooth'
-  //   })
-  // }
+  const scrollToTop = () => {
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+  useEffect(() => {
+    const checkScrollTop = () => {
+      if (!NotificationRef.current) return;
+      setTopButton(NotificationRef.current.scrollToTop > 200);
+    };
 
-  // const handleScroll = () => {
-  //   // const { scrollY } = window;
-  //   // scrollY > 900 ? setTopButton(true) : setTopButton(false);
-  //   if (window.scrollY > scrollRef.current) {
-  //     setTopButton(true);
-  //     console.log("scroo", window.scrollY)
-  //   } else {
-  //     setTopButton(false);
-  //   }
-  //   scrollRef.current = window.scrollY;
-  // };
+    const notificationElement = NotificationRef.current;
+    notificationElement.addEventListener("scroll", checkScrollTop);
 
-  // console.log("scroll", window.scrollY)
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
+    return () => {
+      notificationElement.removeEventListener("scroll", checkScrollTop);
+    }
+  }, [])
 
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   }
-  // }, []);
-
-
+  useEffect(() => {
+    if (settingOpen && NotificationRef.current) {
+      NotificationRef.current.scrollToTop = 0;
+    }
+  }, [settingOpen]);
 
   return (
     <div className="flex h-screen overflow-x-hidden whitespace-nowrap">
@@ -153,7 +149,7 @@ const Notification = ({ mapData }) => {
         </div>
       </div>
       {isMonitoringPage && (
-        <div className={`overflow-auto fixed inset-y-0 right-0 w-96 bg-white shadow-md z-20 transform transition-transform duration-0 ${settingOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
+        <div ref={NotificationRef} className={`overflow-auto fixed inset-y-0 right-0 w-96 bg-white shadow-md z-20 transform transition-transform duration-0 ${settingOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
           style={{ height: isDetailBar ? 'calc(100% - 18rem)' : '100%' }}>
           <div className="p-4">
             <div className="text-lg font-semibold">Control</div>
@@ -219,13 +215,13 @@ const Notification = ({ mapData }) => {
                 </div>
               ))}
             </div>
-              {/* {topButton && (
-              <div className='fixed bottom-10 right-96 cursor-pointer z-50'>
+            {topButton && (
+              <div className='fixed bottom-10 right-10 cursor-pointer z-50'>
                 <button onClick={scrollToTop} className="bg-blue-500 text-white p-2 rounded-full">
                   <MdExpandLess size={30} />
                 </button>
               </div>
-            )} */}
+            )}
           </div>
         </div>
       )}

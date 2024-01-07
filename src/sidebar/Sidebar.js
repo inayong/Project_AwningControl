@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CiViewList, CiLogout, CiIndent, CiDesktop, CiFloppyDisk, CiSquarePlus, CiViewBoard } from "react-icons/ci";
 import AddData from '../monitoring/AddDataModal';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import SideMenu from '../component/SideMenu';
 import { useRecoilState } from 'recoil';
 import { LogAtom } from '../login/LogAtom';
@@ -13,6 +13,12 @@ const Sidebarcomm = () => {
     const [clickSubMenu, setClickSubMenu] = useState(false);
     const [isLogAtom, setIsLogAtom] = useRecoilState(LogAtom);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const path = location.pathname.split('/')[1];
+        setClickMenu(path);
+    }, [location])
 
     useEffect(() => {
         setIsLogAtom(localStorage.getItem("loginId"))

@@ -6,40 +6,33 @@ import { SidebarState } from '../sidebar/SidebarState';
 import DetailBar from '../sidebar/DetailBar';
 import { DetailBarState } from '../sidebar/DetailBarState';
 
-const MainMap = () => {
+const MainMap = ({ mapData }) => {
     const { naver } = window;
 
-    // const [location, setLocation] = useState({ lat: 0, lng: 0 });
-    const [clickAddress, setClickAddress] = useState('');
-    const [inputAddress, setInputAddress] = useState('');
-    // const [map, setMap] = useState(null);
-    // const [markers, setMarkers] = useState(null);
-    const [mapData, setMapData] = useState();
+    // const [mapData, setMapData] = useState();
     const [markerOpen, setMarkerOpen] = useRecoilState(NotiMapState);
-    // const setMarkerOpen = useRecoilValue(NotiMapState);
-    // const setMarkerOpen = useRecoilState(SidebarState);
-    // const [isDetailBarOpen, setIsDetailBarOpen] = useState(false);
-    // const setIsDetailBar = useSetRecoilState(DetailBarState);
     const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
 
-    const getData = () => {
-        // console.log("token", localStorage.getItem("token"))
-        fetch("http://10.125.121.206:8080/user/map", {
-            method: "POST",
-            headers: {
-                "Authorization": localStorage.getItem("token")
-            }
-        })
-            .then(resp => resp.json())
-            .then(data => {
-                setMapData(data);
-                console.log("map", data)
-            })
-            .catch(err => console.error(err))
-    }
+    const [detailMapData, setDetailMapData] = useState();
+
+    // const getData = () => {
+    //     // console.log("token", localStorage.getItem("token"))
+    //     fetch("http://10.125.121.206:8080/user/map", {
+    //         method: "POST",
+    //         headers: {
+    //             "Authorization": localStorage.getItem("token")
+    //         }
+    //     })
+    //         .then(resp => resp.json())
+    //         .then(data => {
+    //             setMapData(data);
+    //             console.log("map", data)
+    //         })
+    //         .catch(err => console.error(err))
+    // }
     useEffect(() => {
         setMarkerOpen({isOpen: false, isOpen2: false})
-        getData();
+        // getData();
 
     }, [])
 
@@ -83,11 +76,10 @@ const MainMap = () => {
 
                     naver.maps.Event.addListener(marker, "click", () => {
                         setMarkerOpen({isOpen: true, markerData: item});
-                        // setIsDetailBarOpen(true);
                         setIsDetailBar(true);
-                        console.log("isOpen",markerOpen);
-                        console.log("item",item);
-                        // window.location.href = 'login'
+                        setDetailMapData(item);
+                        // console.log("isOpen",markerOpen);
+                        // console.log("item",item);
                     })
                 }
 
@@ -101,10 +93,9 @@ const MainMap = () => {
     return (
         <div className='flex flex-col h-screen'>
             <div id="map" style={{ width: '100%', height: '100vh' }}></div>
-            {isDetailBar && (
+            {isDetailBar && detailMapData && (
                 <div className='h-72'>
-                    {/* 마커 상세정보 여기서 probs처럼 들고 와도 되는거 아님? */}
-                    <DetailBar />
+                    <DetailBar markerData={detailMapData} />
                 </div>
             )}
         </div>
