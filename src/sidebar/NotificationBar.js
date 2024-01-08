@@ -6,6 +6,7 @@ import { NotiMapState } from './NotiMapState';
 import { SidebarState } from './SidebarState';
 import { FaCircle } from "react-icons/fa";
 import { DetailBarState } from './DetailBarState';
+import { DetailMapDataState } from './DetailMapDataState ';
 
 // const isTextOverflowing = (text, maxWidth) => {
 //   // 가상 요소를 생성하고 스타일을 설정합니다.
@@ -27,6 +28,7 @@ const Notification = ({ mapData }) => {
   const [currentMarkerData, setCurrentMarkerData] = useState();
   const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
   // const [topButton, setTopButton] = useState(false);
+  const [detailMapData, setDetailMapData] = useRecoilState(DetailMapDataState);
 
 
   const location = useLocation();
@@ -114,7 +116,25 @@ const Notification = ({ mapData }) => {
   //   }
   // }, []);
 
+  useEffect(() => {
+    if (currentMarkerData) {
+      const element = document.getElementById(`marker-${currentMarkerData.awningId}`);
+      element && element.scrollIntoView({ behavior: 'smooth', block: 'center'});
+    }
+  }, [currentMarkerData]);
 
+  const listClick = (item) => {
+    // alert("click")
+    // setCurrentMarkerData(item);
+    setDetailMapData(item);
+    setIsDetailBar(true);
+    console.log("item", item)
+  }
+
+  // useEffect(() => {
+  //   console.log("isDetailBar",isDetailBar); // 상태가 변경될 때마다 로그
+  // }, [isDetailBar]);
+  
 
   return (
     <div className="flex h-screen overflow-x-hidden whitespace-nowrap">
@@ -160,27 +180,17 @@ const Notification = ({ mapData }) => {
             <div>어닝 정보</div>
             <div className="space-y-4">
               {mapData.map((item, idx) => (
-                <div key={idx} className="bg-white shadow-md rounded-lg">
+                // <div key={idx} id={`marker-${item.awningId}`} className={`bg-white shadow-md rounded-lg ${currentMarkerData && currentMarkerData.awningId === item.awningId ? 'animate-blink-border' : ''}`}>
+                // <div key={idx} onClick={() => listClick(item)} id={`marker-${item.awningId}`} className={`bg-white shadow-md rounded-lg cursor-pointer ${currentMarkerData && currentMarkerData.awningId === item.awningId ? 'border-2 border-blue-400' : ''}`}>
+                <div key={idx} onClick={() => listClick(item)} id={`marker-${item.awningId}`} className={`bg-white shadow-md rounded-lg cursor-pointer ${detailMapData && detailMapData.awningId === item.awningId ? 'border-2 border-blue-400' : ''}`}>
                   <div className="flex items-center justify-between p-4 border-b">
                     <span className={`px-3 py-1 text-white text-sm font-bold rounded-full ${item.statusConnected === 'off' ? 'bg-red-500' : 'bg-green-500'}`}>
                       {item.statusConnected.toUpperCase()}
                     </span>
                     <div className="flex-1 min-w-0 group">
-                      {/* <span className="truncate block text-center font-bold">{item.managementNumber}</span>
-                      <span className="truncate block text-center text-sm">{item.installationLocationMemo}</span>
-                      <div className="hidden group-hover:block absolute z-10 bg-gray-600 text-white text-xs px-2 py-1 rounded whitespace-pre-wrap">
-                        {item.installationLocationMemo}
-                      </div>
-                    </div> */}
                       <span className="block text-center font-bold">{item.managementNumber}</span>
-
-                      {/* 설치 위치 메모 */}
                       <div className="relative text-center">
                         <span className="truncate block text-sm">{item.installationLocationMemo}</span>
-                        {/* <span className="absolute z-10 left-0 bg-gray-600 text-white text-xs p-2 rounded hidden group-hover:block whitespace-pre-wrap">
-                          {item.installationLocationMemo}
-                        </span> */}
-                        {/* {isTextOverflowing(item.installationLocationMemo, 200) && ( */}
                         {item.installationLocationMemo.length > 20 && (
                           <span className="absolute z-10 left-0 bg-gray-600 text-white text-xs p-2 rounded hidden group-hover:block whitespace-pre-wrap">
                             {item.installationLocationMemo}

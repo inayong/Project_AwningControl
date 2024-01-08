@@ -56,10 +56,8 @@ const AwningState = () => {
   const [stateData, setStateData] = useState([]); //페이징 데이터
   const [isOpen, setIsOpen] = useState(true);
   const [checkbox, setCheckBox] = useState({});
-  // const [checkbox, setCheckBox] = useState(new Map());
   const [checkboxCount, setCheckboxCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [isFilter, setIsFilter] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchCriteria, setSearchCriteria] = useState('');
   const [batteryCondition, setBatteryCondition] = useState('');
@@ -70,12 +68,13 @@ const AwningState = () => {
   const [statusAwningExpand, setStatusAwningExpand] = useState('');
   const [statusLighting, setStatusLighting] = useState('');
   const [statusConnected, setStatusConnected] = useState('');
-  const [showSelect, setShowSelect] = useState(false);
   const [filterSel, setFilterSel] = useState('');
+  const [showControlModal, setShowControlModal] = useState(false);
+  const [modalContent, setModalContent] = useState('');
 
   const { sigungu, si } = SigunguData();
   const [gu, setGu] = useState([]);
-  
+
   const searchSel = useRef();
   const searchKeyword = useRef();
   // const filterSel = useRef();
@@ -89,7 +88,7 @@ const AwningState = () => {
   const filterMotor = useRef();
   const filterBattery = useRef();
 
-  
+
 
 
   const handleIsOpen = () => {
@@ -143,7 +142,7 @@ const AwningState = () => {
     fetchAwningState();
   }, [searchTerm, searchCriteria, batteryCondition, motorCondition, lightingCondition, managementArea2, managementArea1, statusAwningExpand, statusLighting, statusConnected])
 
-  
+
 
   const handleSearchbutton = () => {
     // console.log("input")
@@ -192,11 +191,11 @@ const AwningState = () => {
     if (filterBattery.current) {
       setBatteryCondition(filterBattery.current.value);
     }
-    
+
     if (e.target.name === 'siSelect') {
       const selectGu = sigungu
-      .filter((items) => items.address.split(" ")[0] === filterArea1.current.value)
-      .map((item) => item.address.split(" ")[1]);
+        .filter((items) => items.address.split(" ")[0] === filterArea1.current.value)
+        .map((item) => item.address.split(" ")[1]);
 
       const selGu = [...new Set(selectGu)];
       setGu(selGu);
@@ -205,12 +204,12 @@ const AwningState = () => {
     } else if (e.target.name === 'guSelect') {
       setManagementArea2(filterArea2.current.value);
     }
-    
-    
+
+
   }
 
   //시군구 셀렉트
-  
+
 
 
   //페이징
@@ -295,6 +294,21 @@ const AwningState = () => {
   }
   // }
 
+  const handleDeviceControl = (action) => {
+    const checkedItems = getStateData.filter(item => checkbox[item.deviceId]);
+    const checkedNumbers = checkedItems.map(item => item.managementNumber).join(', ');
+    // const message = `'${action}' 작동을 보냈습니다. 관리번호: ${checkedNumbers}`;
+    const message = (
+      <div className='flex flex-col items-center'>
+      <div className="text-center">{`${action} 작동을 보냈습니다.`}</div>
+      <div className="text-center">관리번호: {checkedNumbers}</div>
+    </div>
+    )
+
+    setShowControlModal(true);
+    setModalContent(message);
+  };
+
 
   return (
     <div className='bg-slate-200 h-screen'>
@@ -344,65 +358,65 @@ const AwningState = () => {
                   <option value='batteryCondition'>배터리상태</option>
                 </select>
                 {filterSel === 'statusConnected' && (
-                <select ref={filterConn} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  <option value='on'>연결</option>
-                  <option value='off'>끊김</option>
-                </select>
+                  <select ref={filterConn} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                    <option value='full'>전체</option>
+                    <option value='on'>연결</option>
+                    <option value='off'>끊김</option>
+                  </select>
                 )}
                 {filterSel === 'statusLighting' && (
-                <select ref={filterLight} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  <option value='on'>켜짐</option>
-                  <option value='off'>꺼짐</option>
-                </select>
+                  <select ref={filterLight} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                    <option value='full'>전체</option>
+                    <option value='on'>켜짐</option>
+                    <option value='off'>꺼짐</option>
+                  </select>
                 )}
                 {filterSel === 'statusAwningExpand' && (
-                <select ref={filterAwining} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  <option value='on'>열림</option>
-                  <option value='off'>닫힘</option>
-                </select>
+                  <select ref={filterAwining} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                    <option value='full'>전체</option>
+                    <option value='on'>열림</option>
+                    <option value='off'>닫힘</option>
+                  </select>
                 )}
                 {filterSel === 'managementArea' && (
-                <select name='siSelect' ref={filterArea1} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  {si.map((items) => (
-                  <option key={items} value={items}>{items}</option>
-                ))}
-                </select>
+                  <select name='siSelect' ref={filterArea1} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                    <option value='full'>전체</option>
+                    {si.map((items) => (
+                      <option key={items} value={items}>{items}</option>
+                    ))}
+                  </select>
                 )}
                 {managementArea1 && (
-                <select name='guSelect' ref={filterArea2} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  {gu.map((items) => (
-                  <option key={items} value={items}>{items}</option>
-                ))}
-                </select>
+                  <select name='guSelect' ref={filterArea2} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                    <option value='full'>전체</option>
+                    {gu.map((items) => (
+                      <option key={items} value={items}>{items}</option>
+                    ))}
+                  </select>
                 )}
                 {filterSel === 'lightingCondition' && (
-                <select ref={filterLightCond} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  <option value='normal'>정상</option>
-                  <option value='warning'>경고</option>
-                  <option value='crush'>고장</option>
-                </select>
+                  <select ref={filterLightCond} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                    <option value='full'>전체</option>
+                    <option value='normal'>정상</option>
+                    <option value='warning'>경고</option>
+                    <option value='crush'>고장</option>
+                  </select>
                 )}
                 {filterSel === 'motorCondition' && (
-                <select ref={filterMotor} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  <option value='normal'>정상</option>
-                  <option value='warning'>경고</option>
-                  <option value='crush'>고장</option>
-                </select>
+                  <select ref={filterMotor} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                    <option value='full'>전체</option>
+                    <option value='normal'>정상</option>
+                    <option value='warning'>경고</option>
+                    <option value='crush'>고장</option>
+                  </select>
                 )}
                 {filterSel === 'batteryCondition' && (
-                <select ref={filterBattery} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
-                  <option value='full'>전체</option>
-                  <option value='normal'>정상</option>
-                  <option value='warning'>경고</option>
-                  <option value='crush'>고장</option>
-                </select>
+                  <select ref={filterBattery} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                    <option value='full'>전체</option>
+                    <option value='normal'>정상</option>
+                    <option value='warning'>경고</option>
+                    <option value='crush'>고장</option>
+                  </select>
                 )}
               </div>
               <div className='flex p-3'>
@@ -410,8 +424,36 @@ const AwningState = () => {
                   <RiCheckboxLine size={20} className='m-3 fill-gray-500' />
                   <div className='text-lg'>장치 관리</div>
                 </div>
+                {showControlModal && (
+                  <div className="fixed inset-0 flex justify-center items-center">
+                    <div className='bg-white p-6 rounded-md shadow-lg text-center w-1/3 h-1/4 pt-10'>
+                     {modalContent}
+                     <div className="flex justify-center mt-4">
+                      <button onClick={() => setShowControlModal(false)} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">확인</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* {showControlModal && (
+                  <div className="fixed inset-0 flex justify-center items-center">
+                    <div className='bg-white p-6 rounded-md shadow-lg text-center'>
+                      {modalContent}
+                      <div className="flex justify-center mt-4">
+                        <button onClick={() => setShowControlModal(false)} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">확인</button>
+                      </div>
+                    </div>
+                  </div>
+                )} */}
+                <button onClick={() => handleDeviceControl('조명 ON')} className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>조명 ON</button>
+                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>조명 OFF</button>
+                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>어닝 ON</button>
+                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>어닝 OFF</button>
+                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>자동 모드</button>
+                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>수동 모드</button>
+                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>예약하기</button>
+                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>예약삭제</button>
                 {checkboxCount > 0 && (
-                  <button onClick={checkboxAwningDelete} className='hover:bg-red-100 border-4 border-red-400 rounded-lg px-2 mr-2'>어닝삭제</button>
+                  <button onClick={checkboxAwningDelete} className='hover:bg-red-100 border-4 border-red-400 rounded-lg px-2 ml-10'>어닝삭제</button>
                 )}
                 {showModal && (
                   <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
@@ -424,14 +466,14 @@ const AwningState = () => {
                     </div>
                   </div>
                 )}
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>조명 on</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>조명 off</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>어닝 on</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>어닝 off</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>자동 모드</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>수동 모드</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>예약하기</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>예약삭제</button>
+                {/* {showControlModal && (
+                  <div className="fixed inset-0 flex justify-center items-center">
+                    <div className='bg-white p-6 rounded-md shadow-lg'>
+                      <p className="text-lg font-medium mb-4">{modalContent}</p>
+                      <button onClick={() => setShowControlModal(false)} className="flex justify-center items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">확인</button>
+                    </div>
+                  </div>
+                )} */}
               </div>
             </div>
           )}

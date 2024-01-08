@@ -5,6 +5,9 @@ import { NotiMapState } from '../sidebar/NotiMapState';
 import { SidebarState } from '../sidebar/SidebarState';
 import DetailBar from '../sidebar/DetailBar';
 import { DetailBarState } from '../sidebar/DetailBarState';
+import { BiChevronsDown } from "react-icons/bi";
+import '../css/detailbar.css';
+import { DetailMapDataState } from '../sidebar/DetailMapDataState ';
 
 const MainMap = ({ mapData }) => {
     const { naver } = window;
@@ -14,6 +17,7 @@ const MainMap = ({ mapData }) => {
     const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
 
     const [detailMapData, setDetailMapData] = useState();
+    const [mapDataDetail, setMapDataDetail] = useRecoilState(DetailMapDataState);
 
     // const getData = () => {
     //     // console.log("token", localStorage.getItem("token"))
@@ -31,7 +35,7 @@ const MainMap = ({ mapData }) => {
     //         .catch(err => console.error(err))
     // }
     useEffect(() => {
-        setMarkerOpen({isOpen: false, isOpen2: false})
+        setMarkerOpen({ isOpen: false, isOpen2: false })
         // getData();
 
     }, [])
@@ -49,7 +53,7 @@ const MainMap = ({ mapData }) => {
                 zoom: 10
             });
 
-            
+
 
             mapData.forEach(item => {
                 const position = new naver.maps.LatLng(item.latitude, item.longitude);
@@ -75,9 +79,10 @@ const MainMap = ({ mapData }) => {
                     });
 
                     naver.maps.Event.addListener(marker, "click", () => {
-                        setMarkerOpen({isOpen: true, markerData: item});
+                        setMarkerOpen({ isOpen: true, markerData: item });
                         setIsDetailBar(true);
                         setDetailMapData(item);
+                        setMapDataDetail(item);
                         // console.log("isOpen",markerOpen);
                         // console.log("item",item);
                     })
@@ -91,11 +96,17 @@ const MainMap = ({ mapData }) => {
 
 
     return (
-        <div className='flex flex-col h-screen'>
+        <div className='flex flex-col h-screen justify-center items-center'>
             <div id="map" style={{ width: '100%', height: '100vh' }}></div>
-            {isDetailBar && detailMapData && (
-                <div className='h-72'>
-                    <DetailBar markerData={detailMapData} />
+            {isDetailBar ?  
+            <div className='flex justify-center items-center w-10 rounded-full'>
+                <button className='absolute w-10 h-10 rounded-full bg-transparent text-xl focus:outline-none'>
+                    <BiChevronsDown onClick={() => setIsDetailBar(false)} size={40} className='fill-gray-600' />
+                </button>
+            </div> : '' }
+            {isDetailBar && mapDataDetail && detailMapData && (
+                <div className='h-72 w-full'>
+                    <DetailBar markerData={mapDataDetail} />
                 </div>
             )}
         </div>
