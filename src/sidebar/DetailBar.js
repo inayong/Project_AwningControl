@@ -8,11 +8,17 @@ import { FaRegLightbulb, FaWhmcs } from "react-icons/fa";
 import { IoBatteryChargingOutline } from "react-icons/io5";
 import { GiNetworkBars } from "react-icons/gi";
 import { TbTent } from "react-icons/tb";
+import { GrStatusDisabledSmall } from 'react-icons/gr';
 
 const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   const { naver } = window;
   const setIsDetailBar = useSetRecoilState(DetailBarState);
   const [stateDetailData, setStateDetailData] = useState([]);
+
+  const [lightStatus, setLightStatus] = useState(markerData.lightStatus);
+  const [awningStatus, setAwningStatus] = useState(markerData.statusAwningExpand);
+  const [modeStatus, setModeStatus] = useState(markerData.statusOperationMode);
+  // const [modalStatus, setModalStatus] = useState('');
 
 
 
@@ -104,12 +110,33 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
 
 
   //button
+  // const clickControlButton = (controlStatus) => {
   const clickControlButton = () => {
+    // setModalStatus(controlStatus);
     setShowControlModal(true);
   }
 
   // console.log(parseInt(markerData.batteryCondition) <= 20);
   // console.log(typeof markerData.statusBatteryCharge);
+
+  const clickLightControl = (status) => {
+    setLightStatus(status);
+  }
+ 
+  const clickAwningControl = (status)  => {
+    setAwningStatus(status);
+  }
+
+  const clickModeStatus = (status) => {
+    setModeStatus(status);
+  }
+
+  const handelControlConfirm = () => {
+    // window.confirm(`조명: ${lightStatus}, 어닝: ${awningStatus}, 모드: ${modeStatus}`);
+    alert(`조명: ${lightStatus}, 어닝: ${awningStatus}, 모드: ${modeStatus}`);
+    setShowControlModal(false);
+  }
+
 
 
 
@@ -119,15 +146,15 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
       <div className='flex flex-grow h-full space-x-10'>
         <div className='flex flex-col bg-slate-50 w-1/3 shadow-lg rounded-lg p-3'>
           <div className='flex justify-between h-1/3 rounded-t-lg p-1 border-b'>
-            <div className='w-32 flex flex-col justify-center items-center'>
+            <div className='w-32 flex flex-col justify-center items-center space-y-2'>
               <div className='bg-white px-3 shadow-md'>Device ID</div>
               <div className=''>{markerData.deviceId}</div>
             </div>
-            <div className='w-32 flex flex-col justify-center items-center'>
+            <div className='w-32 flex flex-col justify-center items-center space-y-2'>
               <div className='bg-white px-3 shadow-md'>Control ID</div>
               <div className=''>{markerData.controlId}</div>
             </div>
-            <div className='w-32 flex flex-col justify-center items-center'>
+            <div className='w-32 flex flex-col justify-center items-center space-y-2'>
               <div className='bg-white px-3 shadow-md'>관리번호</div>
               <div className=''>{markerData.managementNumber}</div>
             </div>
@@ -170,7 +197,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
           </div>
           <div className='w-1/5 rounded-3xl'>
             <div className='flex justify-center items-center h-1/3 border-b w-full'>
-              <IoBatteryChargingOutline size={35} className='fill-indigo-500' />
+              <IoBatteryChargingOutline size={35} className='fill-green-600' />
               <span className="absolute opacity-0 hover:opacity-100 transition-opacity duration-300 pt-14">
                 배터리
               </span>
@@ -190,7 +217,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
             </div>
             <div className='flex flex-col justify-center items-center h-2/3 border-t w-full space-y-1'>
               <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.lightStatus === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.lightStatus.toUpperCase()}</div>
-              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.batteryCondition === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.lightingCondition === 'normal' ? "정상" : "고장"}</div>
+              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.lightingCondition === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.lightingCondition === 'normal' ? "정상" : "고장"}</div>
             </div>
           </div>
           <div className='w-1/5 rounded-3xl'>
@@ -205,42 +232,47 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
             </div>
           </div>
         </div>
-        <div className='flex flex-col justify-center items-end my-5 w-40 space-y-5'>
-          <div onClick={clickControlButton} className='bg-slate-300 shadow-md w-full h-1/3 rounded-2xl flex items-center justify-center cursor-pointer'>제어버튼</div>
+        <div className='flex flex-col justify-center items-end my-5 w-40'>
+          <button onClick={clickControlButton} className='bg-slate-300 shadow-md w-full h-1/3 rounded-2xl flex items-center justify-center mb-5'>제어버튼</button>
           {showControlModal && (
-            <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 z-50 flex justify-center items-center">
-              <div className='bg-yellow-200 p-6 rounded-md shadow-lg text-center w-1/3 h-1/2'>
-                <div className='bg-slate-300 w-full h-full'>
-                  <div className='text-lg font-bold'>{markerData.managementNumber}</div>
-                  <div className='space-y-3'>
-                  <div className='flex'>
-                    <div>조명</div>
-                    <div className='border-2 '>
-                      <button className='border-r py-3 px-6'>ON</button>
-                      <button className='border-l py-3 px-6'>OFF</button>
+            <div className="fixed top-0 left-0 w-full h-full z-50 bg-black bg-opacity-10 flex justify-center">
+              <div className='bg-white p-6 rounded-md shadow-lg text-center w-1/3 h-1/2 mt-40'>
+                <div className='w-full h-full p-3 space-y-10'>
+                  <div className='flex justify-center items-center '>
+                    <div className='text-lg font-bold border-2 p-3 w-1/2 rounded-md'>{markerData.managementNumber}</div>
+                  </div>
+                  <div className='space-y-10 flex flex-col justify-center items-center'>
+                    <div className='flex space-x-3 justify-center items-center'>
+                      <div>조명</div>
+                      <div className='border-2 '>
+                        <button className={`border-r py-3 px-6 hover:bg-emerald-500 ${lightStatus === 'on' ? 'button-active' : ''}`} onClick={() => setLightStatus('on')}>ON</button>
+                        <button onClick={() => clickLightControl('OFF')} className='border-l py-3 px-6 hover:bg-red-500'>OFF</button>
+                      </div>
+                    </div>
+                    <div className='flex space-x-3 justify-center items-center'>
+                      <div>어닝</div>
+                      <div className='border-2 '>
+                        <button className='border-r py-3 px-6 hover:bg-emerald-500'>ON</button>
+                        <button onClick={() => clickAwningControl('OFF')} className='border-l py-3 px-6 hover:bg-red-500'>OFF</button>
+                      </div>
+                    </div>
+                    <div className='flex space-x-3 justify-center items-center'>
+                      <div>모드</div>
+                      <div className='border-2 '>
+                        <button onClick={() => clickLightControl('ON')} className='border-r py-3 px-6 hover:bg-emerald-500'>자동</button>
+                        <button className='border-l py-3 px-6 hover:bg-blue-500'>수동</button>
+                      </div>
                     </div>
                   </div>
-                  <div className='flex'>
-                    <div>어닝</div>
-                    <div className='border-2 '>
-                      <button className='border-r py-3 px-6'>ON</button>
-                      <button className='border-l py-3 px-6'>OFF</button>
-                    </div>
-                  </div>
-                  <div className='flex'>
-                    <div>모드</div>
-                    <div className='border-2 '>
-                      <button className='border-r py-3 px-6'>자동</button>
-                      <button className='border-l py-3 px-6'>수동</button>
-                    </div>
-                  </div>
+                  <div className='flex justify-center items-center space-x-3'>
+                    <button onClick={handelControlConfirm} className='border p-3 hover:border-2 hover:border-blue-300' >확인</button>
+                    <button onClick={() => setShowControlModal(false)} className='border p-3 hover:bg-gray-200' >취소</button>
                   </div>
                 </div>
-                <button onClick={() => setShowControlModal(false)}>확인</button>
               </div>
             </div>
           )}
-          <div className='bg-slate-300 shadow-md  w-full h-1/3 rounded-2xl flex items-center justify-center'>예약버튼</div>
+          <button className='bg-slate-300 shadow-md  w-full h-1/3 rounded-2xl flex items-center justify-center'>예약버튼</button>
         </div>
       </div>
     </div>

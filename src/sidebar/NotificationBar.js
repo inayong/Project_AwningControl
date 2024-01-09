@@ -125,10 +125,11 @@ const Notification = ({ mapData }) => {
 
   const listClick = (item) => {
     // alert("click")
-    // setCurrentMarkerData(item);
+    setCurrentMarkerData(item);
     setDetailMapData(item);
     setIsDetailBar(true);
-    console.log("item", item)
+    // console.log("list-item", item)
+
   }
 
   // useEffect(() => {

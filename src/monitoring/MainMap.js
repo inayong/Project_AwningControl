@@ -86,7 +86,7 @@ const MainMap = ({ mapData }) => {
                         setDetailMapData(item);
                         setMapDataDetail(item);
                         // console.log("isOpen",markerOpen);
-                        // console.log("item",item);
+                        console.log("item", item);
                     })
                 }
 
@@ -112,7 +112,8 @@ const MainMap = ({ mapData }) => {
                         <BiChevronsDown onClick={() => setIsDetailBar(false)} size={40} className='fill-gray-600' />
                     </button>
                 </div> : ''}
-            {isDetailBar && mapDataDetail && detailMapData && (
+            {/* {isDetailBar && mapDataDetail && detailMapData && ( */}
+            {isDetailBar && mapDataDetail && (
                 <div className='h-72 w-full'>
                     <DetailBar markerData={mapDataDetail} setShowControlModal={setShowControlModal} showControlModal={showControlModal} />
                 </div>

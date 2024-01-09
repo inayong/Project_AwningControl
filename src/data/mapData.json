@@ -6,7 +6,7 @@
         "controlId": "11067",
         "latitude": "35.13955219",
         "longitude": "129.1012566",
-        "statusConnected": "on",
+        "statusConnected": "off",
         "awningOpenTimeLeft":	"28",
         "awningOpenTimeRight": "28",
         "installationLocationMemo": "대연혁신지구 힐스테이트 푸르지오 아파트 102동 앞 횡단보도",
@@ -19,5 +19,26 @@
         "awningCondition": "crash",
         "batteryCondition": "normal",
         "statusOperationMode": "auto"
+    },
+    {
+        "managementNumber": "금정구-12",
+        "awningId": 2,
+        "deviceId": "240089",
+        "controlId": "00876",
+        "latitude": "35.243068",
+        "longitude": "129.0921",
+        "statusConnected": "on",
+        "awningOpenTimeLeft":	"20",
+        "awningOpenTimeRight": "20",
+        "installationLocationMemo": "금정구 전체",
+        "lightStatus": "on",
+        "statusAwningExpand": "on",
+        "statusBatteryCharge": 80,
+        "statusTemperature": "20",
+        "statusWindSpeed": "2.9",
+        "lightingCondition": "crash",
+        "awningCondition": "normal",
+        "batteryCondition": "normal",
+        "statusOperationMode": "manual"
     }
 ]

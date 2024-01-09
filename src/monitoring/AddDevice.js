@@ -5,14 +5,14 @@ import { SigunguData } from '../data/SigunguData';
 
 const FormSection = ({ labelLeft, labelRight, leftRef, rightRef }) => {
   return (
-    <div className='flex py-4 pl-3 w-full'>
-      <div className='flex flex-col w-1/2'>
+    <div className='flex py-3 pl-3 w-full'>
+      <div className='flex flex-col w-1/2 space-y-1'>
         <div className=''>{labelLeft}</div>
-        <input className='w-48' ref={leftRef}></input>
+        <input className='w-48 border' ref={leftRef}></input>
       </div>
-      <div className='flex flex-col w-1/2'>
+      <div className='flex flex-col w-1/2 space-y-1'>
         <div className=''>{labelRight}</div>
-        <input className='w-48' ref={rightRef}></input>
+        <input className='w-48 border' ref={rightRef}></input>
       </div>
     </div>
   );
@@ -184,8 +184,8 @@ const AddDevice = () => {
     setDongSel(selDong);
     setSelectedGu(selGuRef.current.value);
     setSelectedDong('');
-    console.log("selSiRef", selSiRef.current.value)
-    console.log("selGuRef", selGuRef.current.value)
+    // console.log("selSiRef", selSiRef.current.value)
+    // console.log("selGuRef", selGuRef.current.value)
   }
 
   // const handleSelDong = () => {
@@ -261,7 +261,7 @@ const AddDevice = () => {
       alert("위/경도를 입력해주세요")
       return;
     }
-  
+
     // 필수 필드 검사
     for (const field of requiredFields) {
       if (field.ref) {
@@ -305,79 +305,80 @@ const AddDevice = () => {
 
   return (
     <div className='h-screen bg-slate-200 flex justify-center items-center'>
-      <div className=' flex bg-white w-[80%] h-[80%]'>
-        <div className='flex bg-slate-400 w-2/5 h-full'>
-          <div id="map" style={{ width: '100%', height: '100%' }}></div>
+      <div className=' flex bg-white w-[80%] h-[80%] rounded-lg shadow-lg '>
+        <div className='flex  w-2/5 h-full'>
+          <div id="map" style={{ width: '100%', height: '100%' }} className='rounded-l-lg'></div>
         </div>
         <div className='w-2/3 text-lg p-3 flex flex-col'>
           <div className='flex justify-center text-xl font-bold p-1'>
             <div className='border p-3 w-2/3 text-center rounded-lg'>장치 추가</div>
           </div>
-          <div className='bg-slate-50 flex-grow w-full'>
+          <div className='flex-grow w-full'>
             <div className='flex flex-col pt-5 pb-3 pl-3'>
               <div className='flex'>
                 <div className='flex w-1/2'>
-                  <div className='pr-3'>주소</div>
-                  <input type='text' value={inputAddress} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder='주소 입력' />
-                  <button onClick={handleSearch}><CiSearch /></button>
+                  {/* <div className='pr-3'>주소</div> */}
+                  <input type='text' value={inputAddress} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder='주소 입력' className='border' />
+                  {/* <button onClick={handleSearch}><CiSearch /></button> */}
                 </div>
-                <div>위·경도 {displayLocation.lat} / {displayLocation.lng}</div>
+                <div className='flex'>
+                  <div className='pr-3'>위·경도</div>
+                  <div>{displayLocation.lat && displayLocation.lng ? `${displayLocation.lat} / ${displayLocation.lng}` : ''}</div>
+                </div>
               </div>
               <div className='flex flex-col'>
-                <div className='pt-2 text-sm'>전체 주소</div>
-                <div className='text-base text-gray-500 pt-1'>{displayAddress.roadAddress || displayAddress.jibunAddress}</div>
+                {displayAddress.roadAddress || displayAddress.jibunAddress ? (
+                  <>
+                    <div className='pt-2 text-sm'>전체 주소</div>
+                    <div className='text-base text-gray-500 pt-1'>{displayAddress.roadAddress || displayAddress.jibunAddress}</div>
+                  </>
+                ) : ''}
               </div>
             </div>
-            <div className='flex pb-6 pt-2 pl-3'>
-              <div className='pr-3'>관리구역</div>
-              <select onChange={handleSelSi} ref={selSiRef} value={selectedSi} className='w-32 mr-3'>
+            <div className='flex pb-3 pt-2 pl-3'>
+              <div className='pr-6'>관리구역</div>
+              <select onChange={handleSelSi} ref={selSiRef} value={selectedSi} className='w-44 mr-3 border'>
                 <option value=''>시</option>
                 {si.map((items) => (
                   <option key={items}>{items}</option>
                 ))}
               </select>
-              <select onChange={handleSelGu} ref={selGuRef} value={selectedGu} className='w-32 mr-3'>
+              <select onChange={handleSelGu} ref={selGuRef} value={selectedGu} className='w-28 mr-3 border'>
                 <option value=''>구</option>
                 {guSel.map((items) => (
                   <option key={items}>{items}</option>
                 ))}
               </select>
-              {/* <select onChange={handleSelDong} ref={selDongRef} value={selectedDong} className='w-32'>
-                <option>동</option>
-                {dongSel.map((items) => (
-                  <option key={items}>{items}</option>
-                ))}
-              </select> */}
             </div>
             <FormSection labelLeft="관리번호" leftRef={manageNum} labelRight="설치장소" rightRef={locationMemo} />
             <FormSection labelLeft="기구ID" leftRef={deviceId} labelRight="제어기ID" rightRef={controlId} />
             <FormSection labelLeft="어닝 열림시간 - 좌(초)" leftRef={openLeft} labelRight="어닝 열림시간 - 우(초)" rightRef={openRight} />
             <FormSection labelLeft="풍속 임계값" leftRef={windThreshold} labelRight="어닝 재열림 시간(분)" rightRef={awningReopen} />
-            <div className='flex py-4 pl-3 w-full'>
-              <div className='flex flex-col w-1/2'>
+            <div className='flex py-3 pl-3 w-full'>
+              <div className='flex flex-col w-1/2 space-y-1'>
                 <div className=''>설치일자</div>
-                <input type='date' value={installDate} onChange={handleInstallDateChange} className='w-48'></input>
+                <input type='date' value={installDate} onChange={handleInstallDateChange} className='w-48 border'></input>
               </div>
-              <div className='flex flex-col w-1/2'>
+              <div className='flex flex-col w-1/2 space-y-1'>
                 <div className=''>계약만료기간</div>
-                <input type='date' value={expireDate} onChange={handleExpireDateChange} className='w-48'></input>
+                <input type='date' value={expireDate} onChange={handleExpireDateChange} className='w-48 border'></input>
               </div>
             </div>
           </div>
           <div className='flex justify-center m-1'>
-            <button onClick={handleAddSubmit} className='border mr-3 p-1'>추가</button>
+            <button onClick={handleAddSubmit} className='border mr-3 py-2 px-3 hover:bg-blue-400'>추가</button>
             {showModal && (
-                  <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-16 rounded-md">
-                      <p className='text-2xl'>추가하시겠습니까?</p>
-                      <div className="flex justify-center mt-4 pt-3">
-                        <button onClick={AddDeviceConfirm} className="px-3 py-1 bg-red-500 text-white rounded-md">확인</button>
-                        <button onClick={() => setShowModal(false)} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
-                      </div>
-                    </div>
+              <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+                <div className="bg-white p-16 rounded-md">
+                  <p className='text-2xl'>추가하시겠습니까?</p>
+                  <div className="flex justify-center mt-4 pt-3">
+                    <button onClick={AddDeviceConfirm} className="px-3 py-1 bg-red-500 text-white rounded-md">확인</button>
+                    <button onClick={() => setShowModal(false)} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
                   </div>
-                )}
-            <button onClick={cancleButton} className='border ml-3 p-1'>취소</button>
+                </div>
+              </div>
+            )}
+            <button onClick={cancleButton} className='border ml-3 py-2 px-3 hover:bg-gray-400'>취소</button>
           </div>
         </div>
       </div>

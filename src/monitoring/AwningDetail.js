@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import UpdateAwning from '../component/UpdateAwning';
+import UpdateAwning from './UpdateAwning';
 
 const TableBody = ({ leftLabel, leftContent, rightLabel, rightContent }) => {
   return (
