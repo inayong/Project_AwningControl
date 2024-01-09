@@ -9,10 +9,11 @@ import { IoBatteryChargingOutline } from "react-icons/io5";
 import { GiNetworkBars } from "react-icons/gi";
 import { TbTent } from "react-icons/tb";
 
-const DetailBar = ({ markerData }) => {
+const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   const { naver } = window;
   const setIsDetailBar = useSetRecoilState(DetailBarState);
   const [stateDetailData, setStateDetailData] = useState([]);
+
 
 
   useEffect(() => {
@@ -78,9 +79,9 @@ const DetailBar = ({ markerData }) => {
 
 
 
-  const clickCancel = () => {
-    setIsDetailBar(false);
-  }
+  // const clickCancel = () => {
+  //   setIsDetailBar(false);
+  // }
 
   //   if (!markerData) {
   //     return null; 
@@ -101,36 +102,46 @@ const DetailBar = ({ markerData }) => {
   //     .catch(err => console.error(err))
   //   }, [])
 
+
+  //button
+  const clickControlButton = () => {
+    setShowControlModal(true);
+  }
+
+  // console.log(parseInt(markerData.batteryCondition) <= 20);
+  // console.log(typeof markerData.statusBatteryCharge);
+
+
+
   return (
     <div className='flex bg-white h-72 items-center py-5 pl-5 px-8 space-x-8'>
       <div id="map2" style={{ width: '20%', height: '100%' }} className='flex justify-center items-center'></div>
       <div className='flex flex-grow h-full space-x-10'>
-        <div className='flex flex-col bg-slate-50 w-1/3 shadow-lg rounded-lg'>
+        <div className='flex flex-col bg-slate-50 w-1/3 shadow-lg rounded-lg p-3'>
           <div className='flex justify-between h-1/3 rounded-t-lg p-1 border-b'>
             <div className='w-32 flex flex-col justify-center items-center'>
               <div className='bg-white px-3 shadow-md'>Device ID</div>
-              <div className=''>123456</div>
+              <div className=''>{markerData.deviceId}</div>
             </div>
             <div className='w-32 flex flex-col justify-center items-center'>
               <div className='bg-white px-3 shadow-md'>Control ID</div>
-              <div className=''>456789</div>
+              <div className=''>{markerData.controlId}</div>
             </div>
             <div className='w-32 flex flex-col justify-center items-center'>
               <div className='bg-white px-3 shadow-md'>관리번호</div>
-              <div className=''>987321</div>
+              <div className=''>{markerData.managementNumber}</div>
             </div>
           </div>
-          <div className=' h-1/2 flex flex-col p-2 space-y-8'>
-            <div className='flex space-x-5'>
+          <div className=' h-1/2 flex flex-col p-2 space-y-12 pt-5'>
+            <div className='flex space-x-5 items-center'>
               <div className='flex'>
                 <div className='bg-white px-3 shadow-md'>설치장소</div>
-                <div className='pl-3'>:</div>
               </div>
-              <div>{markerData.installationLocationMemo}</div>
+              <div className='flex-1'>{markerData.installationLocationMemo}</div>
             </div>
-            <div className='flex '>
+            <div className='flex space-x-5 items-center'>
               <div className='bg-white px-3 shadow-md'>모드</div>
-              <div>자동</div>
+              <div className=''>{markerData.statusOperationMode === 'auto' ? "자동" : "수동"}</div>
             </div>
           </div>
         </div>
@@ -142,10 +153,8 @@ const DetailBar = ({ markerData }) => {
                 어닝
               </span>
             </div>
-            <div className='flex flex-col justify-center items-center h-2/3 border-t w-full space-y-1'>
-              {/* <div className='flex justify-center items-center h-full w-full rounded-b-3xl bg-emerald-400 text-white font-bold text-2xl'>ON</div> */}
-              <div className='flex justify-center items-center h-full w-full rounded-b-3xl text-emerald-400 font-bold text-2xl'>ON</div>
-              <div className='flex justify-center items-center h-full w-full rounded-b-3xl text-red-400 font-bold text-2xl'>고장</div>
+            <div className='flex justify-center items-center h-2/3 border-t w-full space-y-1'>
+              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.statusAwningExpand === 'on' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.statusAwningExpand.toUpperCase()}</div>
             </div>
           </div>
           <div className='w-1/5 rounded-3xl'>
@@ -155,7 +164,22 @@ const DetailBar = ({ markerData }) => {
                 통신
               </span>
             </div>
-            <div className='flex justify-center items-center h-2/3 border-t w-full'>상태</div>
+            <div className='flex justify-center items-center h-2/3 border-t w-full space-y-1'>
+              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.statusConnected === 'on' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.statusConnected.toUpperCase()}</div>
+            </div>
+          </div>
+          <div className='w-1/5 rounded-3xl'>
+            <div className='flex justify-center items-center h-1/3 border-b w-full'>
+              <IoBatteryChargingOutline size={35} className='fill-indigo-500' />
+              <span className="absolute opacity-0 hover:opacity-100 transition-opacity duration-300 pt-14">
+                배터리
+              </span>
+            </div>
+            <div className='flex flex-col justify-center items-center h-2/3 border-t w-full space-y-1'>
+              {/* <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${parseInt(markerData.statusBatteryCharge) <= 20 ? 'text-red-400' : 'text-emerald-400'} font-bold text-2xl`}>{markerData.statusBatteryCharge}%</div> */}
+              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.statusBatteryCharge <= 20 ? 'text-red-400' : 'text-emerald-400'} font-bold text-2xl`}>{markerData.statusBatteryCharge}%</div>
+              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.batteryCondition === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.batteryCondition === 'normal' ? "정상" : "고장"}</div>
+            </div>
           </div>
           <div className='w-1/5 rounded-3xl'>
             <div className='flex justify-center items-center h-1/3 border-b w-full'>
@@ -164,16 +188,10 @@ const DetailBar = ({ markerData }) => {
                 조명
               </span>
             </div>
-            <div className='flex justify-center items-center h-2/3 border-t w-full'>상태</div>
-          </div>
-          <div className='w-1/5 rounded-3xl'>
-            <div className='flex justify-center items-center h-1/3 border-b w-full'>
-              <IoBatteryChargingOutline size={35} className='fill-emerald-500' />
-              <span className="absolute opacity-0 hover:opacity-100 transition-opacity duration-300 pt-14">
-                배터리
-              </span>
+            <div className='flex flex-col justify-center items-center h-2/3 border-t w-full space-y-1'>
+              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.lightStatus === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.lightStatus.toUpperCase()}</div>
+              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.batteryCondition === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.lightingCondition === 'normal' ? "정상" : "고장"}</div>
             </div>
-            <div className='flex justify-center items-center h-2/3 border-t w-full'>상태</div>
           </div>
           <div className='w-1/5 rounded-3xl'>
             <div className='flex justify-center items-center h-1/3 border-b w-full'>
@@ -182,12 +200,47 @@ const DetailBar = ({ markerData }) => {
                 모터
               </span>
             </div>
-            <div className='flex justify-center items-center h-2/3 border-t w-full'>상태</div>
+            <div className='flex justify-center items-center h-2/3 border-t w-full space-y-1'>
+              <div className='flex justify-center items-center h-full w-full rounded-b-3xl text-red-400 font-bold text-2xl'>{markerData.awningCondition === 'normal' ? "정상" : "고장"}</div>
+            </div>
           </div>
         </div>
         <div className='flex flex-col justify-center items-end my-5 w-40 space-y-5'>
-          <div className='bg-red-300 w-full h-1/3 rounded-2xl flex items-center justify-center'>제어버튼2</div>
-          <div className='bg-green-300 w-full h-1/3 rounded-2xl flex items-center justify-center'>예약버튼2</div>
+          <div onClick={clickControlButton} className='bg-slate-300 shadow-md w-full h-1/3 rounded-2xl flex items-center justify-center cursor-pointer'>제어버튼</div>
+          {showControlModal && (
+            <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 z-50 flex justify-center items-center">
+              <div className='bg-yellow-200 p-6 rounded-md shadow-lg text-center w-1/3 h-1/2'>
+                <div className='bg-slate-300 w-full h-full'>
+                  <div className='text-lg font-bold'>{markerData.managementNumber}</div>
+                  <div className='space-y-3'>
+                  <div className='flex'>
+                    <div>조명</div>
+                    <div className='border-2 '>
+                      <button className='border-r py-3 px-6'>ON</button>
+                      <button className='border-l py-3 px-6'>OFF</button>
+                    </div>
+                  </div>
+                  <div className='flex'>
+                    <div>어닝</div>
+                    <div className='border-2 '>
+                      <button className='border-r py-3 px-6'>ON</button>
+                      <button className='border-l py-3 px-6'>OFF</button>
+                    </div>
+                  </div>
+                  <div className='flex'>
+                    <div>모드</div>
+                    <div className='border-2 '>
+                      <button className='border-r py-3 px-6'>자동</button>
+                      <button className='border-l py-3 px-6'>수동</button>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <button onClick={() => setShowControlModal(false)}>확인</button>
+              </div>
+            </div>
+          )}
+          <div className='bg-slate-300 shadow-md  w-full h-1/3 rounded-2xl flex items-center justify-center'>예약버튼</div>
         </div>
       </div>
     </div>

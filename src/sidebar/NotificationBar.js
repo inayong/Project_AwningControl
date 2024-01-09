@@ -134,6 +134,9 @@ const Notification = ({ mapData }) => {
   // useEffect(() => {
   //   console.log("isDetailBar",isDetailBar); // 상태가 변경될 때마다 로그
   // }, [isDetailBar]);
+
+  // console.log("detailMapData.awningId", detailMapData.awningId)
+  // console.log("mapdata", mapData.map(item => item.awningId))
   
 
   return (

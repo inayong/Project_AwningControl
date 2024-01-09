@@ -19,6 +19,8 @@ const MainMap = ({ mapData }) => {
     const [detailMapData, setDetailMapData] = useState();
     const [mapDataDetail, setMapDataDetail] = useRecoilState(DetailMapDataState);
 
+    const [showControlModal, setShowControlModal] = useState(false);
+
     // const getData = () => {
     //     // console.log("token", localStorage.getItem("token"))
     //     fetch("http://10.125.121.206:8080/user/map", {
@@ -92,21 +94,27 @@ const MainMap = ({ mapData }) => {
         }
     }, [mapData, setMarkerOpen]);
 
+    //button
+    //control button
+    // const clickControlButton = () => {
+    //     setShowControlModal(true);
+    // }
+
 
 
 
     return (
         <div className='flex flex-col h-screen justify-center items-center'>
             <div id="map" style={{ width: '100%', height: '100vh' }}></div>
-            {isDetailBar ?  
-            <div className='flex justify-center items-center w-10 rounded-full'>
-                <button className='absolute w-10 h-10 rounded-full bg-transparent text-xl focus:outline-none'>
-                    <BiChevronsDown onClick={() => setIsDetailBar(false)} size={40} className='fill-gray-600' />
-                </button>
-            </div> : '' }
+            {isDetailBar ?
+                <div className='flex justify-center items-center w-10 rounded-full'>
+                    <button className='absolute w-10 h-10 rounded-full bg-transparent text-xl focus:outline-none'>
+                        <BiChevronsDown onClick={() => setIsDetailBar(false)} size={40} className='fill-gray-600' />
+                    </button>
+                </div> : ''}
             {isDetailBar && mapDataDetail && detailMapData && (
                 <div className='h-72 w-full'>
-                    <DetailBar markerData={mapDataDetail} />
+                    <DetailBar markerData={mapDataDetail} setShowControlModal={setShowControlModal} showControlModal={showControlModal} />
                 </div>
             )}
         </div>

@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { DetailBarState } from './DetailBarState';
 import DetailBar from './DetailBar';
+import mapData from '../data/mapData.json';
 
 const DisplayTest = () => {
     const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
+
+    useEffect(() => {
+        console.log("mapData",mapData)
+    })
+
     return (
         <div className='flex flex-col h-screen'>
             <div className='bg-slate-400 h-full '>
