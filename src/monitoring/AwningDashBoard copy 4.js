@@ -17,28 +17,36 @@ const AwningDashBoard = () => {
  * In the chart render event, add icons on top of the circular shapes
  */
 function renderIcons() {
-  const chart = this;
-  const series = chart.series[0];
 
-  // this.series.forEach(series => {
+  this.series.forEach(series => {
       if (!series.icon) {
-          series.icon = chart.renderer
+          series.icon = this.renderer
               .text(
                   `<i class="fa fa-${series.options.custom.icon}"></i>`,
-                  chart.plotLeft + (chart.plotWidth * 0.5),
-                  chart.plotTop + (chart.plotHeight * 0.5)
-                  )
-              .css({
-                  color: '#4572A7',
-                  fontSize: '16px'
+                  0,
+                  0,
+                  true
+              )
+              .attr({
+                  zIndex: 10
               })
-              .add(series.group);
+              .css({
+                  color: series.options.custom.iconColor,
+                  fontSize: '1.5em'
+              })
+              .add(this.series[2].group);
       }
       series.icon.attr({
-          x: chart.plotLeft + (chart.plotWidth * 0.5) - 10,
-          y: chart.plotTop + (chart.plotHeight * 0.5) - 10
+          x: this.chartWidth / 2 - 15,
+          y: this.plotHeight / 2 -
+              series.points[0].shapeArgs.innerR -
+              (
+                  series.points[0].shapeArgs.r -
+                  series.points[0].shapeArgs.innerR
+              ) / 2 +
+              8
       });
-  // });
+  });
 }
 
 const trackColors = Highcharts.getOptions().colors.map(color =>
@@ -49,7 +57,7 @@ const gaugeOptions = {
 
   chart: {
       type: 'solidgauge',
-      height: '100%',
+      height: '110%',
       events: {
           render: renderIcons
       }
@@ -61,14 +69,13 @@ const gaugeOptions = {
     enabled: false
   },
   title: {
-      text: '정상작동 가동 시간',
+      text: 'Multiple KPI gauge',
       style: {
           fontSize: '24px'
       }
   },
 
   tooltip: {
-      enabled: false,
       borderWidth: 0,
       backgroundColor: 'none',
       shadow: false,
@@ -77,7 +84,8 @@ const gaugeOptions = {
       },
       valueSuffix: '%',
       pointFormat: '{series.name}<br>' +
-          '<span style="font-size: 2em; color: {point.color}; font-weight: bold">{point.y}</span>',
+          '<span style="font-size: 2em; color: {point.color}; ' +
+          'font-weight: bold">{point.y}</span>',
       positioner: function (labelWidth) {
           return {
               x: (this.chart.chartWidth - labelWidth) / 2,
@@ -89,7 +97,17 @@ const gaugeOptions = {
   pane: {
       startAngle: 0,
       endAngle: 360,
-      background: [{ // Track for Feedback
+      background: [{ // Track for Conversion
+          outerRadius: '112%',
+          innerRadius: '88%',
+          backgroundColor: trackColors[0],
+          borderWidth: 0
+      }, { // Track for Engagement
+          outerRadius: '87%',
+          innerRadius: '63%',
+          backgroundColor: trackColors[1],
+          borderWidth: 0
+      }, { // Track for Feedback
           outerRadius: '62%',
           innerRadius: '38%',
           backgroundColor: trackColors[2],
@@ -107,12 +125,7 @@ const gaugeOptions = {
   plotOptions: {
       solidgauge: {
           dataLabels: {
-              enabled: true,
-              useHTML: true,
-              format: '<div style="text-align: center; padding: 5px;">' + 
-              '<span style="font-size: 12px; opacity: 0.8">{series.name}</span></div><br/>' +
-              '<span style="font-size: 24px; color: {point.color}; font-weight: bold">{point.y}h</span>',
-              y: -30 //라벨 위치
+              enabled: false
           },
           linecap: 'round',
           stickyTracking: false,
@@ -121,17 +134,41 @@ const gaugeOptions = {
   },
 
   series: [{
-      name: '가동시간',
+      name: 'Conversion',
+      data: [{
+          color: Highcharts.getOptions().colors[0],
+          radius: '112%',
+          innerRadius: '88%',
+          y: 80
+      }],
+      custom: {
+          icon: 'filter',
+          iconColor: '#303030'
+      }
+  }, {
+      name: 'Engagement',
+      data: [{
+          color: Highcharts.getOptions().colors[1],
+          radius: '87%',
+          innerRadius: '63%',
+          y: 65
+      }],
+      custom: {
+          icon: 'comments-o',
+          iconColor: '#ffffff'
+      }
+  }, {
+      name: 'Feedback',
       data: [{
           color: Highcharts.getOptions().colors[2],
           radius: '62%',
           innerRadius: '38%',
-          y: 75
+          y: 50
       }],
       custom: {
           icon: 'commenting-o',
           iconColor: '#303030'
-      },
+      }
   }]
 };
 

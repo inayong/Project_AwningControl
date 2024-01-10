@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { NotiMapState } from './NotiMapState';
 import { DetailBarState } from './DetailBarState';
@@ -9,7 +9,6 @@ import { IoBatteryChargingOutline } from "react-icons/io5";
 import { GiNetworkBars } from "react-icons/gi";
 import { TbTent } from "react-icons/tb";
 import { GrStatusDisabledSmall } from 'react-icons/gr';
-import Alert from '../component/Alert';
 
 const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   const { naver } = window;
@@ -20,14 +19,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   const [awningStatus, setAwningStatus] = useState(markerData.statusAwningExpand);
   const [modeStatus, setModeStatus] = useState(markerData.statusOperationMode);
   // const [modalStatus, setModalStatus] = useState('');
-  // const [isActive, setIsActive] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [lightStatusRef, setLightStatusRef] = useState(lightStatus);
-  const [awningStatusRef, setAwningStatusRef] = useState(awningStatus);
-  const [modeStatusRef, setModeStatusRef] = useState(modeStatus);
-  // const awningStatusRef = useRef(markerData.statusAwningExpand);
-  // const modeStatusRef = useRef(markerData.statusOperationMode);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [isActive, setIsActive] = useState(false);
 
 
 
@@ -135,64 +127,25 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
 
   const clickAwningControl = (status) => {
     setAwningStatus(status);
-    console.log("awningstatus", status)
   }
 
   const clickModeStatus = (status) => {
     setModeStatus(status);
-    console.log("modestatus", status)
   }
 
   const handelControlConfirm = () => {
-    let message = '';
-    let isChange = false;
-
-    if (lightStatus !== lightStatusRef.current) {
-      message += '조명 변경';
-      isChange = true;
-    }
-    if (awningStatus !== awningStatusRef.current) {
-      message += '어닝 변경';
-      isChange = true;
-    }
-    if (modeStatus !== modeStatusRef.current) {
-      message += '모드 변경';
-      isChange = true;
-    }
-
-    if (isChange) {
-      setAlertMessage(message);
-      setShowAlert(true);
-      setTimeout(() => { setShowAlert(false) }, 3000);
-    } else {
-      setAlertMessage("xxxx");
-      setShowAlert(true);
-      setTimeout(() => { setShowAlert(false) }, 1000);
-    }
-
-    setLightStatusRef(lightStatus);
-    setAwningStatusRef(awningStatus);
-    setModeStatusRef(modeStatus);
-
+    // window.confirm(`조명: ${lightStatus}, 어닝: ${awningStatus}, 모드: ${modeStatus}`);
+    alert(`조명: ${lightStatus}, 어닝: ${awningStatus}, 모드: ${modeStatus}`);
+    setShowControlModal(false);
   }
-  useEffect(() => {
-    console.log("현재 lightStatus:", lightStatus);
-    // console.log("이전 lightStatus:", lightStatusRef.current);
-  }, [lightStatus]);
-
-  // useEffect(() => {
-  //   lightStatusRef.current = lightStatus;
-  //   awningStatusRef.current = awningStatus;
-  //   modeStatusRef.current = modeStatus;
-  // }, [lightStatus, awningStatus, modeStatus])
 
   useEffect(() => {
     setLightStatus(markerData.lightStatus);
   }, [markerData]);
 
-  // const toggleLightStatus = () => {
-  //   setLightStatus(prevStatus => prevStatus === 'on' ? 'off' : 'on');
-  // };
+  const toggleLightStatus = () => {
+    setLightStatus(prevStatus => prevStatus === 'on' ? 'off' : 'on');
+  };
 
 
   return (
@@ -283,7 +236,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
               </span>
             </div>
             <div className='flex justify-center items-center h-2/3 border-t w-full space-y-1'>
-              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.awningCondition === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.awningCondition === 'normal' ? "정상" : "고장"}</div>
+              <div className='flex justify-center items-center h-full w-full rounded-b-3xl text-red-400 font-bold text-2xl'>{markerData.awningCondition === 'normal' ? "정상" : "고장"}</div>
             </div>
           </div>
         </div>
@@ -300,22 +253,35 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
                     <div className='flex space-x-3 justify-center items-center'>
                       <div>조명</div>
                       <div className='border-2 '>
-                        <button onClick={() => clickLightControl('on')} className={`border-r py-3 px-6 hover:bg-emerald-500 ${lightStatus === 'on' ? 'bg-emerald-500' : ''}`}>ON</button>
-                        <button onClick={() => clickLightControl('off')} className={`border-l py-3 px-6 hover:bg-red-500 ${lightStatus === 'off' ? 'bg-red-500' : ''}`}>OFF</button>
+                        {markerData.lightStatus === 'on' ? (
+                          <>
+                            {/* <button className={`border-r py-3 px-6 bg-emerald-500 hover:bg-emerald-500 ${isActive ? 'active' : ''}`} onClick={() => setLightStatus('off')}>ON</button>
+                            <button onClick={() => setLightStatus('on')} className='border-l py-3 px-6 hover:bg-red-500'>OFF</button> */}
+                            <button className="border-r py-3 px-6 bg-emerald-500 hover:bg-emerald-500" onClick={toggleLightStatus}>ON</button>
+                            <button className="border-l py-3 px-6 hover:bg-red-500" onClick={toggleLightStatus}>OFF</button>
+                          </>
+                        ) : (
+                          <>
+                            {/* <button className={`border-r py-3 px-6 hover:bg-emerald-500 ${isActive ? 'active' : ''}`} onClick={() => setLightStatus('off')}>ON</button>
+                            <button onClick={() => setLightStatus('on')} className='border-l py-3 px-6 bg-red-500 hover:bg-red-500'>OFF</button> */}
+                            <button className="border-r py-3 px-6 hover:bg-emerald-500" onClick={toggleLightStatus}>ON</button>
+                            <button className="border-l py-3 px-6 bg-red-500 hover:bg-red-500" onClick={toggleLightStatus}>OFF</button>
+                          </>
+                        )}
                       </div>
                     </div>
                     <div className='flex space-x-3 justify-center items-center'>
                       <div>어닝</div>
                       <div className='border-2 '>
-                        <button onClick={() => clickAwningControl('on')} className={`border-r py-3 px-6 hover:bg-emerald-500 ${awningStatus === 'on' ? 'bg-emerald-500' : ''}`}>ON</button>
-                        <button onClick={() => clickAwningControl('off')} className={`border-l py-3 px-6 hover:bg-red-500 ${awningStatus === 'off' ? 'bg-red-500' : ''}`}>OFF</button>
+                        <button className='border-r py-3 px-6 hover:bg-emerald-500'>ON</button>
+                        <button onClick={() => clickAwningControl('OFF')} className='border-l py-3 px-6 hover:bg-red-500'>OFF</button>
                       </div>
                     </div>
                     <div className='flex space-x-3 justify-center items-center'>
                       <div>모드</div>
                       <div className='border-2 '>
-                        <button onClick={() => clickModeStatus('auto')} className={`border-r py-3 px-6 hover:bg-emerald-500 ${modeStatus === 'auto' ? 'bg-emerald-500' : ''}`}>자동</button>
-                        <button onClick={() => clickModeStatus('manual')} className={`border-l py-3 px-6 hover:bg-blue-500 ${modeStatus === 'manual' ? 'bg-blue-500' : ''}`}>수동</button>
+                        <button onClick={() => clickLightControl('ON')} className='border-r py-3 px-6 hover:bg-emerald-500'>자동</button>
+                        <button className='border-l py-3 px-6 hover:bg-blue-500'>수동</button>
                       </div>
                     </div>
                   </div>
@@ -327,7 +293,6 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
               </div>
             </div>
           )}
-          <Alert show={showAlert} message={alertMessage} />
           <button className='bg-slate-300 shadow-md  w-full h-1/3 rounded-2xl flex items-center justify-center'>예약버튼</button>
         </div>
       </div>

@@ -338,7 +338,7 @@ const AddDevice = () => {
             <div className='flex pb-3 pt-2 pl-3'>
               <div className='pr-6'>관리구역</div>
               <select onChange={handleSelSi} ref={selSiRef} value={selectedSi} className='w-44 mr-3 border'>
-                <option value=''>시</option>
+                <option value='' className='text-gray-300'>시</option>
                 {si.map((items) => (
                   <option key={items}>{items}</option>
                 ))}

@@ -49,7 +49,7 @@ const gaugeOptions = {
 
   chart: {
       type: 'solidgauge',
-      height: '100%',
+      height: '110%',
       events: {
           render: renderIcons
       }
@@ -68,7 +68,6 @@ const gaugeOptions = {
   },
 
   tooltip: {
-      enabled: false,
       borderWidth: 0,
       backgroundColor: 'none',
       shadow: false,
@@ -107,12 +106,7 @@ const gaugeOptions = {
   plotOptions: {
       solidgauge: {
           dataLabels: {
-              enabled: true,
-              useHTML: true,
-              format: '<div style="text-align: center; padding: 5px;">' + 
-              '<span style="font-size: 12px; opacity: 0.8">{series.name}</span></div><br/>' +
-              '<span style="font-size: 24px; color: {point.color}; font-weight: bold">{point.y}h</span>',
-              y: -30 //라벨 위치
+              enabled: false
           },
           linecap: 'round',
           stickyTracking: false,
@@ -131,7 +125,7 @@ const gaugeOptions = {
       custom: {
           icon: 'commenting-o',
           iconColor: '#303030'
-      },
+      }
   }]
 };
 

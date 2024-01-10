@@ -22,12 +22,9 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   // const [modalStatus, setModalStatus] = useState('');
   // const [isActive, setIsActive] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [lightStatusRef, setLightStatusRef] = useState(lightStatus);
-  const [awningStatusRef, setAwningStatusRef] = useState(awningStatus);
-  const [modeStatusRef, setModeStatusRef] = useState(modeStatus);
-  // const awningStatusRef = useRef(markerData.statusAwningExpand);
-  // const modeStatusRef = useRef(markerData.statusOperationMode);
-  const [alertMessage, setAlertMessage] = useState('');
+  const lightStatusRef = useRef(markerData.lightStatus);
+  const awningStatusRef = useRef(markerData.statusAwningExpand);
+  const modalStatusRef = useRef(markerData.statusOperationMode);
 
 
 
@@ -144,47 +141,30 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   }
 
   const handelControlConfirm = () => {
-    let message = '';
-    let isChange = false;
-
+    // window.confirm(`조명: ${lightStatus}, 어닝: ${awningStatus}, 모드: ${modeStatus}`);
+    // alert(`조명: ${lightStatus}, 어닝: ${awningStatus}, 모드: ${modeStatus}`);
+    // setShowAlert(true);
     if (lightStatus !== lightStatusRef.current) {
-      message += '조명 변경';
-      isChange = true;
-    }
-    if (awningStatus !== awningStatusRef.current) {
-      message += '어닝 변경';
-      isChange = true;
-    }
-    if (modeStatus !== modeStatusRef.current) {
-      message += '모드 변경';
-      isChange = true;
-    }
-
-    if (isChange) {
-      setAlertMessage(message);
       setShowAlert(true);
-      setTimeout(() => { setShowAlert(false) }, 3000);
-    } else {
-      setAlertMessage("xxxx");
-      setShowAlert(true);
-      setTimeout(() => { setShowAlert(false) }, 1000);
+      setTimeout(() => {
+          setShowAlert(false);
+        }, 3000)
+      // setLightStatus(status);
     }
-
-    setLightStatusRef(lightStatus);
-    setAwningStatusRef(awningStatus);
-    setModeStatusRef(modeStatus);
-
+    lightStatusRef.current = lightStatus;
+    // setShowControlModal(false);
+    // setTimeout(() => {
+    //   setShowAlert(false);
+    // }, 3000)
   }
   useEffect(() => {
     console.log("현재 lightStatus:", lightStatus);
-    // console.log("이전 lightStatus:", lightStatusRef.current);
+    console.log("이전 lightStatus:", lightStatusRef.current);
   }, [lightStatus]);
 
-  // useEffect(() => {
-  //   lightStatusRef.current = lightStatus;
-  //   awningStatusRef.current = awningStatus;
-  //   modeStatusRef.current = modeStatus;
-  // }, [lightStatus, awningStatus, modeStatus])
+  useEffect(() => {
+    lightStatusRef.current = lightStatus;
+  }, [lightStatus])
 
   useEffect(() => {
     setLightStatus(markerData.lightStatus);
@@ -327,7 +307,9 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
               </div>
             </div>
           )}
-          <Alert show={showAlert} message={alertMessage} />
+          <Alert show={showAlert} message={`${lightStatus} ${awningStatus} ${modeStatus === 'auto' ? '자동' : '수동'}`} onClose={() => setShowAlert(false)} />
+          {/* {showControlModal && (
+          )} */}
           <button className='bg-slate-300 shadow-md  w-full h-1/3 rounded-2xl flex items-center justify-center'>예약버튼</button>
         </div>
       </div>

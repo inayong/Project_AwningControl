@@ -27,7 +27,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   const [modeStatusRef, setModeStatusRef] = useState(modeStatus);
   // const awningStatusRef = useRef(markerData.statusAwningExpand);
   // const modeStatusRef = useRef(markerData.statusOperationMode);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [message, setMessage] = useState('');
 
 
 
@@ -144,35 +144,26 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   }
 
   const handelControlConfirm = () => {
-    let message = '';
-    let isChange = false;
-
-    if (lightStatus !== lightStatusRef.current) {
-      message += '조명 변경';
-      isChange = true;
-    }
-    if (awningStatus !== awningStatusRef.current) {
-      message += '어닝 변경';
-      isChange = true;
-    }
-    if (modeStatus !== modeStatusRef.current) {
-      message += '모드 변경';
-      isChange = true;
-    }
-
-    if (isChange) {
-      setAlertMessage(message);
+    if (lightStatus !== lightStatusRef.current || awningStatus !== awningStatusRef.current || modeStatus !== modeStatusRef.current) {
       setShowAlert(true);
-      setTimeout(() => { setShowAlert(false) }, 3000);
+      setMessage("test")
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000)
+      
+      setLightStatusRef(lightStatus);
+      setAwningStatusRef(awningStatus);
+      setModeStatusRef(modeStatus);
     } else {
-      setAlertMessage("xxxx");
       setShowAlert(true);
+      setMessage("xx")
       setTimeout(() => { setShowAlert(false) }, 1000);
     }
+    // lightStatusRef.current = lightStatus;
+    // awningStatusRef.current = awningStatus;
+    // modeStatusRef.current = modeStatus;
 
-    setLightStatusRef(lightStatus);
-    setAwningStatusRef(awningStatus);
-    setModeStatusRef(modeStatus);
+    // setShowControlModal(false);
 
   }
   useEffect(() => {
@@ -327,7 +318,10 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
               </div>
             </div>
           )}
-          <Alert show={showAlert} message={alertMessage} />
+          {/* {showAlert && <Alert show={showAlert} message={`${lightStatus} ${awningStatus} ${modeStatus === 'auto' ? '자동' : '수동'}`} onClose={() => setShowAlert(false)} />} */}
+          {showAlert && <Alert show={showAlert} message={message} onClose={() => setShowAlert(false)} />}
+          {/* {showControlModal && (
+          )} */}
           <button className='bg-slate-300 shadow-md  w-full h-1/3 rounded-2xl flex items-center justify-center'>예약버튼</button>
         </div>
       </div>
