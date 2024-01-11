@@ -194,6 +194,17 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   //   setLightStatus(prevStatus => prevStatus === 'on' ? 'off' : 'on');
   // };
 
+  //페이지 이동시 닫기
+  // const location = useLocation();
+  // useEffect(() => {
+  //   // setIsDetailBar(false);
+  //   if (location.pathname === '/monitoring') {
+  //     setIsDetailBar(true);
+  //   } else {
+  //     setIsDetailBar(false);
+  //   }
+  // }, [location])
+
 
   return (
     <div className='flex bg-white h-72 items-center py-5 pl-5 px-8 space-x-8'>
@@ -271,7 +282,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
               </span>
             </div>
             <div className='flex flex-col justify-center items-center h-2/3 border-t w-full space-y-1'>
-              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.lightStatus === 'on' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.lightStatus.toUpperCase()}</div>
+              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.statusLighting === 'on' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.statusLighting.toUpperCase()}</div>
               <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.lightingCondition === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.lightingCondition === 'normal' ? "정상" : "고장"}</div>
             </div>
           </div>

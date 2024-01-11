@@ -180,8 +180,7 @@ const Notification = ({ mapData }) => {
         <div className={`overflow-auto fixed inset-y-0 right-0 w-96 bg-white shadow-md z-20 transform transition-transform duration-0 ${settingOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
           style={{ height: isDetailBar ? 'calc(100% - 18rem)' : '100%' }}>
           <div className="p-4">
-            <div className="text-lg font-semibold">Control</div>
-            <div>어닝 정보</div>
+            <div className="text-lg font-semibold p-5">어닝 리스트</div>
             <div className="space-y-4">
               {mapData.map((item, idx) => (
                 // <div key={idx} id={`marker-${item.awningId}`} className={`bg-white shadow-md rounded-lg ${currentMarkerData && currentMarkerData.awningId === item.awningId ? 'animate-blink-border' : ''}`}>

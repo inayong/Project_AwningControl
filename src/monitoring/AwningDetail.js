@@ -54,7 +54,7 @@ const AwningDetail = () => {
   };
 
   const startDate = toIsoDateString(awningDetailData['startDate']);
-  const finishDate = toIsoDateString(awningDetailData['finshDate']);
+  const finishDate = toIsoDateString(awningDetailData['finishDate']);
   const lastReportedDate = toIsoDateString(awningDetailData['lastReportedDate']);
 
   const openEdit = () => {
@@ -143,7 +143,7 @@ const AwningDetail = () => {
                 <TableBody leftLabel="온도" leftContent={awningDetailData['statusTemperature']} rightLabel="풍속" rightContent={awningDetailData['statusWindSpeed']} />
                 <TableBody leftLabel="배터리" leftContent={awningDetailData['statusBatteryCharge']} rightLabel="마지막 보고일" rightContent={lastReportedDate} />
                 <TableBody leftLabel="조명 상태" leftContent={awningDetailData['lightingCondition']} rightLabel="조명 메세지" rightContent={awningDetailData['lightingMessage']} />
-                <TableBody leftLabel="어닝 상태" leftContent={awningDetailData['awningCondition']} rightLabel="어닝 메세지" rightContent={awningDetailData['awningMessage']} />
+                <TableBody leftLabel="어닝 상태" leftContent={awningDetailData['motorCondition']} rightLabel="어닝 메세지" rightContent={awningDetailData['awningMessage']} />
                 <TableBody leftLabel="배터리 상태" leftContent={awningDetailData['batteryCondition']} rightLabel="배터리 메세지" rightContent={awningDetailData['batteryMessage']} />
               </div>
             </div>

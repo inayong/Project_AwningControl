@@ -186,7 +186,7 @@ const UpdateAwning = ({ data, onClose }) => {
 
 
     const installedDate = formData.startDate ? new Date(formData.startDate).toISOString().split('T')[0] : '';
-    const expiredDate = formData.finshDate ? new Date(formData.startDate).toISOString().split('T')[0] : '';
+    const expiredDate = formData.finishDate ? new Date(formData.finishDate).toISOString().split('T')[0] : '';
 
 
     const handleFormChange = (e) => {
@@ -249,7 +249,7 @@ const UpdateAwning = ({ data, onClose }) => {
         awningReopenTimeMinutes: "어닝 재열림 시간",
         controlId: "제어기ID",
         deviceId: "기구ID",
-        finshDate: "계약만료기간",
+        finishDate: "계약만료기간",
         startDate: "설치일자",
         installationLocationMemo: "설치장소",
         managementNumber: "관리번호",
@@ -342,7 +342,7 @@ const UpdateAwning = ({ data, onClose }) => {
                     </div>
                     <div className='flex flex-col w-1/2'>
                         <div className=''>계약만료기간</div>
-                        <input type='date' name='finshDate' value={expiredDate} onChange={handleFormChange} className='w-48'></input>
+                        <input type='date' name='finishDate' value={expiredDate} onChange={handleFormChange} className='w-48'></input>
                     </div>
                 </div>
             </div>

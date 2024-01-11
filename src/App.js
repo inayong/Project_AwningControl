@@ -18,30 +18,30 @@ import DetailBar from './sidebar/DetailBar';
 import DisplayTest from './sidebar/DisplayTest';
 import AwningDashBoard from './monitoring/AwningDashBoard';
 import ScrollButton from './component/ScrollButton';
-import mapData from './data/mapData.json';
+// import mapData from './data/mapData.json';
 
 function App() {
   const [isSidebar, setIsSidebar] = useRecoilState(SidebarState);
   const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
-  // const [mapData, setMapData] = useState([]);
+  const [mapData, setMapData] = useState([]);
 
   useEffect(() => {
-    // const getMapData = () => {
-    //   fetch("http://10.125.121.206:8080/user/map", {
-    //         method: "POST",
-    //         headers: {
-    //             "Authorization": localStorage.getItem("token")
-    //         }
-    //     })
-    //         .then(resp => resp.json())
-    //         .then(data => {
-    //             setMapData(data);
-    //             console.log("map", data)
-    //         })
-    //         .catch(err => console.error(err))
-    // }
+    const getMapData = () => {
+      fetch("http://10.125.121.206:8080/user/map", {
+            method: "POST",
+            headers: {
+                "Authorization": localStorage.getItem("token")
+            }
+        })
+            .then(resp => resp.json())
+            .then(data => {
+                setMapData(data);
+                console.log("map", data)
+            })
+            .catch(err => console.error(err))
+    }
     
-    // getMapData();
+    getMapData();
 
   }, []);
   

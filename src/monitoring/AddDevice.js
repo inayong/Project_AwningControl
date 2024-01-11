@@ -223,7 +223,7 @@ const AddDevice = () => {
         'windSpeedThreshold': windThreshold.current.value,
         'awningReopenTimeMinutes': awningReopen.current.value,
         'startDate': installDate,
-        'finshDate': expireDate,
+        'finishDate': expireDate,
       })
     })
       .then((resp) => {
