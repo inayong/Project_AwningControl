@@ -154,6 +154,7 @@ const AddDevice = () => {
   const [selectedSi, setSelectedSi] = useState('');
   const [selectedGu, setSelectedGu] = useState('');
   const [selectedDong, setSelectedDong] = useState('');
+  const [selCompany, setSelCompany] = useState('');
 
   const handleSelSi = () => {
     // console.log("selref", selSiRef.current.value)
@@ -201,6 +202,7 @@ const AddDevice = () => {
   const openRight = useRef();
   const windThreshold = useRef();
   const awningReopen = useRef();
+  const company = useRef();
 
   const fetchAddDevice = () => {
     fetch("http://10.125.121.206:8080/admin/device/add", {
@@ -224,6 +226,7 @@ const AddDevice = () => {
         'awningReopenTimeMinutes': awningReopen.current.value,
         'startDate': installDate,
         'finishDate': expireDate,
+        'company': company.current.value
       })
     })
       .then((resp) => {
@@ -255,6 +258,7 @@ const AddDevice = () => {
       { ref: awningReopen, name: "어닝 재열림 시간" },
       { value: installDate, name: "설치일자" },
       { value: expireDate, name: "계약만료기간" },
+      { ref: company, name: "회사 구분" },
     ];
 
     if (!displayLocation.lat || !displayLocation.lng) {
@@ -297,10 +301,11 @@ const AddDevice = () => {
     controlId.current.value = '';
     openLeft.current.value = '';
     openRight.current.value = '';
-    windThreshold.current.value = ''
-    awningReopen.current.value = ''
+    windThreshold.current.value = '';
+    awningReopen.current.value = '';
     setInstallDate('');
     setExpireDate('');
+    company.current.value = '';
   }
 
   return (
@@ -317,9 +322,7 @@ const AddDevice = () => {
             <div className='flex flex-col pt-5 pb-3 pl-3'>
               <div className='flex'>
                 <div className='flex w-1/2'>
-                  {/* <div className='pr-3'>주소</div> */}
                   <input type='text' value={inputAddress} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder='주소 입력' className='border' />
-                  {/* <button onClick={handleSearch}><CiSearch /></button> */}
                 </div>
                 <div className='flex'>
                   <div className='pr-3'>위·경도</div>
@@ -336,6 +339,7 @@ const AddDevice = () => {
               </div>
             </div>
             <div className='flex pb-3 pt-2 pl-3'>
+              <div className='flex'>
               <div className='pr-6'>관리구역</div>
               <select onChange={handleSelSi} ref={selSiRef} value={selectedSi} className='w-44 mr-3 border'>
                 <option value='' className='text-gray-300'>시</option>
@@ -349,6 +353,15 @@ const AddDevice = () => {
                   <option key={items}>{items}</option>
                 ))}
               </select>
+              </div>
+              <div className='flex'>
+                <div className='pl-9 pr-3'>회사 구분</div>
+                <select ref={company} className='border w-28'>
+                  <option value=''>회사선택</option>
+                  <option value='1'>1</option>
+                  <option value='2'>2</option>
+                </select>
+              </div>
             </div>
             <FormSection labelLeft="관리번호" leftRef={manageNum} labelRight="설치장소" rightRef={locationMemo} />
             <FormSection labelLeft="기구ID" leftRef={deviceId} labelRight="제어기ID" rightRef={controlId} />

@@ -10,7 +10,7 @@ import { SigunguData } from '../data/SigunguData';
 
 const TableHead = ({ title, className, rowSpan, colSpan }) => {
   return (
-    <th scope="col" className={`px-6 py-2 ${className || ''}`} rowSpan={rowSpan || undefined} colSpan={colSpan || undefined}>
+    <th scope="col" className={`px-3 py-1 ${className || ''}`} rowSpan={rowSpan || undefined} colSpan={colSpan || undefined}>
       {title}
     </th>
   )
@@ -25,7 +25,7 @@ const TableBody = ({ content, className, scope, deviceId }) => {
   }
 
   return (
-    <td className={`px-6 py-2 ${className || ''} ${statusColor}`} scope={scope || undefined} >
+    <td className={`px-3 py-2 ${className || ''} ${statusColor}`} scope={scope || undefined} >
       {content === "상세" ? (
         <Link to={`detail/${deviceId}`}>
           <button className='border p-1 rounded-full text-xs text-black shadow-sm'>상세</button>
@@ -485,10 +485,10 @@ const AwningState = () => {
           {checkboxCount > 0 && (<button onClick={checkboxResetButton} className='ml-6 text-base items-center'><GrPowerReset /></button>)}
         </div>
       </div>
-      <div className='flex justify-center h-1/2'>
-        <div className='bg-white w-5/6 h-full flex flex-col shadow-md sm:rounded-lg'>
-          <div className="flex-grow overflow-x-auto max-h-full hide-scrollbar rounded-t-lg">
-            <table className="min-w-full text-center text-gray-500 whitespace-nowrap">
+      <div className='flex w-full justify-center h-1/2'>
+        <div className='bg-white w-5/6 h-full flex flex-col shadow-md sm:rounded-lg '>
+          <div className="flex-grow w-full overflow-x-auto max-h-full rounded-t-lg hide-scrollbar">
+            <table className=" text-center w-full text-gray-500 whitespace-nowrap">
               <thead className="text-sm text-gray-700 bg-gray-50">
                 <tr>
                   <th scope="col" className="p-4" rowSpan="2">
@@ -504,7 +504,7 @@ const AwningState = () => {
                   <TableHead title="어닝" rowSpan={2} />
                   <TableHead title="모드" rowSpan={2} />
                   <TableHead title="배터리" rowSpan={2} />
-                  <TableHead title="관리구역" rowSpan={2} />
+                  <TableHead title="관리구역" rowSpan={2}/>
                   <TableHead title="설치장소 메모" rowSpan={2} />
                   <TableHead title="열림시간(좌/우)" rowSpan={2} />
                   <TableHead title="풍속임계값" rowSpan={2} />
@@ -533,7 +533,7 @@ const AwningState = () => {
                     <TableBody content={items.statusConnected === 'on' ? '연결' : '끊김'} />
                     <TableBody content={items.statusLighting === 'on' ? '켜짐' : '꺼짐'} />
                     <TableBody content={items.statusAwningExpand === 'on' ? '열림' : '닫힘'} />
-                    <TableBody content={items.statusOperationMode} />
+                    <TableBody content={items.statusOperationMode === 'auto' ? '자동' : '수동'} />
                     <TableBody content={items.statusBatteryCharge} />
                     <TableBody content={`${items.managementArea1} ${items.managementArea2}`} />
                     <TableBody content={items.installationLocationMemo} />

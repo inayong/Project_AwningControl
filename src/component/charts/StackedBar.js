@@ -24,12 +24,12 @@ const StackedBar = () => {
             text: '고장 집계'
         },
         xAxis: {
-            categories: ['2020/21', '2019/20', '2018/19', '2017/18', '2016/17']
+            categories: ['2024', '2023', '2022', '2021', '2020']
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'Goals'
+                text: '고장'
             }
         },
         legend: {
@@ -44,13 +44,13 @@ const StackedBar = () => {
             }
         },
         series: [{
-            name: 'Cristiano Ronaldo',
+            name: '모터',
             data: [4, 4, 6, 15, 12]
         }, {
-            name: 'Lionel Messi',
+            name: '조명',
             data: [5, 3, 12, 6, 11]
         }, {
-            name: 'Robert Lewandowski',
+            name: '배터리',
             data: [5, 15, 8, 5, 8]
         }]
     };

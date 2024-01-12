@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MdOutlineNotificationsActive, MdDisplaySettings, MdMoreVert, MdExpandLess } from "react-icons/md";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { NotiMapState } from './NotiMapState';
 import { SidebarState } from './SidebarState';
@@ -29,6 +29,7 @@ const Notification = ({ mapData }) => {
   const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
   // const [topButton, setTopButton] = useState(false);
   const [detailMapData, setDetailMapData] = useRecoilState(DetailMapDataState);
+  const [listDetailBtn, setListDetailBtn] = useState(false);
 
 
   const location = useLocation();
@@ -128,7 +129,7 @@ const Notification = ({ mapData }) => {
     setCurrentMarkerData(item);
     setDetailMapData(item);
     setIsDetailBar(true);
-    // console.log("list-item", item)
+    console.log("list-item", item)
 
   }
 
@@ -138,6 +139,13 @@ const Notification = ({ mapData }) => {
 
   // console.log("detailMapData.awningId", detailMapData.awningId)
   // console.log("mapdata", mapData.map(item => item.awningId))
+
+  const navigate = useNavigate();
+  const clickListToDetail = (deviceId) => {
+    navigate(`/awningstate/detail/${deviceId}`)
+    // navigate(`/awningstate/detail/${currentMarkerData.deviceId}`)
+    // setListDetailBtn(!listDetailBtn);
+  }
   
 
   return (
@@ -160,7 +168,7 @@ const Notification = ({ mapData }) => {
         </div>
       )}
       <button onClick={toggleNoti}
-        className={`absolute top-0 mt-4 transition-transform ease-in-out ${notiOpen ? 'bg-black' : 'bg-white'} ${notiOpen || settingOpen ? 'right-96' : 'right-4 rounded-full'} p-3`}>
+        className={`fixed top-0 mt-4 transition-transform ease-in-out ${notiOpen ? 'bg-black' : 'bg-white'} ${notiOpen || settingOpen ? 'right-96' : 'right-4 rounded-full'} p-3`}>
         <MdOutlineNotificationsActive size={30} className='fill-blue-600' />
       </button>
       {isMonitoringPage && markerOpen && (
@@ -183,8 +191,6 @@ const Notification = ({ mapData }) => {
             <div className="text-lg font-semibold p-5">어닝 리스트</div>
             <div className="space-y-4">
               {mapData.map((item, idx) => (
-                // <div key={idx} id={`marker-${item.awningId}`} className={`bg-white shadow-md rounded-lg ${currentMarkerData && currentMarkerData.awningId === item.awningId ? 'animate-blink-border' : ''}`}>
-                // <div key={idx} onClick={() => listClick(item)} id={`marker-${item.awningId}`} className={`bg-white shadow-md rounded-lg cursor-pointer ${currentMarkerData && currentMarkerData.awningId === item.awningId ? 'border-2 border-blue-400' : ''}`}>
                 <div key={idx} onClick={() => listClick(item)} id={`marker-${item.awningId}`} className={`bg-white shadow-md rounded-lg cursor-pointer ${detailMapData && detailMapData.awningId === item.awningId ? 'border-2 border-blue-400' : ''}`}>
                   <div className="flex items-center justify-between p-4 border-b">
                     <span className={`px-3 py-1 text-white text-sm font-bold rounded-full ${item.statusConnected === 'off' ? 'bg-red-500' : 'bg-green-500'}`}>
@@ -201,19 +207,22 @@ const Notification = ({ mapData }) => {
                         )}
                       </div>
                     </div>
-                    <button className="text-lg "><MdMoreVert /></button>
+                    <button onClick={() => clickListToDetail(item.deviceId)} className="text-lg "><MdMoreVert /></button>
+                    {/* {listDetailBtn && (
+                      <div className='z-50'>이동</div>
+                    )} */}
                   </div>
                   <div className="p-4 grid grid-cols-2 md:grid-cols-5 gap-4">
                     <div className="text-center">
-                      <div className="text-sm font-bold">통신</div>
-                      <div className={`${item.statusConnected === 'off' ? 'text-red-500' : 'text-green-500'} font-bold`}>
-                        {item.statusConnected.toUpperCase()}
+                    <div className="text-sm font-bold">어닝</div>
+                      <div className={`${item.statusAwningExpand === 'off' ? 'text-red-500' : 'text-green-500'} font-bold`}>
+                        {item.statusAwningExpand.toUpperCase()}
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-sm font-bold">어닝</div>
-                      <div className={`${item.statusAwningExpand === 'off' ? 'text-red-500' : 'text-green-500'} font-bold`}>
-                        {item.statusAwningExpand.toUpperCase()}
+                    <div className="text-sm font-bold">조명</div>
+                      <div className={`${item.statusLighting === 'off' ? 'text-red-500' : 'text-green-500'} font-bold`}>
+                        {item.statusLighting.toUpperCase()}
                       </div>
                     </div>
                     <div className="text-center">
@@ -232,13 +241,6 @@ const Notification = ({ mapData }) => {
                 </div>
               ))}
             </div>
-              {/* {topButton && (
-              <div className='fixed bottom-10 right-96 cursor-pointer z-50'>
-                <button onClick={scrollToTop} className="bg-blue-500 text-white p-2 rounded-full">
-                  <MdExpandLess size={30} />
-                </button>
-              </div>
-            )} */}
           </div>
         </div>
       )}

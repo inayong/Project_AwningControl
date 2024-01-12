@@ -1,72 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
+import GaugeOptions from '../component/charts/GaugeOptions';
+import StackedBar from '../component/charts/StackedBar';
+import LineLabels from '../component/charts/LineLabels';
 
-// const data = [
-//   { name : 'A', y: 10},
-//   { name : 'B', y: 50}
-// ]
 
-const options = {
-  chart: {
-    type: 'pie',
-    backgroundColor: '#cbd5e1',
-    plotBackgroundColor: '#9ca3af',
-    plotBorderWidth: 1,
-    plotBorderColor: 'gray',
-    plotShadow: true
-  },
-  title: {
-    text: '정상 가동 시간'
-  },
-  credits: {
-    enabled: false
-  },
-  series: [{
-    name: '가동 시간',
-    data: [
-      { name: '가동', y: 60, color: Highcharts.getOptions().colors[4] }, // 강조하고 싶은 부분
-      { name: '비가동', y: 40 }
-    ],
-    innerSize: '80%',
-    size: '50%',
-  }],
-  colors: ['#FCE700', '#f6e1ea'],
-  };
 
+{/* <div className='bg-yellow-200'>일자별 차양막 가동 대수와 가동시간</div> */ }
 const AwningDashBoard = () => {
   const [dashBoardData, setDashBoardData] = useState([]);
 
-  // useEffect(() => {
-  //     fetch("http://10.125.121.206:8080/user/device/view", {
-  //         method: "GET",
-  //         headers: {
-  //             'Authorization': localStorage.getItem("token"),
-  //         }
-  //     })
-  //     .then(resp => resp.json())
-  //     .then((data) => {
-  //         setDashBoardData(data);
-  //         console.log("dashboard", data)
-  //     })
-  //     .catch(err => console.error(err))
-  // }, [])
-
   return (
     <div>
-      <div>AwningDashBoard</div>
-      <div>정상동작 가동 시간 {'->'} 파이차트같은?</div>
-      <div>고장 집계 그래프/차트 {'->'} 막대그래프</div>
-      <div>요약 정보(총 설치대수, 정상 동작 대수, 차양막 가동대수) {'->'} 그냥 사각형에 원</div>
-      <div>일자별 차양막 가동대수와 가동시간 그래프 {'->'} 선 그래프 2개</div>
-      <div>지도로 합계?같은거 나타낼거 있으면 해보기</div>
-      <div className='w-1/3 border-2'>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={options}
-      />
+      <div className='h-screen bg-slate-300'>
+        <div className='bg-white flex justify-center items-center p-4'>DashBoard</div>
+        <div className='bg-amber-100 w-full h-full flex p-5'>
+          <div className='w-2/3'>
+            <div className='bg-green-200 h-1/2'>
+              <div className='h-full'><StackedBar /></div>
+            </div>
+            <div className='bg-violet-200 h-1/2'>
+              <div className='h-full'><LineLabels /></div>
+            </div>
+          </div>
+          {/* <div className='bg-blue-200 w-1/3 flex flex-col justify-center items-center'> */}
+          <div className='bg-blue-200 w-1/3 flex flex-col'>
+            <div className=''><GaugeOptions /></div>
+            <div className='p-5 space-y-5 w-1/2 mx-auto'>
+              <div className="bg-gray-300 h-32 flex items-center px-5 space-x-2">
+                <div className="w-24 h-24 border-2 border-white rounded-full flex justify-center items-center">123</div>
+                <div className="text-sm ">총 설치 대수</div>
+              </div>
+              <div className="bg-gray-300 h-32 flex items-center px-5 space-x-2">
+                <div className="w-24 h-24 border-2 border-white rounded-full flex justify-center items-center">123</div>
+                <div className="text-sm ">정상 동작 대수</div>
+              </div>
+              <div className="bg-gray-300 h-32 flex items-center px-5 space-x-2">
+                <div className="w-24 h-24 border-2 border-white rounded-full flex justify-center items-center">123</div>
+                <div className="text-sm ">차양막 가동 대수</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* <div className='bg-violet-100 w-full h-full p-5'>
+          <div>요약</div>
+          <div className='flex space-x-10'>
+            <div className="bg-gray-300 w-1/5 h-32 flex items-center px-5 space-x-2">
+              <div className="w-24 h-24 border-2 border-white rounded-full flex justify-center items-center">123</div>
+              <div className="text-sm ">총 설치 대수</div>
+            </div>
+            <div className="bg-gray-300 w-1/5 h-32 flex items-center px-5 space-x-2">
+              <div className="w-24 h-24 border-2 border-white rounded-full flex justify-center items-center">123</div>
+              <div className="text-sm ">정상 동작 대수</div>
+            </div>
+            <div className="bg-gray-300 w-1/5 h-32 flex items-center px-5 space-x-2">
+              <div className="w-24 h-24 border-2 border-white rounded-full flex justify-center items-center">123</div>
+              <div className="text-sm ">차양막 가동 대수</div>
+            </div>
+          </div>
+        </div> */}
       </div>
     </div>
+
   )
 }
 

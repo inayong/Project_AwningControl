@@ -16,7 +16,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   const setIsDetailBar = useSetRecoilState(DetailBarState);
   const [stateDetailData, setStateDetailData] = useState([]);
 
-  const [lightStatus, setLightStatus] = useState(markerData.lightStatus);
+  const [lightStatus, setLightStatus] = useState(markerData.statusLighting);
   const [awningStatus, setAwningStatus] = useState(markerData.statusAwningExpand);
   const [modeStatus, setModeStatus] = useState(markerData.statusOperationMode);
   // const [modalStatus, setModalStatus] = useState('');
@@ -187,7 +187,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
   // }, [lightStatus, awningStatus, modeStatus])
 
   useEffect(() => {
-    setLightStatus(markerData.lightStatus);
+    setLightStatus(markerData.statusLighting);
   }, [markerData]);
 
   // const toggleLightStatus = () => {
@@ -294,7 +294,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
               </span>
             </div>
             <div className='flex justify-center items-center h-2/3 border-t w-full space-y-1'>
-              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.awningCondition === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.awningCondition === 'normal' ? "정상" : "고장"}</div>
+              <div className={`flex justify-center items-center h-full w-full rounded-b-3xl ${markerData.motorCondition === 'normal' ? 'text-emerald-400' : 'text-red-400'} font-bold text-2xl`}>{markerData.motorCondition === 'normal' ? "정상" : "고장"}</div>
             </div>
           </div>
         </div>

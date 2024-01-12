@@ -24,6 +24,7 @@ function App() {
   const [isSidebar, setIsSidebar] = useRecoilState(SidebarState);
   const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
   const [mapData, setMapData] = useState([]);
+  const [close, setClose] = useState(true);
 
   useEffect(() => {
     const getMapData = () => {
@@ -50,10 +51,15 @@ function App() {
   return (
     <div className='flex'>
       <BrowserRouter>
-        <div className=''>
+        {/* <div className=''>
           {isSidebar && <Sidebar />}
-        </div>
-        <div className='w-full'>
+        </div> */}
+        {isSidebar && (
+          <div className={`fixed top-0 left-0 ${close ? 'sm:w-16' : 'sm:w-60'} h-full bg-gray-800`}>
+            <Sidebar close={close} setClose={setClose} />
+          </div>
+        )}
+        <div className={`${close ? 'sm:ml-16' : 'sm:ml-60'} w-full`}>
           <div>
             <Routes>
               <Route path='/login' element={<LoginPage />} />
@@ -69,7 +75,6 @@ function App() {
         </div>
         <div>
           {isSidebar && <Notification mapData={mapData} />}
-          {/* <ScrollButton /> */}
         </div>
       </BrowserRouter>
     </div>
