@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { NotiMapState } from './NotiMapState';
-import { DetailBarState } from './DetailBarState';
+import { NotiMapState } from '../component/atoms/NotiMapState';
+import { DetailBarState } from '../component/atoms/DetailBarState';
 import { useLocation } from 'react-router-dom';
 import NaverMap from '../component/NaverMap';
 import { FaRegLightbulb, FaWhmcs } from "react-icons/fa";
@@ -61,26 +61,42 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
       weatherIconUrl = 'https://i.ibb.co/bQjr55h/sun.png'; // 맑음 아이콘
     }
 
+    const windspeed = markerData.statusWindSpeed;
+    // let windIconUrl;
+
     const infoWindow = new naver.maps.InfoWindow({
       content: `
-    <div style='
-      text-align: center;
-      border-radius: 5px;
-      overflow: hidden; /* rounded corners와 함께 사용하면 내부 요소가 밖으로 나오지 않음 */
-      background-color: white; /* 배경색 지정 */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-      padding: 8px; /* 내용과 테두리 사이의 여백 */
-    '>
-      <img src='${weatherIconUrl}' width="40" height="40" alt='날씨 아이콘' />
-      <br>
-      ${temperature}°C
+      <div style='display: flex; background-color: transparent;'>
+        <div style='
+          text-align: center;
+          border-radius: 5px;
+          overflow: hidden; /* rounded corners와 함께 사용하면 내부 요소가 밖으로 나오지 않음 */
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+          padding: 8px; /* 내용과 테두리 사이의 여백 */
+          margin-right: 12px;
+        '>
+          <img src='${weatherIconUrl}' width="40" height="40" alt='날씨 아이콘' />
+          <br>
+          ${temperature}°C
+        </div>
+        <div style='
+          text-align: center;
+          border-radius: 5px;
+          overflow: hidden; /* rounded corners와 함께 사용하면 내부 요소가 밖으로 나오지 않음 */
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+          padding: 8px; /* 내용과 테두리 사이의 여백 */
+        '>
+          <img src='https://i.ibb.co/Jnb44GQ/wind.png' width="40" height="40" alt='풍속' />
+          <br>
+          ${windspeed}
+        </div>
     </div>
   `,
       borderWidth: 0,
       position: position,
       anchorSkew: true,
       anchorSize: new naver.maps.Size(0, 0),
-      pixelOffset: new naver.maps.Point(80, 50)
+      pixelOffset: new naver.maps.Point(100, 70)
     });
 
     infoWindow.open(map, marker);
@@ -91,31 +107,6 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
 
   }, [markerData])
 
-
-
-
-  // const clickCancel = () => {
-  //   setIsDetailBar(false);
-  // }
-
-  //   if (!markerData) {
-  //     return null; 
-  // }
-
-  // useEffect(() => {
-  //   fetch("http://10.125.121.206:8080/user/device/view", {
-  //     method: "GET",
-  //     headers: {
-  //       'Authorization': localStorage.getItem("token"),
-  //     }
-  //   })
-  //     .then(resp => resp.json())
-  //     .then(data => {
-  //       setStateDetailData(data);
-  //       console.log("StateDetailData", data)
-  //     })
-  //     .catch(err => console.error(err))
-  //   }, [])
 
 
   //button
@@ -180,30 +171,13 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
     // console.log("이전 lightStatus:", lightStatusRef.current);
   }, [lightStatus]);
 
-  // useEffect(() => {
-  //   lightStatusRef.current = lightStatus;
-  //   awningStatusRef.current = awningStatus;
-  //   modeStatusRef.current = modeStatus;
-  // }, [lightStatus, awningStatus, modeStatus])
+
 
   useEffect(() => {
     setLightStatus(markerData.statusLighting);
   }, [markerData]);
 
-  // const toggleLightStatus = () => {
-  //   setLightStatus(prevStatus => prevStatus === 'on' ? 'off' : 'on');
-  // };
 
-  //페이지 이동시 닫기
-  // const location = useLocation();
-  // useEffect(() => {
-  //   // setIsDetailBar(false);
-  //   if (location.pathname === '/monitoring') {
-  //     setIsDetailBar(true);
-  //   } else {
-  //     setIsDetailBar(false);
-  //   }
-  // }, [location])
 
 
   return (
@@ -222,7 +196,13 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal }) => {
             </div>
             <div className='w-32 flex flex-col justify-center items-center space-y-2'>
               <div className='bg-white px-3 shadow-md'>관리번호</div>
-              <div className=''>{markerData.managementNumber}</div>
+              {markerData.managementNumber.length > 8 ? (
+                <div className="text-sm whitespace-nowrap">
+                  {markerData.managementNumber}
+                </div>
+              ) : (
+                <div className=''>{markerData.managementNumber}</div>
+              )}
             </div>
           </div>
           <div className=' h-1/2 flex flex-col p-2 space-y-12 pt-5'>

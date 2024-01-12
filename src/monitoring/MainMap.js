@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FaCircle } from "react-icons/fa";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { NotiMapState } from '../sidebar/NotiMapState';
-import { SidebarState } from '../sidebar/SidebarState';
+import { NotiMapState } from '../component/atoms/NotiMapState';
+import { SidebarState } from '../component/atoms/SidebarState';
 import DetailBar from '../sidebar/DetailBar';
-import { DetailBarState } from '../sidebar/DetailBarState';
+import { DetailBarState } from '../component/atoms/DetailBarState';
 import { BiChevronsDown } from "react-icons/bi";
+import { CiCircleChevDown } from "react-icons/ci";
 import '../css/detailbar.css';
-import { DetailMapDataState } from '../sidebar/DetailMapDataState ';
+import { DetailMapDataState } from '../component/atoms/DetailMapDataState ';
+import { useLocation } from 'react-router-dom';
+import { FilterMarkerState } from '../component/atoms/FilterMarkerState';
 
 const MainMap = ({ mapData }) => {
     const { naver } = window;
@@ -20,6 +23,8 @@ const MainMap = ({ mapData }) => {
     const [mapDataDetail, setMapDataDetail] = useRecoilState(DetailMapDataState);
 
     const [showControlModal, setShowControlModal] = useState(false);
+
+    const markerFilterStatus = useRecoilValue(FilterMarkerState);
 
     // const getData = () => {
     //     // console.log("token", localStorage.getItem("token"))
@@ -60,7 +65,7 @@ const MainMap = ({ mapData }) => {
             mapData.forEach(item => {
                 const position = new naver.maps.LatLng(item.latitude, item.longitude);
 
-
+                //어닝장비 아이콘 표시/정상이면 녹색, 고장이면 노란색, 통신두절이면 적색
                 let markerUrl;
                 if (item.statusConnected === 'off') {
                     markerUrl = 'https://i.ibb.co/5MqN3j7/location-pin-red-64.png';
@@ -100,6 +105,11 @@ const MainMap = ({ mapData }) => {
     //     setShowControlModal(true);
     // }
 
+    const location = useLocation();
+
+    useEffect(() => {
+        setIsDetailBar(false);
+    }, [location])
 
 
 
@@ -109,7 +119,7 @@ const MainMap = ({ mapData }) => {
             {isDetailBar ?
                 <div className='flex justify-center items-center w-10 rounded-full'>
                     <button className='absolute w-10 h-10 rounded-full bg-transparent text-xl focus:outline-none'>
-                        <BiChevronsDown onClick={() => setIsDetailBar(false)} size={40} className='fill-gray-600' />
+                        <CiCircleChevDown onClick={() => setIsDetailBar(false)} size={40} className='fill-gray-600' />
                     </button>
                 </div> : ''}
             {/* {isDetailBar && mapDataDetail && detailMapData && ( */}

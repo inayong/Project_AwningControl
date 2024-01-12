@@ -31,7 +31,7 @@ const Notification = ({ mapData }) => {
   // const [topButton, setTopButton] = useState(false);
   const [detailMapData, setDetailMapData] = useRecoilState(DetailMapDataState);
   // const [listDetailBtn, setListDetailBtn] = useState(false);
-  // const [markerFilterStatus, setMarkerFilterStatus] = useState(FilterMarkerState);
+  const [markerFilterStatus, setMarkerFilterStatus] = useState(FilterMarkerState);
 
 
   const location = useLocation();
@@ -148,15 +148,15 @@ const Notification = ({ mapData }) => {
       {isMonitoringPage && (
         <div className={`absolute right-10 z-10 w-24 h-24 bg-white rounded-lg flex flex-col justify-center items-center ${notiOpen || settingOpen ? 'right-[416px]' : 'right-16'}`}
           style={{ bottom: isDetailBar ? 'calc(18rem + 40px)' : '40px' }}>
-          <div className='flex items-center justify-center w-full'>
+          <div className='flex items-center justify-center w-full cursor-pointer' onClick={() => markerFilterClick('open')}>
             <FaCircle size={15} className='fill-emerald-500' />
             <div className='text-sm pl-5'>열림</div>
           </div>
-          <div className='flex items-center justify-center w-full py-2'>
+          <div className='flex items-center justify-center w-full py-2 cursor-pointer' onClick={() => markerFilterClick('closed')}>
             <FaCircle size={15} className='fill-blue-500' />
             <div className='text-sm pl-5'>닫힘</div>
           </div>
-          <div className='flex items-center justify-center w-full'>
+          <div className='flex items-center justify-center w-full cursor-pointer' onClick={() => markerFilterClick('disconn')}>
             <FaCircle size={15} className='fill-red-500' />
             <div className='text-sm pl-5'>끊김</div>
           </div>

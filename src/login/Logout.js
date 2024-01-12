@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { LogAtom } from './LogAtom';
+import { LogAtom } from '../component/atoms/LogAtom';
 import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {

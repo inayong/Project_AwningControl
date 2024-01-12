@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import MainMap from './monitoring/MainMap';
 import LoginPage from './login/LoginPage';
@@ -6,14 +6,14 @@ import Sidebar from './sidebar/Sidebar';
 import AddData from './monitoring/AddDataModal';
 import { useEffect, useState } from 'react';
 import { RecoilRoot, useRecoilState } from 'recoil';
-import { SidebarState } from './sidebar/SidebarState';
+import { SidebarState } from './component/atoms/SidebarState';
 import AwningState from './monitoring/AwningState';
 import EventList from './monitoring/EventList';
 import AddDevice from './monitoring/AddDevice';
 import Notification from './sidebar/NotificationBar';
-import { NotiMapState } from './sidebar/NotiMapState';
+import { NotiMapState } from './component/atoms/NotiMapState';
 import AwningDetail from './monitoring/AwningDetail';
-import { DetailBarState } from './sidebar/DetailBarState';
+import { DetailBarState } from './component/atoms/DetailBarState';
 import DetailBar from './sidebar/DetailBar';
 import DisplayTest from './sidebar/DisplayTest';
 import AwningDashBoard from './monitoring/AwningDashBoard';
@@ -29,37 +29,38 @@ function App() {
   useEffect(() => {
     const getMapData = () => {
       fetch("http://10.125.121.206:8080/user/map", {
-            method: "POST",
-            headers: {
-                "Authorization": localStorage.getItem("token")
-            }
+        method: "POST",
+        headers: {
+          "Authorization": localStorage.getItem("token")
+        }
+      })
+        .then(resp => resp.json())
+        .then(data => {
+          setMapData(data);
+          console.log("map", data)
         })
-            .then(resp => resp.json())
-            .then(data => {
-                setMapData(data);
-                console.log("map", data)
-            })
-            .catch(err => console.error(err))
+        .catch(err => console.error(err))
     }
-    
+
     getMapData();
 
   }, []);
-  
 
+  // const location = useLocation();
+  // useEffect(() => {
+  //   setIsSidebar(location.pathname !== '/login');
+  // }, [location, setIsDetailBar])
 
   return (
     <div className='flex'>
       <BrowserRouter>
-        {/* <div className=''>
-          {isSidebar && <Sidebar />}
-        </div> */}
         {isSidebar && (
           <div className={`fixed top-0 left-0 ${close ? 'sm:w-16' : 'sm:w-60'} h-full bg-gray-800`}>
             <Sidebar close={close} setClose={setClose} />
           </div>
         )}
-        <div className={`${close ? 'sm:ml-16' : 'sm:ml-60'} w-full`}>
+        {/* <div className={`${close ? 'sm:ml-16' : 'sm:ml-60'} w-full`}> */}
+        <div className={`${isSidebar ? (close ? 'sm:ml-16' : 'sm:ml-60') : 'sm:ml-0'} w-full`}>
           <div>
             <Routes>
               <Route path='/login' element={<LoginPage />} />

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { DetailBarState } from './DetailBarState';
+import { DetailBarState } from '../component/atoms/DetailBarState';
 import DetailBar from './DetailBar';
 import mapData from '../data/mapData.json';
 

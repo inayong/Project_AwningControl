@@ -4,7 +4,7 @@ import AddData from '../monitoring/AddDataModal';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import SideMenu from '../component/SideMenu';
 import { useRecoilState } from 'recoil';
-import { LogAtom } from '../login/LogAtom';
+import { LogAtom } from '../component/atoms/LogAtom';
 import { handleLogout } from '../login/Logout';
 
 const Sidebarcomm = ({ close, setClose }) => {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { SidebarState } from '../sidebar/SidebarState';
+import { SidebarState } from '../component/atoms/SidebarState';
 import { Link, useNavigate } from 'react-router-dom';
-import { LogAtom } from './LogAtom';
+import { LogAtom } from '../component/atoms/LogAtom';
 import { FaRegEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
 
@@ -18,7 +18,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         setSidebar(false);
-        return () => setSidebar(true);
+        return () => setSidebar(true); //다른페이지 이동시 다시 표시
     }, []);
 
     const fetchLogin = (e) => {
@@ -64,7 +64,7 @@ const LoginPage = () => {
     return (
         <div>
             <div className='flex h-screen'>
-                <div className='bg-slate-400 sm:w-1/2'>
+                <div className='bg-slate-400 sm:w-1/2 w-1/2'>
                     <img src="https://i.ibb.co/0n3DTXJ/loginawningimage.jpg" alt="loginawningimage" className='h-full w-full' />
                 </div>
                 <div className='sm:w-2/3 flex flex-col justify-center'>
