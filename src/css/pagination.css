@@ -2,7 +2,7 @@
     display: flex !important;
     justify-content: center;
     margin-top: 15px;
-    font-family: 'SUITE-Regular';
+    font-family: 'ChosunGu';
 }
 
 ul.pagination li {
@@ -34,7 +34,7 @@ ul.pagination li.active a {
 }
 
 ul.pagination li.active {
-    background-color: #e5e7eb;
+    background-color: #dbeafe;
 }
 
 ul.pagination li a:hover,

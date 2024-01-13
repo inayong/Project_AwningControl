@@ -5,7 +5,7 @@ import { SigunguData } from '../data/SigunguData';
 
 const FormSection = ({ labelLeft, labelRight, leftRef, rightRef }) => {
   return (
-    <div className='flex justify-around items-center py-3 pl-3 w-full'>
+    <div className='flex justify-center items-center py-3 pl-3 w-full space-x-60'>
       <div className='flex flex-col justify-center space-y-1'>
         <div className='font-NIXGONMVb font-bold'>{labelLeft}</div>
         <input className='w-48 border font-NanumSquareNeoVariable outline-none pl-1' ref={leftRef}></input>
@@ -320,7 +320,7 @@ const AddDevice = () => {
           </div>
           <div className='flex-grow w-full'>
             <div className='flex flex-col pt-5 pb-3 pl-3'>
-              <div className='flex pb-3 pl-3 justify-center'>
+              <div className='flex justify-center'>
                 <div className='flex w-1/2 '>
                   <input type='text' value={inputAddress} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder='주소 입력' className='border outline-none pl-1 font-NanumSquareNeoVariable' />
                 </div>
@@ -329,25 +329,16 @@ const AddDevice = () => {
                   <div className='font-NanumSquareNeoVariable'>{displayLocation.lat && displayLocation.lng ? `${displayLocation.lat} / ${displayLocation.lng}` : ''}</div>
                 </div>
               </div>
-              {/* <div className='flex flex-col justify-center'>
+              <div className='flex flex-col justify-center'>
                 {displayAddress.roadAddress || displayAddress.jibunAddress ? (
                   <>
                     <div className='pt-2 text-sm font-NIXGONMVb'>전체 주소</div>
                     <div className='text-base text-gray-500 pt-1 font-NanumSquareNeoVariable'>{displayAddress.roadAddress || displayAddress.jibunAddress}</div>
                   </>
                 ) : ''}
-              </div> */}
-              <div className='flex flex-col justify-center items-center w-full'> {/* items-center와 w-full 추가 */}
-                {displayAddress.roadAddress || displayAddress.jibunAddress ? (
-                  <>
-                    <div className='pt-2 text-sm font-NIXGONMVb text-center'>전체 주소</div> {/* text-center 추가 */}
-                    <div className='text-base text-gray-500 pt-1 font-NanumSquareNeoVariable text-center'>{displayAddress.roadAddress || displayAddress.jibunAddress}</div> {/* text-center 추가 */}
-                  </>
-                ) : ''}
               </div>
-
             </div>
-            <div className='flex pb-3 pt-5 pl-3 justify-center'>
+            <div className='flex pb-3 pt-2 pl-3 justify-center'>
               <div className='flex'>
                 <div className='pr-6 font-NIXGONMVb font-bold'>관리구역</div>
                 <select onChange={handleSelSi} ref={selSiRef} value={selectedSi} className='w-44 mr-3 border font-NanumSquareNeoVariable'>
@@ -376,14 +367,24 @@ const AddDevice = () => {
             <FormSection labelLeft="기구ID" leftRef={deviceId} labelRight="제어기ID" rightRef={controlId} />
             <FormSection labelLeft="어닝 열림시간 - 좌(초)" leftRef={openLeft} labelRight="어닝 열림시간 - 우(초)" rightRef={openRight} />
             <FormSection labelLeft="풍속 임계값" leftRef={windThreshold} labelRight="어닝 재열림 시간(분)" rightRef={awningReopen} />
-            <div className='flex justify-around items-center py-3 pl-3 w-full'>
-              <div className='flex flex-col justify-center space-y-1'>
+            {/* <div className='flex py-3 pl-3 w-full'>
+              <div className='flex flex-col w-1/2 space-y-1'>
                 <div className='font-NIXGONMVb font-bold'>설치일자</div>
                 <input type='date' value={installDate} onChange={handleInstallDateChange} className='w-48 border font-NanumSquareNeoVariable'></input>
               </div>
-              <div className='flex flex-col justify-center space-y-1'>
+              <div className='flex flex-col w-1/2 space-y-1'>
                 <div className='font-NIXGONMVb font-bold'>계약만료기간</div>
                 <input type='date' value={expireDate} onChange={handleExpireDateChange} className='w-48 border font-NanumSquareNeoVariable'></input>
+              </div>
+            </div> */}
+            <div className='flex justify-center items-center py-3 pl-3 w-full space-x-60'>
+              <div className='flex flex-col justify-center space-y-1'>
+                <div className='font-NIXGONMVb font-bold'>설치일자</div>
+                <input type='date' value={installDate} onChange={handleInstallDateChange} className='w-full border font-NanumSquareNeoVariable'></input>
+              </div>
+              <div className='flex flex-col justify-center space-y-1'>
+                <div className='font-NIXGONMVb font-bold'>계약만료기간</div>
+                <input type='date' value={expireDate} onChange={handleExpireDateChange} className='w-full border font-NanumSquareNeoVariable'></input>
               </div>
             </div>
           </div>

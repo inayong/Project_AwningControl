@@ -41,7 +41,7 @@ const TableBody = ({ content, className, scope, deviceId }) => {
 // const filterContent = ({}) => {
 //   return (
 //     filterSel === 'statusConnected' && (
-//       <select ref={filterOption} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+//       <select ref={filterOption} onChange={filterOptionChange} className='w-28 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white ml-2 outline-none'>
 //         <option value='full'>전체</option>
 //         <option value='on'>연결</option>
 //         <option value='off'>끊김</option>
@@ -299,8 +299,8 @@ const AwningState = () => {
     const checkedNumbers = checkedItems.map(item => item.managementNumber).join(', ');
     // const message = `'${action}' 작동을 보냈습니다. 관리번호: ${checkedNumbers}`;
     const message = (
-      <div className='flex flex-col items-center'>
-      <div className="text-center">{`${action} 작동을 보냈습니다.`}</div>
+      <div className='flex flex-col items-center space-y-5'>
+      <div className="text-center"><span className='font-bold'>{`${action}`}</span> 작동을 보냈습니다.</div>
       <div className="text-center">관리번호: {checkedNumbers}</div>
     </div>
     )
@@ -311,29 +311,29 @@ const AwningState = () => {
 
 
   return (
-    <div className='bg-slate-200 h-screen'>
-      <div className={`flex justify-center pt-14 ${isOpen ? 'h-[28%]' : 'h-32'} `}>
-        <div className='bg-white w-5/6 rounded-lg shadow-md'>
+    <div className='bg-white h-screen'>
+      <div className={`flex justify-center pt-14 ${isOpen ? 'h-[30%]' : 'h-32'} `}>
+        <div className='bg-blue-200 w-5/6 rounded-lg shadow-md shadow-gray-300'>
           <div className='flex justify-between'>
             <div className='flex p-3'>
               <div className='flex items-center w-48'>
-                <RiSearch2Line size={20} className='m-3 fill-gray-500' />
-                <div className='text-lg'>검색</div>
+                <RiSearch2Line size={25} className='m-3 fill-white' />
+                <div className='text-lg font-NIXGONMVb font-bold pl-3'>검색</div>
               </div>
-              <select ref={searchSel} className='bg-slate-200 w-36 pl-2 rounded-lg'>
+              <select ref={searchSel} className=' w-36 pl-2 rounded-lg bg-transparent border-2 border-white font-NanumSquareNeoVariable'>
                 <option value='full'>전체</option>
                 <option value='managementNumber'>관리번호</option>
                 <option value='installationLocationMemo'>설치장소</option>
               </select>
-              <div className='flex bg-slate-300 ml-2 items-center rounded-lg'>
-                <input type='text' ref={searchKeyword} onKeyDown={searchKeyDown} className='w-72 bg-slate-300' />
-                <button onClick={handleSearchbutton} className='absolute ml-[260px]'><RiSearch2Line /></button>
+              <div className='flex ml-2 items-center rounded-lg bg-white'>
+                <input type='text' ref={searchKeyword} onKeyDown={searchKeyDown} className='w-72 bg-transparent font-NanumSquareNeoVariable outline-gray-400 h-full pl-2' />
+                <button onClick={handleSearchbutton} className='absolute ml-[260px]'><RiSearch2Line size={20} className='fill-gray-600' /></button>
               </div>
             </div>
             <div className='flex pr-3'>
-              <button onClick={filterResetButton} className='flex bg-gray-100 items-center mx-4 my-3 px-2 rounded-lg hover:bg-gray-200'>
-                <div className='pr-2'>초기화</div>
-                <GrPowerReset />
+              <button onClick={filterResetButton} className='flex bg-white items-center mx-4 my-3 px-2 rounded-lg hover:bg-gray-200'>
+                <div className='pr-2 font-NanumSquareNeoVariable'>초기화</div>
+                <GrPowerReset size={17} className='text-gray-600' />
               </button>
               <button onClick={handleIsOpen}>
                 {isOpen ? <RiArrowUpCircleLine size={30} className='fill-neutral-500' /> : <RiArrowDownCircleLine size={30} className='fill-neutral-500' />}
@@ -342,12 +342,12 @@ const AwningState = () => {
           </div>
           {isOpen && (
             <div>
-              <div className='flex p-3'>
+              <div className='flex p-3 border-y-2 border-dashed border-gray-100'>
                 <div className='flex items-center w-48'>
-                  <RiFilter3Line size={20} className='m-3 fill-gray-500' />
-                  <div className='text-lg'>필터</div>
+                  <RiFilter3Line size={25} className='m-3 fill-white' />
+                  <div className='text-lg font-NIXGONMVb font-bold pl-3'>필터</div>
                 </div>
-                <select value={filterSel} onChange={filterSelChange} className='w-36 pl-2 rounded-lg'>
+                <select value={filterSel} onChange={filterSelChange} className='w-36 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white outline-none'>
                   <option value='full'>전체</option>
                   <option value='statusConnected'>통신상태</option>
                   <option value='statusLighting'>조명</option>
@@ -358,28 +358,28 @@ const AwningState = () => {
                   <option value='batteryCondition'>배터리상태</option>
                 </select>
                 {filterSel === 'statusConnected' && (
-                  <select ref={filterConn} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <select ref={filterConn} onChange={filterOptionChange} className='w-28 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white ml-2 outline-none'>
                     <option value='full'>전체</option>
                     <option value='on'>연결</option>
                     <option value='off'>끊김</option>
                   </select>
                 )}
                 {filterSel === 'statusLighting' && (
-                  <select ref={filterLight} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <select ref={filterLight} onChange={filterOptionChange} className='w-28 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white ml-2 outline-none'>
                     <option value='full'>전체</option>
                     <option value='on'>켜짐</option>
                     <option value='off'>꺼짐</option>
                   </select>
                 )}
                 {filterSel === 'statusAwningExpand' && (
-                  <select ref={filterAwining} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <select ref={filterAwining} onChange={filterOptionChange} className='w-28 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white ml-2 outline-none'>
                     <option value='full'>전체</option>
                     <option value='on'>열림</option>
                     <option value='off'>닫힘</option>
                   </select>
                 )}
                 {filterSel === 'managementArea' && (
-                  <select name='siSelect' ref={filterArea1} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <select name='siSelect' ref={filterArea1} onChange={filterOptionChange} className='w-36 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white ml-2 outline-none'>
                     <option value='full'>전체</option>
                     {si.map((items) => (
                       <option key={items} value={items}>{items}</option>
@@ -387,7 +387,7 @@ const AwningState = () => {
                   </select>
                 )}
                 {managementArea1 && (
-                  <select name='guSelect' ref={filterArea2} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <select name='guSelect' ref={filterArea2} onChange={filterOptionChange} className='w-28 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white ml-2 outline-none'>
                     <option value='full'>전체</option>
                     {gu.map((items) => (
                       <option key={items} value={items}>{items}</option>
@@ -395,7 +395,7 @@ const AwningState = () => {
                   </select>
                 )}
                 {filterSel === 'lightingCondition' && (
-                  <select ref={filterLightCond} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <select ref={filterLightCond} onChange={filterOptionChange} className='w-28 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white ml-2 outline-none'>
                     <option value='full'>전체</option>
                     <option value='normal'>정상</option>
                     <option value='warning'>경고</option>
@@ -403,7 +403,7 @@ const AwningState = () => {
                   </select>
                 )}
                 {filterSel === 'motorCondition' && (
-                  <select ref={filterMotor} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <select ref={filterMotor} onChange={filterOptionChange} className='w-28 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white ml-2 outline-none'>
                     <option value='full'>전체</option>
                     <option value='normal'>정상</option>
                     <option value='warning'>경고</option>
@@ -411,7 +411,7 @@ const AwningState = () => {
                   </select>
                 )}
                 {filterSel === 'batteryCondition' && (
-                  <select ref={filterBattery} onChange={filterOptionChange} className='bg-slate-300 ml-2'>
+                  <select ref={filterBattery} onChange={filterOptionChange} className='w-28 pl-2 rounded-lg font-NanumSquareNeoVariable bg-transparent border-2 border-white ml-2 outline-none'>
                     <option value='full'>전체</option>
                     <option value='normal'>정상</option>
                     <option value='warning'>경고</option>
@@ -421,39 +421,29 @@ const AwningState = () => {
               </div>
               <div className='flex p-3'>
                 <div className='flex items-center w-48'>
-                  <RiCheckboxLine size={20} className='m-3 fill-gray-500' />
-                  <div className='text-lg'>장치 관리</div>
+                  <RiCheckboxLine size={25} className='m-3 fill-white' />
+                  <div className='text-lg font-NIXGONMVb font-bold pl-3'>장치 관리</div>
                 </div>
                 {showControlModal && (
-                  <div className="fixed inset-0 flex justify-center items-center">
-                    <div className='bg-white p-6 rounded-md shadow-lg text-center w-1/3 h-1/4 pt-10'>
+                  <div className="fixed inset-0 flex justify-center items-center font-NanumSquareNeoVariable">
+                    <div className='bg-gray-100 p-6 rounded-md shadow-lg text-center w-1/3 h-1/4 flex flex-col justify-center items-center'>
                      {modalContent}
-                     <div className="flex justify-center mt-4">
+                     <div className="flex justify-center pt-6">
                       <button onClick={() => setShowControlModal(false)} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">확인</button>
                       </div>
                     </div>
                   </div>
                 )}
-                {/* {showControlModal && (
-                  <div className="fixed inset-0 flex justify-center items-center">
-                    <div className='bg-white p-6 rounded-md shadow-lg text-center'>
-                      {modalContent}
-                      <div className="flex justify-center mt-4">
-                        <button onClick={() => setShowControlModal(false)} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">확인</button>
-                      </div>
-                    </div>
-                  </div>
-                )} */}
-                <button onClick={() => handleDeviceControl('조명 ON')} className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>조명 ON</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>조명 OFF</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>어닝 ON</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>어닝 OFF</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>자동 모드</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>수동 모드</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>예약하기</button>
-                <button className='hover:bg-gray-200 border rounded-lg px-2 mx-2'>예약삭제</button>
+                <button onClick={() => handleDeviceControl('조명 ON')} className='hover:bg-slate-100 border-2 rounded-lg px-3 mx-2 font-NanumSquareNeoVariable border-white'>조명 ON</button>
+                <button onClick={() => handleDeviceControl('조명 OFF')} className='hover:bg-slate-100 border-2 rounded-lg px-3 mx-2 font-NanumSquareNeoVariable border-white'>조명 OFF</button>
+                <button onClick={() => handleDeviceControl('어닝 ON')} className='hover:bg-slate-100 border-2 rounded-lg px-3 mx-2 font-NanumSquareNeoVariable border-white'>어닝 ON</button>
+                <button onClick={() => handleDeviceControl('어닝 OFF')} className='hover:bg-slate-100 border-2 rounded-lg px-3 mx-2 font-NanumSquareNeoVariable border-white'>어닝 OFF</button>
+                <button onClick={() => handleDeviceControl('자동 모드')} className='hover:bg-slate-100 border-2 rounded-lg px-3 mx-2 font-NanumSquareNeoVariable border-white'>자동 모드</button>
+                <button onClick={() => handleDeviceControl('수동 모드')} className='hover:bg-slate-100 border-2 rounded-lg px-3 mx-2 font-NanumSquareNeoVariable border-white'>수동 모드</button>
+                <button onClick={() => handleDeviceControl('예약하기')} className='hover:bg-slate-100 border-2 rounded-lg px-3 mx-2 font-NanumSquareNeoVariable border-white'>예약하기</button>
+                <button onClick={() => handleDeviceControl('예약삭제')} className='hover:bg-slate-100 border-2 rounded-lg px-3 mx-2 font-NanumSquareNeoVariable border-white'>예약삭제</button>
                 {checkboxCount > 0 && (
-                  <button onClick={checkboxAwningDelete} className='hover:bg-red-100 border-4 border-red-400 rounded-lg px-2 ml-10'>어닝삭제</button>
+                  <button onClick={checkboxAwningDelete} className='hover:bg-red-100 border-4 border-red-400 rounded-lg px-3 ml-3 font-NanumSquareNeoVariable'>어닝삭제</button>
                 )}
                 {showModal && (
                   <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
@@ -466,30 +456,22 @@ const AwningState = () => {
                     </div>
                   </div>
                 )}
-                {/* {showControlModal && (
-                  <div className="fixed inset-0 flex justify-center items-center">
-                    <div className='bg-white p-6 rounded-md shadow-lg'>
-                      <p className="text-lg font-medium mb-4">{modalContent}</p>
-                      <button onClick={() => setShowControlModal(false)} className="flex justify-center items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">확인</button>
-                    </div>
-                  </div>
-                )} */}
               </div>
             </div>
           )}
         </div>
       </div>
       <div className='flex justify-center mt-14'>
-        <div className='w-5/6 p-4 text-xl flex'>
+        <div className='w-5/6 p-4 text-xl flex font-ChosunGu'>
           <span>총 <span className='font-bold'>7</span>건 {checkboxCount > 0 && (<span>중 <span className='font-bold'>{checkboxCount}</span>건 선택</span>)}</span>
-          {checkboxCount > 0 && (<button onClick={checkboxResetButton} className='ml-6 text-base items-center'><GrPowerReset /></button>)}
+          {checkboxCount > 0 && (<button onClick={checkboxResetButton} className='ml-6 text-base items-center'><GrPowerReset size={18} className='text-gray-600'/></button>)}
         </div>
       </div>
       <div className='flex w-full justify-center h-1/2'>
-        <div className='bg-white w-5/6 h-full flex flex-col shadow-md sm:rounded-lg '>
+        <div className='w-5/6 h-full flex flex-col shadow-md shadow-blue-100 sm:rounded-lg '>
           <div className="flex-grow w-full overflow-x-auto max-h-full rounded-t-lg hide-scrollbar">
             <table className=" text-center w-full text-gray-500 whitespace-nowrap">
-              <thead className="text-sm text-gray-700 bg-gray-50">
+              <thead className="text-sm text-gray-700 bg-blue-100 font-GmarketSansMedium">
                 <tr>
                   <th scope="col" className="p-4" rowSpan="2">
                     <div className="flex items-center">
@@ -519,7 +501,7 @@ const AwningState = () => {
                   <TableHead title="배터리" />
                 </tr>
               </thead>
-              <tbody className='text-sm'>
+              <tbody className='text-sm font-NanumSquareNeoVariable'>
                 {stateData.map((items, index) => (
                   <tr key={index} className={`${checkbox[items.deviceId] ? 'bg-blue-50' : 'bg-white border-b hover:bg-gray-50'}`}>
                     <td className="w-4 p-4">

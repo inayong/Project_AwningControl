@@ -85,12 +85,12 @@ const Notification = ({ mapData }) => {
 
   }, [settingOpen])
 
-  
+
 
   useEffect(() => {
     if (currentMarkerData) {
       const element = document.getElementById(`marker-${currentMarkerData.awningId}`);
-      element && element.scrollIntoView({ behavior: 'smooth', block: 'center'});
+      element && element.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [currentMarkerData]);
 
@@ -130,7 +130,7 @@ const Notification = ({ mapData }) => {
   //   });
   //   setMarkerFilterStatus(filterMarker);
   // }
-  
+
   // useEffect(() => {
   //   const filterMarker = mapData.filter(marker => {
   //     if (markerFilterStatus === 'all') return true;
@@ -143,6 +143,16 @@ const Notification = ({ mapData }) => {
   //   console.log("filterMarker",filterMarker)
   // }, [markerFilterStatus, mapData])
 
+  const batteryChargeColor = (charge) => {
+    if (charge <= 20) {
+      return 'text-red-500';
+    } else if (charge < 60) {
+      return 'text-yellow-500';
+    } else {
+      return 'text-green-500';
+    }
+  }
+
   return (
     <div className="flex h-screen overflow-x-hidden whitespace-nowrap">
       {isMonitoringPage && (
@@ -150,26 +160,26 @@ const Notification = ({ mapData }) => {
           style={{ bottom: isDetailBar ? 'calc(18rem + 40px)' : '40px' }}>
           <div className='flex items-center justify-center w-full'>
             <FaCircle size={15} className='fill-emerald-500' />
-            <div className='text-sm pl-5'>열림</div>
+            <div className='text-sm pl-5 font-Orbit'>열림</div>
           </div>
           <div className='flex items-center justify-center w-full py-2'>
             <FaCircle size={15} className='fill-blue-500' />
-            <div className='text-sm pl-5'>닫힘</div>
+            <div className='text-sm pl-5 font-Orbit'>닫힘</div>
           </div>
           <div className='flex items-center justify-center w-full'>
             <FaCircle size={15} className='fill-red-500' />
-            <div className='text-sm pl-5'>끊김</div>
+            <div className='text-sm pl-5 font-Orbit'>끊김</div>
           </div>
         </div>
       )}
       <button onClick={toggleNoti}
-        className={`fixed top-0 mt-4 transition-transform ease-in-out ${notiOpen ? 'bg-gray-300' : 'bg-white'} ${notiOpen || settingOpen ? 'right-96' : 'right-4 rounded-full'} p-3`}>
-        <MdOutlineNotificationsActive size={30} className='fill-blue-600' />
+        className={`fixed top-0 mt-4 transition-transform ease-in-out bg-white ${notiOpen || settingOpen ? 'right-96' : 'right-4 rounded-full bg-neutral-100'} p-3`}>
+        <MdOutlineNotificationsActive size={30} className={`${notiOpen ? 'fill-blue-600' : 'fill-stone-600'}`} />
       </button>
       {isMonitoringPage && markerOpen && (
         <button onClick={toggleSetting}
-          className={`absolute top-0 mt-20 transition-transform ease-in-out ${settingOpen ? 'bg-gray-300' : 'bg-white'} ${settingOpen || notiOpen ? 'right-96' : 'right-4 rounded-full'} p-3`}>
-          <MdDisplaySettings size={30} className='fill-stone-600' />
+          className={`absolute top-0 mt-20 transition-transform ease-in-out bg-white ${settingOpen || notiOpen ? 'right-96' : 'right-4 rounded-full bg-neutral-100'} p-3`}>
+          <MdDisplaySettings size={30} className={`${settingOpen ? 'fill-blue-600' : 'fill-stone-600'}`} />
         </button>
       )}
       <div className={`fixed inset-y-0 right-0 w-96 h-full bg-white shadow-md z-20 transform transition-transform duration-0 ${notiOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
@@ -180,21 +190,21 @@ const Notification = ({ mapData }) => {
         </div>
       </div>
       {isMonitoringPage && (
-        <div className={`overflow-auto fixed inset-y-0 right-0 w-96 bg-white shadow-md z-20 transform transition-transform duration-0 ${settingOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
+        <div className={`overflow-auto fixed inset-y-0 right-0 w-96 bg-neutral-100 shadow-md z-20 transform transition-transform duration-0 ${settingOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
           style={{ height: isDetailBar ? 'calc(100% - 18rem)' : '100%' }}>
           <div className="p-4">
-            <div className="text-lg font-semibold p-5">어닝 리스트</div>
+            <div className="text-2xl font-semibold p-5 font-Orbit flex justify-center items-center">어닝 목록</div>
             <div className="space-y-4">
               {mapData.map((item, idx) => (
-                <div key={idx} onClick={() => listClick(item)} id={`marker-${item.awningId}`} className={`bg-white shadow-md rounded-lg cursor-pointer ${detailMapData && detailMapData.awningId === item.awningId ? 'border-2 border-blue-400' : ''}`}>
+                <div key={idx} onClick={() => listClick(item)} id={`marker-${item.awningId}`} className={`bg-white shadow-md rounded-lg cursor-pointer hover:bg-gray-100 ${detailMapData && detailMapData.awningId === item.awningId ? 'border-2 border-blue-400' : ''}`}>
                   <div className="flex items-center justify-between p-4 border-b">
-                    <span className={`px-3 py-1 text-white text-sm font-bold rounded-full ${item.statusConnected === 'off' ? 'bg-red-500' : 'bg-green-500'}`}>
+                    <span className={`px-3 py-1 text-white text-base font-bold font-Orbit rounded-full ${item.statusConnected === 'off' ? 'bg-red-500' : 'bg-green-500'}`}>
                       {item.statusConnected.toUpperCase()}
                     </span>
                     <div className="flex-1 min-w-0 group">
-                      <span className="block text-center font-bold">{item.managementNumber}</span>
+                      <span className="block text-center font-bold font-GmarketSansMedium">{item.managementNumber}</span>
                       <div className="relative text-center">
-                        <span className="truncate block text-sm">{item.installationLocationMemo}</span>
+                        <span className="truncate block text-sm font-Orbit">{item.installationLocationMemo}</span>
                         {item.installationLocationMemo.length > 20 && (
                           <span className="absolute z-10 left-0 bg-gray-600 text-white text-xs p-2 rounded hidden group-hover:block whitespace-pre-wrap">
                             {item.installationLocationMemo}
@@ -202,32 +212,37 @@ const Notification = ({ mapData }) => {
                         )}
                       </div>
                     </div>
-                    <button onClick={() => clickListToDetail(item.deviceId)} className="text-lg"><MdMoreVert className='hover:fill-blue-500'/></button>
+                    <button className="group relative text-lg">
+                      <MdMoreVert className='hover:fill-blue-500' />
+                      <span className="absolute z-10 top-1/2 left-full transform -translate-x-full -translate-y-1/2 bg-gray-600 text-white text-xs p-2 rounded hidden group-hover:block">
+                        상세페이지 이동
+                      </span>
+                    </button>
                   </div>
                   <div className="p-4 grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <div className="text-center">
-                    <div className="text-sm font-bold">어닝</div>
-                      <div className={`${item.statusAwningExpand === 'off' ? 'text-red-500' : 'text-green-500'} font-bold`}>
+                    <div className="text-center space-y-2">
+                      <div className="text-sm font-semibold font-NanumSquareNeoVariable text-gray-800">어닝</div>
+                      <div className={`${item.statusAwningExpand === 'off' ? 'text-red-500' : 'text-green-500'} font-neurimboGothicRegular font-bold`}>
                         {item.statusAwningExpand.toUpperCase()}
                       </div>
                     </div>
-                    <div className="text-center">
-                    <div className="text-sm font-bold">조명</div>
-                      <div className={`${item.statusLighting === 'off' ? 'text-red-500' : 'text-green-500'} font-bold`}>
+                    <div className="text-center space-y-2">
+                      <div className="text-sm font-semibold font-NanumSquareNeoVariable text-gray-800">조명</div>
+                      <div className={`${item.statusLighting === 'off' ? 'text-red-500' : 'text-green-500'} font-neurimboGothicRegular font-bold`}>
                         {item.statusLighting.toUpperCase()}
                       </div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-sm font-bold">온도</div>
-                      <div className="font-bold">{item.statusTemperature}</div>
+                    <div className="text-center space-y-3">
+                      <div className="text-sm font-semibold font-NanumSquareNeoVariable text-gray-800">온도</div>
+                      <div className="font-bold text-sm font-NanumSquareNeoVariable">{item.statusTemperature}</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-sm font-bold">풍속</div>
-                      <div className="font-bold">{item.statusWindSpeed}</div>
+                    <div className="text-center space-y-3">
+                      <div className="text-sm font-semibold font-NanumSquareNeoVariable text-gray-800">풍속</div>
+                      <div className="font-bold text-sm font-NanumSquareNeoVariable">{item.statusWindSpeed}</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-sm font-bold">배터리</div>
-                      <div className="font-bold">{item.statusBatteryCharge}</div>
+                    <div className="text-center space-y-3">
+                      <div className="text-sm font-semibold font-NanumSquareNeoVariable text-gray-800">배터리</div>
+                      <div className={`font-bold text-sm font-NanumSquareNeoVariable ${batteryChargeColor(item.statusBatteryCharge)}`}>{item.statusBatteryCharge}</div>
                     </div>
                   </div>
                 </div>

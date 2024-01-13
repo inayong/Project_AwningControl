@@ -23,6 +23,7 @@ const MainMap = ({ mapData }) => {
     const [mapDataDetail, setMapDataDetail] = useRecoilState(DetailMapDataState);
 
     const [showControlModal, setShowControlModal] = useState(false);
+    const [showReserveModal, setShowReserveModal] = useState(false);
 
     const markerFilterStatus = useRecoilValue(FilterMarkerState);
 
@@ -125,7 +126,7 @@ const MainMap = ({ mapData }) => {
             {/* {isDetailBar && mapDataDetail && detailMapData && ( */}
             {isDetailBar && mapDataDetail && (
                 <div className='h-72 w-full'>
-                    <DetailBar markerData={mapDataDetail} setShowControlModal={setShowControlModal} showControlModal={showControlModal} />
+                    <DetailBar markerData={mapDataDetail} setShowControlModal={setShowControlModal} showControlModal={showControlModal} showReserveModal={showReserveModal} setShowReserveModal={setShowReserveModal}/>
                 </div>
             )}
         </div>
