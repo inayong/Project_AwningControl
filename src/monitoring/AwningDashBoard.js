@@ -30,7 +30,7 @@ const AwningDashBoard = () => {
   return (
     <div>
       <div className='h-screen'>
-        <div className='bg-sky-800 text-white font-bold text-xl flex justify-center items-center p-4'>DashBoard</div>
+        <div className='bg-neutral-400 text-gray-800 font-bold text-6xl font-SDSamliphopangcheOutline flex justify-center items-center p-4 h-32'>DashBoard</div>
         <div className='w-full h-full flex p-5'>
           <div className='w-2/3'>
             <div className='h-1/2'>

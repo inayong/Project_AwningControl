@@ -27,21 +27,23 @@ const MainMap = ({ mapData }) => {
 
     const markerFilterStatus = useRecoilValue(FilterMarkerState);
 
-    // const getData = () => {
-    //     // console.log("token", localStorage.getItem("token"))
-    //     fetch("http://10.125.121.206:8080/user/map", {
-    //         method: "POST",
-    //         headers: {
-    //             "Authorization": localStorage.getItem("token")
-    //         }
-    //     })
-    //         .then(resp => resp.json())
-    //         .then(data => {
-    //             setMapData(data);
-    //             console.log("map", data)
-    //         })
-    //         .catch(err => console.error(err))
-    // }
+    const filterMapData = mapData.filter(item => {
+        if (markerFilterStatus === 'all') return true;
+
+        if (markerFilterStatus === 'normal') {
+            return item.batteryCondition === 'normal' && item.lightingCondition === 'normal' && item.motorCondition === 'normal' && item.statusConnected !== 'off';
+        }
+
+        if (markerFilterStatus === 'failure') {
+            return item.batteryCondition !== 'normal' || item.lightingCondition !== 'normal' || item.motorCondition !== 'normal';
+        }
+
+        if (markerFilterStatus === 'disconnect') {
+            return item.batteryCondition === 'normal' && item.lightingCondition === 'normal' && item.motorCondition === 'normal' && item.statusConnected === 'off';
+        }
+    });
+
+
     useEffect(() => {
         setMarkerOpen({ isOpen: false, isOpen2: false })
         // getData();
@@ -58,23 +60,30 @@ const MainMap = ({ mapData }) => {
 
             const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(mapData[0].latitude, mapData[0].longitude),
+                // center: new naver.maps.LatLng(35.747178, 127.9587706),
                 zoom: 10
             });
 
 
 
-            mapData.forEach(item => {
+            filterMapData.forEach(item => {
                 const position = new naver.maps.LatLng(item.latitude, item.longitude);
 
                 //어닝장비 아이콘 표시/정상이면 녹색, 고장이면 노란색, 통신두절이면 적색
+                // https://i.ibb.co/ftzFTDR/location-pin-yellow-64.png
                 let markerUrl;
-                if (item.statusConnected === 'off') {
+                if (item.batteryCondition !== 'normal' || item.lightingCondition !== 'normal' || item.motorCondition !== 'normal') {
+                    markerUrl = 'https://i.ibb.co/ftzFTDR/location-pin-yellow-64.png';
+                } else if (item.statusConnected === 'off') {
                     markerUrl = 'https://i.ibb.co/5MqN3j7/location-pin-red-64.png';
-                } else if (item.statusAwningExpand === 'on') {
+                } else {
                     markerUrl = 'https://i.ibb.co/nr90vdz/location-pin-green-64.png';
-                } else if (item.statusAwningExpand === 'off') {
-                    markerUrl = 'https://i.ibb.co/4V14zHY/location-pin-blue-64.png';
                 }
+                // else if (item.statusAwningExpand === 'on') {
+                //     markerUrl = 'https://i.ibb.co/nr90vdz/location-pin-green-64.png';
+                // } else if (item.statusAwningExpand === 'off') {
+                //     markerUrl = 'https://i.ibb.co/4V14zHY/location-pin-blue-64.png';
+                // }
 
                 if (markerUrl) {
                     const marker = new naver.maps.Marker({
@@ -86,7 +95,11 @@ const MainMap = ({ mapData }) => {
                         }
                     });
 
-                    naver.maps.Event.addListener(marker, "click", () => {
+                    naver.maps.Event.addListener(marker, "click", (e) => {
+                        console.log("Marker clicked, moving center to:", position);
+                        map.setCenter(position);
+                        // map.setCenter(position);
+                        // map.panTo(position);
                         setMarkerOpen({ isOpen: true, markerData: item });
                         setIsDetailBar(true);
                         setDetailMapData(item);
@@ -98,7 +111,7 @@ const MainMap = ({ mapData }) => {
 
             });
         }
-    }, [mapData, setMarkerOpen]);
+    }, [mapData, setMarkerOpen, filterMapData]);
 
     //button
     //control button
@@ -126,7 +139,7 @@ const MainMap = ({ mapData }) => {
             {/* {isDetailBar && mapDataDetail && detailMapData && ( */}
             {isDetailBar && mapDataDetail && (
                 <div className='h-72 w-full'>
-                    <DetailBar markerData={mapDataDetail} setShowControlModal={setShowControlModal} showControlModal={showControlModal} showReserveModal={showReserveModal} setShowReserveModal={setShowReserveModal}/>
+                    <DetailBar markerData={mapDataDetail} setShowControlModal={setShowControlModal} showControlModal={showControlModal} showReserveModal={showReserveModal} setShowReserveModal={setShowReserveModal} />
                 </div>
             )}
         </div>

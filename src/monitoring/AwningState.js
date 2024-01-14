@@ -313,7 +313,7 @@ const AwningState = () => {
   return (
     <div className='bg-white h-screen'>
       <div className={`flex justify-center pt-14 ${isOpen ? 'h-[30%]' : 'h-32'} `}>
-        <div className='bg-blue-200 w-5/6 rounded-lg shadow-md shadow-gray-300'>
+        <div className='bg-neutral-300 w-5/6 rounded-lg shadow-md shadow-gray-300'>
           <div className='flex justify-between'>
             <div className='flex p-3'>
               <div className='flex items-center w-48'>
@@ -468,10 +468,10 @@ const AwningState = () => {
         </div>
       </div>
       <div className='flex w-full justify-center h-1/2'>
-        <div className='w-5/6 h-full flex flex-col shadow-md shadow-blue-100 sm:rounded-lg '>
+        <div className='w-5/6 h-full flex flex-col shadow-md shadow-neutral-300 sm:rounded-lg '>
           <div className="flex-grow w-full overflow-x-auto max-h-full rounded-t-lg hide-scrollbar">
             <table className=" text-center w-full text-gray-500 whitespace-nowrap">
-              <thead className="text-sm text-gray-700 bg-blue-100 font-GmarketSansMedium">
+              <thead className="text-sm text-gray-700 bg-neutral-200 font-GmarketSansMedium">
                 <tr>
                   <th scope="col" className="p-4" rowSpan="2">
                     <div className="flex items-center">
@@ -524,7 +524,7 @@ const AwningState = () => {
                     <TableBody content={items.statusTemperature} />
                     <TableBody content={items.statusWindSpeed} />
                     <TableBody content={items.lightingCondition === 'normal' ? '정상' : '고장'} />
-                    <TableBody content={items.awningCondition === 'normal' ? '정상' : '고장'} />
+                    <TableBody content={items.motorCondition === 'normal' ? '정상' : '고장'} />
                     <TableBody content={items.batteryCondition === 'normal' ? '정상' : '고장'} />
                     <TableBody content={items.awningOpenScheduleTime === null ? '-' : items.awningOpenScheduleTime} />
                   </tr>

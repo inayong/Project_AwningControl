@@ -4,23 +4,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { NotiMapState } from '../component/atoms/NotiMapState';
 import { SidebarState } from '../component/atoms/SidebarState';
-import { FaCircle } from "react-icons/fa";
+import { FaCircle, FaRegObjectUngroup } from "react-icons/fa";
 import { DetailBarState } from '../component/atoms/DetailBarState';
 import { DetailMapDataState } from '../component/atoms/DetailMapDataState ';
 import { FilterMarkerState } from '../component/atoms/FilterMarkerState';
 
-// const isTextOverflowing = (text, maxWidth) => {
-//   // 가상 요소를 생성하고 스타일을 설정합니다.
-//   const canvas = document.createElement("canvas");
-//   const context = canvas.getContext("2d");
-//   context.font = "16px Arial"; // 실제 텍스트와 동일한 폰트와 사이즈를 사용해야 합니다.
 
-//   // 텍스트의 너비를 측정합니다.
-//   const textWidth = context.measureText(text).width;
-
-//   // 너비가 maxWidth를 초과하는지 검사합니다.
-//   return textWidth > maxWidth;
-// };
 
 const Notification = ({ mapData }) => {
   const [notiOpen, setNotiOpen] = useState(false);
@@ -31,7 +20,8 @@ const Notification = ({ mapData }) => {
   // const [topButton, setTopButton] = useState(false);
   const [detailMapData, setDetailMapData] = useRecoilState(DetailMapDataState);
   // const [listDetailBtn, setListDetailBtn] = useState(false);
-  // const [markerFilterStatus, setMarkerFilterStatus] = useState(FilterMarkerState);
+  // const [markerFilterStatus, setMarkerFilterStatus] = useState('all');
+  const [markerFilterStatus, setMarkerFilterStatus] = useRecoilState(FilterMarkerState);
 
 
   const location = useLocation();
@@ -115,34 +105,17 @@ const Notification = ({ mapData }) => {
   const navigate = useNavigate();
   const clickListToDetail = (deviceId) => {
     navigate(`/awningstate/detail/${deviceId}`)
-    // navigate(`/awningstate/detail/${currentMarkerData.deviceId}`)
-    // setListDetailBtn(!listDetailBtn);
   }
 
-  // const markerFilterClick = (status) => {
-  //   setMarkerFilterStatus(status);
-  //   const filterMarker = mapData.filter(marker => {
-  //     if (markerFilterStatus === 'all') return true;
+  const markerFilterClick = (status) => {
+    if (markerFilterStatus === status) {
+      setMarkerFilterStatus('all');
+    } else {
+      setMarkerFilterStatus(status);
+    }
+  }
 
-  //     if (markerFilterStatus === 'open') return marker.statusAwningExpand === 'on';
-  //   if (markerFilterStatus === 'closed') return marker.statusAwningExpand === 'off';
-  //   if (markerFilterStatus === 'disconn') return marker.statusConnected === 'on';
-  //   });
-  //   setMarkerFilterStatus(filterMarker);
-  // }
-
-  // useEffect(() => {
-  //   const filterMarker = mapData.filter(marker => {
-  //     if (markerFilterStatus === 'all') return true;
-
-  //     if (markerFilterStatus === 'open') return marker.statusAwningExpand === 'on';
-  //   if (markerFilterStatus === 'closed') return marker.statusAwningExpand === 'off';
-  //   if (markerFilterStatus === 'disconn') return marker.statusConnected === 'on';
-  //   })
-
-  //   console.log("filterMarker",filterMarker)
-  // }, [markerFilterStatus, mapData])
-
+  
   const batteryChargeColor = (charge) => {
     if (charge <= 20) {
       return 'text-red-500';
@@ -158,15 +131,15 @@ const Notification = ({ mapData }) => {
       {isMonitoringPage && (
         <div className={`absolute right-10 z-10 w-24 h-24 bg-white rounded-lg flex flex-col justify-center items-center ${notiOpen || settingOpen ? 'right-[416px]' : 'right-16'}`}
           style={{ bottom: isDetailBar ? 'calc(18rem + 40px)' : '40px' }}>
-          <div className='flex items-center justify-center w-full'>
+          <div onClick={() => markerFilterClick('normal')} className='flex items-center justify-center w-full cursor-pointer'>
             <FaCircle size={15} className='fill-emerald-500' />
-            <div className='text-sm pl-5 font-Orbit'>열림</div>
+            <div className='text-sm pl-5 font-Orbit'>정상</div>
           </div>
-          <div className='flex items-center justify-center w-full py-2'>
-            <FaCircle size={15} className='fill-blue-500' />
-            <div className='text-sm pl-5 font-Orbit'>닫힘</div>
+          <div onClick={() => markerFilterClick('failure')} className='flex items-center justify-center w-full py-2 cursor-pointer'>
+            <FaCircle size={15} className='fill-yellow-400' />
+            <div className='text-sm pl-5 font-Orbit'>고장</div>
           </div>
-          <div className='flex items-center justify-center w-full'>
+          <div onClick={() => markerFilterClick('disconnect')} className='flex items-center justify-center w-full cursor-pointer'>
             <FaCircle size={15} className='fill-red-500' />
             <div className='text-sm pl-5 font-Orbit'>끊김</div>
           </div>
@@ -212,7 +185,7 @@ const Notification = ({ mapData }) => {
                         )}
                       </div>
                     </div>
-                    <button className="group relative text-lg">
+                    <button onClick={() => clickListToDetail(item.deviceId)} className="group relative text-lg">
                       <MdMoreVert className='hover:fill-blue-500' />
                       <span className="absolute z-10 top-1/2 left-full transform -translate-x-full -translate-y-1/2 bg-gray-600 text-white text-xs p-2 rounded hidden group-hover:block">
                         상세페이지 이동

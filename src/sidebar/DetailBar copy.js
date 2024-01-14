@@ -53,200 +53,31 @@ const ControlBtnContent = ({ manageNum, handelControlConfirm, handleCloseModal, 
   )
 }
 
-const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMenu, reserveDate, setReserveDate }) => {
-  const [reserveData, setReserveData] = useState([]);
-
-  const formatDateTime = (dateStr) => {
-    if (dateStr === null) {
-      return '';
-    } else {
-      const date = new Date(dateStr);
-      const time = date.toLocaleTimeString('ko-KR');
-      return time.slice(0, -3);
-    }
-  }
-
-
-  useEffect(() => {
-    const fetchRes = () => {
-      fetch("http://10.125.121.206:8080/user/reserv/view", {
-        method: "GET",
-        headers: {
-          'Authorization': localStorage.getItem("token"),
-          'deviceId': deviceId
-        }
-      })
-        .then(resp => resp.json())
-        .then(data => {
-          setReserveData(data);
-          console.log("reserve", data);
-        })
-        .catch(err => console.error(err));
-    }
-
-    if (deviceId) {
-      fetchRes();
-    }
-  }, [deviceId])
-
-
-  const clickReserveMenu = (menu) => {
-    setReserveMenu(menu);
-  }
-
-  const clcickReserveDate = (menu) => {
-    setReserveDate(menu);
-  }
-
-
-
+const ReserveBtnContent = ({ handelResClose }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full z-50 bg-black bg-opacity-10 flex justify-center items-center">
-      <div className='bg-white p-6 rounded-md shadow-lg text-center w-4/5 h-5/6 flex flex-col'>
-        <div className='flex justify-between items-center mb-4'>
-          <div className='text-lg font-bold border-4 border-double border-gray-400 shadow-lg p-3 rounded-md font-GmarketSansMedium flex-grow'>
-            예약
-          </div>
-          <button onClick={handelResClose} className='ml-4 rounded-lg  font-ChosunGu font-bold'>
-            <FaXmark size={40} className='fill-gray-700 hover:fill-red-400' />
-          </button>
-        </div>
-        <div className='flex space-x-5 flex-grow'>
-          <div className='w-1/3 rounded-md shadow-md flex flex-col overflow-auto'>
-            <div className='bg-yellow-50 h-12 flex-shrink-0 rounded-t-md flex justify-center items-center font-ChosunGu font-bold'>예약 목록</div> {/* 고정 */}
-            <div className='bg-neutral-100 flex-grow rounded-b-md space-y-3 pt-5'>
-              {reserveData.map((item, idx) => (
-                <div key={idx} className='flex bg-white rounded-md shadow-md p-1 px-2 space-x-2'>
-                  <div className='flex justify-center items-center pr-2'>
-                    <div className='bg-blue-100 rounded-full w-5 flex justify-center font-NanumSquareNeoVariable text-sm'>{item.rsrvtId}</div>
-                  </div>
-                  <div className='space-y-3'>
-                    <div className='flex items-center space-x-3'>
-                      <div className={`font-NanumSquareNeoVariable ${item.reservationItems === 'motor' ? 'text-blue-500' : 'text-orange-400'}`}>{item.reservationItems === 'motor' ? '모터' : '조명'}</div>
-                      <div className='font-NanumSquareNeoVariable'>{formatDateTime(item.startDate)} - {formatDateTime(item.finshDate)}</div>
-                    </div>
-                    <div className='flex space-x-3'>
-                      <div className='bg-blue-50'>{item.reservationMethod}</div>
-                      <div className='bg-indigo-200'>{item.repeatDay}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+      <div className='bg-white p-6 rounded-md shadow-lg text-center w-2/3 h-2/3'>
+        <div className='w-full h-full p-3 space-y-10'>
+          <div className='flex justify-center items-center'>
+            <div className='text-lg font-bold border-4 border-double border-gray-400 shadow-lg p-3 rounded-md font-ChosunGu w-5/6'>
+              예약
+            </div>
+            <div className='w-1/6'>
+              <button onClick={handelResClose} className='ml-4 rounded-lg hover:border-2 hover:border-red-300 font-ChosunGu font-bold'>
+                <FaXmark size={40} className='fill-gray-700'/>
+              </button>
             </div>
           </div>
-          <div className='bg-neutral-200 w-2/3 rounded-md shadow-md flex flex-col items-center p-3'>
-            <div className='bg-white w-full h-48 flex flex-col justify-center items-center space-y-4'>
-              <div className='bg-neutral-300 rounded-lg w-1/3 h-16 flex justify-center p-2'>
-                <button onClick={() => clickReserveMenu('light')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable font-semibold ${reserveMenu === 'light' ? 'bg-white' : ''}`}>조명</button>
-                <button onClick={() => clickReserveMenu('motor')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable font-semibold ${reserveMenu === 'motor' ? 'bg-white' : ''}`}>모터</button>
-              </div>
-              <div className='bg-neutral-300 rounded-lg w-1/3 h-16 flex justify-center p-2'>
-                <button onClick={() => clcickReserveDate('week')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable font-semibold ${reserveDate === 'week' ? 'bg-white' : ''}`}>요일 예약</button>
-                <button onClick={() => clcickReserveDate('date')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable font-semibold ${reserveDate === 'date' ? 'bg-white' : ''}`}>날짜 예약</button>
-              </div>
-            </div>
-            {reserveDate === 'week' ? (
-              <div className=' bg-white w-full flex-grow space-y-10 pt-5'>
-                <div className='flex flex-col items-center space-y-3'>
-                  <div className='font-ChosunGu font-bold text-lg'>요일 선택</div>
-                  <div className='flex space-x-2'>
-                    <div className='border py-2 px-3'>월</div>
-                    <div className='border py-2 px-3'>화</div>
-                    <div className='border py-2 px-3'>수</div>
-                    <div className='border py-2 px-3'>목</div>
-                    <div className='border py-2 px-3'>금</div>
-                    <div className='border py-2 px-3'>토</div>
-                    <div className='border py-2 px-3'>일</div>
-                  </div>
-                </div>
-                <div className='space-y-3'>
-                  <div className='font-ChosunGu font-bold text-lg'>시간 선택</div>
-                  <div className='flex justify-center space-x-5'>
-                    <div className='bg-neutral-300 w-1/5 h-16 flex justify-center p-2'>
-                      <div className='bg-white w-full rounded-md flex justify-center items-center'>오전</div>
-                      <div className='bg-white w-full rounded-md flex justify-center items-center'>오후</div>
-                    </div>
-                    <div className='bg-blue-50 w-1/5 h-16 flex justify-center p-2 items-center space-x-10'>
-                      <div>00</div>
-                      <div>:</div>
-                      <div>00</div>
-                    </div>
-                    <span className='flex items-center'>부터</span>
-                  </div>
-                  <div className='flex justify-center space-x-5'>
-                    <div className='bg-neutral-300 rounded-md w-1/5 h-16 flex justify-center p-2'>
-                      <div className='bg-white w-full rounded-md flex justify-center items-center'>오전</div>
-                      <div className='bg-white w-full rounded-md flex justify-center items-center'>오후</div>
-                    </div>
-                    <div className='bg-blue-50 w-1/5 h-16 flex justify-center p-2 items-center'>
-                      <div className='bg-blue-50 w-1/5 h-16 flex justify-center p-2 items-center space-x-10'>
-                        <div>00</div>
-                        <div>:</div>
-                        <div>00</div>
-                      </div>
-                    </div>
-                    <span className='flex items-center'>까지</span>
-                  </div>
-                </div>
-              </div>
-            ) : (
-            <div className=' bg-white w-full flex-grow pt-5 flex'>
-              <div className='flex flex-col items-center justify-center flex-grow space-y-10'>
-                <div className='text-lg font-ChosunGu font-bold'>시작일시(ON)</div>
-                <div className='space-y-16 flex flex-col items-center'>
-                  <div className='flex space-x-5'>
-                    <div className='font-ChosunGu font-bold'>날짜</div>
-                    <input type='date' />
-                  </div>
-                  <div className='flex space-x-5 items-center'>
-                    <div className='font-ChosunGu font-bold'>시간</div>
-                    <div className='flex space-x-3'>
-                      <div className='bg-neutral-300 rounded-md flex p-1 w-32 h-12'>
-                        <div className='bg-white rounded-md w-full flex items-center justify-center'>오전</div>
-                        <div className='bg-white rounded-md w-full flex items-center justify-center'>오후</div>
-                      </div>
-                      <div className='bg-blue-50 rounded-md flex p-2 w-32 h-12 justify-center items-center space-x-6'>
-                        <div>00</div>
-                        <div>:</div>
-                        <div>00</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='flex flex-col items-center justify-center flex-grow space-y-10'>
-                <div className='text-lg font-ChosunGu font-bold'>종료일시(OFF)</div>
-                <div className='space-y-16 flex flex-col items-center'>
-                  <div className='flex space-x-5'>
-                    <div className='font-ChosunGu font-bold'>날짜</div>
-                    <input type='date' />
-                  </div>
-                  <div className='flex space-x-5 items-center'>
-                    <div className='font-ChosunGu font-bold'>시간</div>
-                    <div className='flex space-x-3'>
-                      <div className='bg-neutral-300 rounded-md flex p-1 w-32 h-12'>
-                        <div className='bg-white rounded-md w-full flex items-center justify-center'>오전</div>
-                        <div className='bg-white rounded-md w-full flex items-center justify-center'>오후</div>
-                      </div>
-                      <div className='bg-blue-50 rounded-md flex p-2 w-32 h-12 justify-center items-center space-x-6'>
-                        <div>00</div>
-                        <div>:</div>
-                        <div>00</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            )}
+          <div className='flex space-x-5 h-full'>
+            <div className='bg-blue-50 w-1/2 rounded-md shadow-md h-full'>작동</div>
+            <div className='bg-green-50 w-1/2 rounded-md shadow-md'>목록</div>
           </div>
-        </div>
-        <div className='flex justify-center items-center mt-5'>
-          <button className='border rounded-lg py-2 px-4 hover:border-2 hover:border-blue-300 font-ChosunGu font-bold'>확인</button>
+          <div className='flex justify-center items-center space-x-3'>
+            <button className='border rounded-lg py-2 px-4 hover:border-2 hover:border-blue-300 font-ChosunGu font-bold'>확인</button>
+          </div>
         </div>
       </div>
     </div>
-
 
   )
 }
@@ -418,15 +249,6 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal, showRese
   }
 
 
-  //reserve
-  // const [lightReserve, setLightReserve] = useState(false);
-  // const [motorReserve, setMotorReserve] = useState(false);
-  const [reserveMenu, setReserveMenu] = useState('light');
-  const [reserveDate, setReserveDate] = useState('week');
-
-  // const clickReserveMenu = (menu) => {
-  //   setReserveMenu(menu)
-  // }
 
 
 
@@ -538,7 +360,7 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal, showRese
           <Alert show={showAlert} message={alertMessage} />
           <button onClick={() => setShowReserveModal(true)} className='bg-cyan-700 text-white shadow-md  w-full h-1/3 rounded-2xl flex items-center justify-center font-ChosunGu font-bold'>예약버튼</button>
           {showReserveModal && (
-            <ReserveBtnContent handelResClose={() => setShowReserveModal(false)} deviceId={markerData.deviceId} reserveMenu={reserveMenu} setReserveMenu={setReserveMenu} reserveDate={reserveDate} setReserveDate={setReserveDate} />
+            <ReserveBtnContent handelResClose={() => setShowReserveModal(false)}/>
           )}
         </div>
       </div>

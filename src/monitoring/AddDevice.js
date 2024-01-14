@@ -329,23 +329,22 @@ const AddDevice = () => {
                   <div className='font-NanumSquareNeoVariable'>{displayLocation.lat && displayLocation.lng ? `${displayLocation.lat} / ${displayLocation.lng}` : ''}</div>
                 </div>
               </div>
-              {/* <div className='flex flex-col justify-center'>
+              <div className='flex flex-col justify-center pl-6'>
                 {displayAddress.roadAddress || displayAddress.jibunAddress ? (
                   <>
                     <div className='pt-2 text-sm font-NIXGONMVb'>전체 주소</div>
                     <div className='text-base text-gray-500 pt-1 font-NanumSquareNeoVariable'>{displayAddress.roadAddress || displayAddress.jibunAddress}</div>
                   </>
                 ) : ''}
-              </div> */}
-              <div className='flex flex-col justify-center items-center w-full'> {/* items-center와 w-full 추가 */}
+              </div>
+              {/* <div className='flex flex-col justify-center items-center w-full'>
                 {displayAddress.roadAddress || displayAddress.jibunAddress ? (
                   <>
-                    <div className='pt-2 text-sm font-NIXGONMVb text-center'>전체 주소</div> {/* text-center 추가 */}
-                    <div className='text-base text-gray-500 pt-1 font-NanumSquareNeoVariable text-center'>{displayAddress.roadAddress || displayAddress.jibunAddress}</div> {/* text-center 추가 */}
+                    <div className='pt-2 text-sm font-NIXGONMVb text-center'>전체 주소</div>
+                    <div className='text-base text-gray-500 pt-1 font-NanumSquareNeoVariable text-center'>{displayAddress.roadAddress || displayAddress.jibunAddress}</div>
                   </>
                 ) : ''}
-              </div>
-
+              </div> */}
             </div>
             <div className='flex pb-3 pt-5 pl-3 justify-center'>
               <div className='flex'>
