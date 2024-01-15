@@ -11,7 +11,6 @@ import { TbTent } from "react-icons/tb";
 import { GrStatusDisabledSmall } from 'react-icons/gr';
 import Alert from '../component/Alert';
 import { FaXmark } from "react-icons/fa6";
-import TimePicker from 'react-time-picker';
 
 const ControlBtnContent = ({ manageNum, handelControlConfirm, handleCloseModal, clickLightControl, clickAwningControl, clickModeStatus, lightStatus, awningStatus, modeStatus }) => {
   return (
@@ -111,31 +110,40 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
   const formatDateTime = (dateStr) => {
     if (dateStr === null) {
       return '';
-    } else {
-      const options = { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
-      const date = new Date(dateStr);
-      return date.toLocaleDateString('ko-KR', options);
     }
-  }
-
-  const formatRepeatDay = (dayStr) => {
-    const days = ["일", "월", "화", "수", "목", "금", "토"];
-
-  }
-
-  // const fetchReserve = () => {
-  //   fetch("http://10.125.121.206:8080/user/reserv/add", {
-  //     method: "POST",
-  //     headers: {
-  //       'Authorization': localStorage.getItem("token")
-  //     },
-  //     body: JSON.stringify({
-  //       'reservationItems': 
-  //     })
-  //   })
-  // }
-
+    // if (reserveData.reservationMethod === 'dayWeek') {
+    //   const date = new Date(dateStr);
+    //   const time = date.toLocaleTimeString('ko-KR');
+    //   console.log("ddd", date.toLocaleString())
+    //   return time.slice(0, -3);
+    // }
+    // else {
+    //   const options = { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
+    //   const date = new Date(dateStr);
+    //   return date.toLocaleDateString('ko-KR', options);
+    // }
+  //   const options = {
+  //     year: '2-digit', 
+  //     month: '2-digit', 
+  //     day: '2-digit', 
+  //     hour: '2-digit', 
+  //     minute: '2-digit', 
+  //     hour12: false
+  //   };
+  //   const date = new Date(dateStr);
+  //   const dateTimeString = date.toLocaleString('ko-KR', options);
   
+  //   // 날짜와 시간 부분 분리
+  // const parts = dateTimeString.split(' ');
+  // let datePart = parts.slice(0, -1).join(' '); // 날짜 부분 추출
+  // let timePart = parts[parts.length - 1]; // 시간 부분 추출
+
+  // // 날짜 부분에서 마지막 점 제거
+  // datePart = datePart.replace(/\.$/, '');
+
+  // return `${datePart} ${timePart}`;
+  
+  }
 
 
   return (
@@ -172,9 +180,7 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                     </div>
                     <div className='flex space-x-3'>
                       <div className='font-NanumSquareNeoVariable'>{item.reservationMethod === 'dayWeek' ? '반복' : '날짜'}</div>
-                      {item.reservationMethod === 'dayWeek' ? (
                       <div className='bg-indigo-200'>{item.repeatDay}</div>
-                      ) : ''}
                     </div>
                   </div>
                 </div>
@@ -197,33 +203,40 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                 <div className='flex flex-col items-center space-y-3'>
                   <div className='font-ChosunGu font-bold text-lg'>요일 선택</div>
                   <div className='flex space-x-2'>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>일</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>월</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>화</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>수</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>목</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>금</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>토</button>
+                    <div className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>일</div>
+                    <div className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>월</div>
+                    <div className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>화</div>
+                    <div className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>수</div>
+                    <div className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>목</div>
+                    <div className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>금</div>
+                    <div className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>토</div>
                   </div>
                 </div>
                 <div className='space-y-3'>
                   <div className='font-ChosunGu font-bold text-lg'>시간 선택</div>
                   <div className='flex justify-center space-x-5'>
+                    <div className='bg-blue-50 rounded-lg w-1/5 h-16 flex justify-center p-2'>
+                      <button onClick={() => clickReserveStart('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
+                      <button onClick={() => clickReserveStart('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'after' ? 'bg-white' : ''}`}>오후</button>
+                    </div>
+                    <div className='border-2 border-blue-50 rounded-lg w-1/5 h-16 flex justify-center p-2 items-center space-x-7'>
+                      <input className='font-NanumBarunpen w-10 flex text-center outline-none' placeholder='00' />
+                      <div className='font-NanumBarunpen'>:</div>
+                      <input className='font-NanumBarunpen w-10 flex text-center outline-none' placeholder='00' />
+                    </div>
+                    <span className='flex items-center font-NanumBarunpen'>부터</span>
+                  </div>
+                  <div className='flex justify-center space-x-5'>
                     <div className='bg-blue-50 rounded-md w-1/5 h-16 flex justify-center p-2'>
                       <button onClick={() => clickReserveFinish('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
                       <button onClick={() => clickReserveFinish('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'after' ? 'bg-white' : ''}`}>오후</button>
                     </div>
-                    <div className='border-2 border-blue-50 rounded-lg w-1/5 h-16 flex justify-center p-2 items-center space-x-5'>
+                    <div className='border-2 border-blue-50 rounded-lg w-1/5 h-16 flex justify-center p-2 items-center space-x-7'>
                       <input className='font-NanumBarunpen w-10 flex text-center outline-none' placeholder='00' />
                       <div className='font-NanumBarunpen'>:</div>
                       <input className='font-NanumBarunpen w-10 flex text-center outline-none' placeholder='00' />
                     </div>
                     <span className='flex items-center font-NanumBarunpen'>까지</span>
-                  {/* <input type='time'  className=''/> */}
-                  {/* <TimePicker  format="HH:mm" disableClock={true} className='bg-slate-400 w-52'/> */}
-                  </div>
-                  <div className='flex justify-center space-x-5'>
-                    <input type='time'  className=''/>
                   </div>
                 </div>
               </div>
@@ -239,8 +252,15 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                     <div className='flex space-x-5 items-center'>
                       <div className='font-ChosunGu font-bold'>시간</div>
                       <div className='flex space-x-3'>
-                        
-                        <input type='time'  className=''/>
+                        <div className='bg-blue-50 rounded-md flex p-1 w-32 h-12'>
+                          <button onClick={() => clickReserveStart('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
+                          <button onClick={() => clickReserveStart('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'after' ? 'bg-white' : ''}`}>오후</button>
+                        </div>
+                        <div className='border-2 border-blue-50 rounded-lg flex p-2 w-32 h-12 justify-center items-center space-x-4'>
+                          <input className='font-NanumBarunpen w-10 flex text-center outline-none bg-transparent' placeholder='00' />
+                          <div className='font-NanumBarunpen'>:</div>
+                          <input className='font-NanumBarunpen w-10 flex text-center outline-none bg-transparent' placeholder='00' />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -253,8 +273,18 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                       <input type='date' className='font-NanumSquareNeoVariable' />
                     </div>
                     <div className='flex space-x-5 items-center'>
-                      
-                      <input type='time'  className=''/>
+                      <div className='font-ChosunGu font-bold'>시간</div>
+                      <div className='flex space-x-3'>
+                        <div className='bg-blue-50 rounded-md flex p-1 w-32 h-12'>
+                          <button onClick={() => clickReserveFinish('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
+                          <button onClick={() => clickReserveFinish('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'after' ? 'bg-white' : ''}`}>오후</button>
+                        </div>
+                        <div className='border-2 border-blue-50 rounded-lg flex p-2 w-32 h-12 justify-center items-center space-x-4'>
+                          <input className='font-NanumBarunpen w-10 flex text-center outline-none bg-transparent' placeholder='00' />
+                          <div className='font-NanumBarunpen'>:</div>
+                          <input className='font-NanumBarunpen w-10 flex text-center outline-none bg-transparent' placeholder='00' />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

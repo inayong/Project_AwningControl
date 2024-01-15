@@ -11,7 +11,7 @@ import { TbTent } from "react-icons/tb";
 import { GrStatusDisabledSmall } from 'react-icons/gr';
 import Alert from '../component/Alert';
 import { FaXmark } from "react-icons/fa6";
-import TimePicker from 'react-time-picker';
+import TimePicker from 'react-gradient-timepicker';
 
 const ControlBtnContent = ({ manageNum, handelControlConfirm, handleCloseModal, clickLightControl, clickAwningControl, clickModeStatus, lightStatus, awningStatus, modeStatus }) => {
   return (
@@ -123,19 +123,7 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
 
   }
 
-  // const fetchReserve = () => {
-  //   fetch("http://10.125.121.206:8080/user/reserv/add", {
-  //     method: "POST",
-  //     headers: {
-  //       'Authorization': localStorage.getItem("token")
-  //     },
-  //     body: JSON.stringify({
-  //       'reservationItems': 
-  //     })
-  //   })
-  // }
 
-  
 
 
   return (
@@ -209,6 +197,19 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                 <div className='space-y-3'>
                   <div className='font-ChosunGu font-bold text-lg'>시간 선택</div>
                   <div className='flex justify-center space-x-5'>
+                    <div className='bg-blue-50 rounded-lg w-1/5 h-16 flex justify-center p-2'>
+                      <button onClick={() => clickReserveStart('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
+                      <button onClick={() => clickReserveStart('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'after' ? 'bg-white' : ''}`}>오후</button>
+                    </div>
+                    <div className='border-2 border-blue-50 rounded-lg w-1/5 h-16 flex justify-center p-2 items-center space-x-5'>
+                      {/* <input className='font-NanumBarunpen w-10 flex text-center outline-none' placeholder='00' />
+                      <div className='font-NanumBarunpen'>:</div>
+                      <input className='font-NanumBarunpen w-10 flex text-center outline-none' placeholder='00' /> */}
+                      <input type='time' />
+                    </div>
+                    <span className='flex items-center font-NanumBarunpen'>부터</span>
+                  </div>
+                  <div className='flex justify-center space-x-5'>
                     <div className='bg-blue-50 rounded-md w-1/5 h-16 flex justify-center p-2'>
                       <button onClick={() => clickReserveFinish('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
                       <button onClick={() => clickReserveFinish('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'after' ? 'bg-white' : ''}`}>오후</button>
@@ -219,11 +220,6 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                       <input className='font-NanumBarunpen w-10 flex text-center outline-none' placeholder='00' />
                     </div>
                     <span className='flex items-center font-NanumBarunpen'>까지</span>
-                  {/* <input type='time'  className=''/> */}
-                  {/* <TimePicker  format="HH:mm" disableClock={true} className='bg-slate-400 w-52'/> */}
-                  </div>
-                  <div className='flex justify-center space-x-5'>
-                    <input type='time'  className=''/>
                   </div>
                 </div>
               </div>
@@ -239,8 +235,15 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                     <div className='flex space-x-5 items-center'>
                       <div className='font-ChosunGu font-bold'>시간</div>
                       <div className='flex space-x-3'>
-                        
-                        <input type='time'  className=''/>
+                        <div className='bg-blue-50 rounded-md flex p-1 w-32 h-12'>
+                          <button onClick={() => clickReserveStart('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
+                          <button onClick={() => clickReserveStart('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'after' ? 'bg-white' : ''}`}>오후</button>
+                        </div>
+                        <div className='border-2 border-blue-50 rounded-lg flex p-2 w-32 h-12 justify-center items-center space-x-3'>
+                          <input className='font-NanumBarunpen w-10 flex text-center outline-none bg-transparent' placeholder='00' />
+                          <div className='font-NanumBarunpen'>:</div>
+                          <input className='font-NanumBarunpen w-10 flex text-center outline-none bg-transparent' placeholder='00' />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -253,8 +256,18 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                       <input type='date' className='font-NanumSquareNeoVariable' />
                     </div>
                     <div className='flex space-x-5 items-center'>
-                      
-                      <input type='time'  className=''/>
+                      <div className='font-ChosunGu font-bold'>시간</div>
+                      <div className='flex space-x-3'>
+                        <div className='bg-blue-50 rounded-md flex p-1 w-32 h-12'>
+                          <button onClick={() => clickReserveFinish('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
+                          <button onClick={() => clickReserveFinish('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'after' ? 'bg-white' : ''}`}>오후</button>
+                        </div>
+                        <div className='border-2 border-blue-50 rounded-lg flex p-2 w-32 h-12 justify-center items-center space-x-3'>
+                          <input className='font-NanumBarunpen w-10 flex text-center outline-none bg-transparent' placeholder='00' />
+                          <div className='font-NanumBarunpen'>:</div>
+                          <input className='font-NanumBarunpen w-10 flex text-center outline-none bg-transparent' placeholder='00' />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

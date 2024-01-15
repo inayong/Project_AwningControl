@@ -18,6 +18,7 @@ import DetailBar from './sidebar/DetailBar';
 import DisplayTest from './sidebar/DisplayTest';
 import AwningDashBoard from './monitoring/AwningDashBoard';
 import ScrollButton from './component/ScrollButton';
+import WebSocket from './component/WebSocket';
 // import mapData from './data/mapData.json';
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
               <Route path='/adddevice' element={<AddDevice />} />
               <Route path='/dashboard' element={<AwningDashBoard />} />
               <Route path='/test' element={<DisplayTest />} />
+              <Route path='/ws' element={<WebSocket />} />
             </Routes>
           </div>
         </div>

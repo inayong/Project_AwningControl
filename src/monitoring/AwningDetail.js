@@ -5,13 +5,13 @@ import UpdateAwning from './UpdateAwning';
 const TableBody = ({ leftLabel, leftContent, rightLabel, rightContent }) => {
   return (
     <div className='flex'>
-      <div className='w-1/2 flex p-4'>
-        <div className='pr-3'>{leftLabel}</div>
-        <div className='pl-3'>{leftContent}</div>
+      <div className='w-1/2 flex p-4 items-center'>
+        <div className='mr-3 font-NanumSquareNeoVariable font-bold bg-neutral-100 p-2 shadow-md'>{leftLabel}</div>
+        <div className='pl-3 font-ChosunGu font-bold'>{leftContent}</div>
       </div>
-      <div className='flex p-4'>
-        <div className='pr-3'>{rightLabel}</div>
-        <div className='pl-3'>{rightContent}</div>
+      <div className='flex p-4 items-center'>
+        <div className='mr-3 font-NanumSquareNeoVariable font-bold bg-neutral-100 p-2 shadow-md'>{rightLabel}</div>
+        <div className='pl-3 font-ChosunGu font-bold'>{rightContent}</div>
       </div>
     </div>
   )
@@ -77,26 +77,17 @@ const AwningDetail = () => {
     <div>
       <div className='h-screen'>
         <div className='w-full h-full'>
-          <div className='bg-gray-100 pt-10'>
+          <div className='bg-white pt-10'>
             <div className='px-4 p-1'>
               <div className='flex justify-between border-b-2'>
                 <div className='flex pb-1 items-center'>
-                  <div className='text-2xl pr-7'>상세정보</div>
-                  {/* {isEdited ? (
-                    <div>
-                      <button className='border p-1 bg-white rounded-lg shadow-md mr-3'>수정완료</button>
-                      <button onClick={openEditCancle} className='border p-1 bg-white rounded-lg shadow-md'>수정취소</button>
-                    </div>
-                  ) : (
-                    <button onClick={openEdit} className='border p-1 bg-white rounded-lg shadow-md'>수정하기</button>
-
-                  )} */}
-                  <button onClick={openEdit} className='border p-1 bg-white rounded-lg shadow-md'>수정하기</button>
+                  <div className='text-2xl pr-7 font-GmarketSansMedium font-bold'>상세정보</div>
+                  <button onClick={openEdit} className='p-1 bg-gray-200 hover:bg-white hover:border-2 hover:border-gray-400 rounded-lg shadow-md font-NanumSquareNeoVariable mb-2'>수정</button>
                   {showModal && (
                     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-25 flex justify-center items-center py-14">
                       <div className="bg-white p-3 rounded-md w-1/2 h-full">
                         <div>
-                          <div className='text-2xl pb-1'>수정</div>
+                          <div className='text-2xl pb-1 font-GmarketSansMedium flex justify-center'>수정</div>
                           <UpdateAwning data={awningDetailData} onClose={() => setShowModal(false)} />
                           {/* <div className="flex justify-center mt-4 pt-3">
                             <button className="px-3 py-1 bg-red-500 text-white rounded-md">수정</button>
@@ -107,7 +98,7 @@ const AwningDetail = () => {
                     </div>
                   )}
                 </div>
-                <div className='flex pb-1 pr-16'>
+                <div className='flex pr-16 items-center font-GmarketSansMedium'>
                   <div className='pr-2'>설치일자 :</div>
                   <div>{startDate}</div>
                   <div className='px-1'>/</div>
@@ -116,25 +107,25 @@ const AwningDetail = () => {
                 </div>
               </div>
             </div>
-            <div className='pt-3'>
-              <div className='flex flex-col'>
-                <div className='flex p-4'>
-                  <div className='pr-3'>관리구역</div>
-                  <div className='pr-3'>{`${awningDetailData['managementArea1']} ${awningDetailData['managementArea2']}`}</div>
+            <div className='pt-1'>
+              <div className='flex flex-col p-10 flex-grow'>
+                <div className='flex p-4 items-center text-center'>
+                  <div className='mr-3 font-NanumSquareNeoVariable font-bold bg-neutral-100 p-2 shadow-md'>관리구역</div>
+                  <div className='pr-3 font-ChosunGu font-bold'>{`${awningDetailData['managementArea1']} ${awningDetailData['managementArea2']}`}</div>
                 </div>
-                <div className='flex p-4'>
-                  <div className='pr-3'>관리번호</div>
-                  <div className='pr-3'>{awningDetailData['managementNumber']}</div>
+                <div className='flex p-4 items-center'>
+                  <div className='mr-3 font-NanumSquareNeoVariable font-bold bg-neutral-100 p-2 shadow-md'>관리번호</div>
+                  <div className='pr-3 font-ChosunGu font-bold'>{awningDetailData['managementNumber']}</div>
                 </div>
                 <TableBody leftLabel="기구ID" leftContent={awningDetailData['deviceId']} rightLabel="제어기ID" rightContent={awningDetailData['controlId']} />
-                <div className='flex p-4'>
-                  <div className='pr-3'>설치장소</div>
-                  <div className='pr-3'>{awningDetailData['installationLocationMemo']}</div>
+                <div className='flex p-4 items-center'>
+                  <div className='mr-3 font-NanumSquareNeoVariable font-bold bg-neutral-100 p-2 shadow-md'>설치장소</div>
+                  <div className='pr-3 font-ChosunGu font-bold'>{awningDetailData['installationLocationMemo']}</div>
                 </div>
                 <TableBody leftLabel="어닝 열림시간 - 좌" leftContent={awningDetailData['awningOpenTimeLeft']} rightLabel="어닝 열림시간 - 우" rightContent={awningDetailData['awningOpenTimeRight']} />
-                <div className='flex p-4'>
-                  <div className='pr-3'>어닝 열림 예정시간</div>
-                  <div className='pr-3'>{awningDetailData['awningOpenScheduleTime']}</div>
+                <div className='flex p-4 items-center'>
+                  <div className='mr-3 font-NanumSquareNeoVariable font-bold bg-neutral-100 p-2 shadow-md'>어닝 열림 예정시간</div>
+                  <div className='pr-3 font-ChosunGu font-bold'>{awningDetailData['awningOpenScheduleTime']}</div>
                 </div>
                 <TableBody leftLabel="풍속 임계값" leftContent={awningDetailData['windSpeedThreshold']} rightLabel="어닝 재열림 시간(분)" rightContent={awningDetailData['awningReopenTimeMinutes']} />
                 <TableBody leftLabel="위도" leftContent={awningDetailData['latitude']} rightLabel="경도" rightContent={awningDetailData['longitude']} />
@@ -148,9 +139,9 @@ const AwningDetail = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className='bg-slate-600'>
-          <div>로그</div>
+          <div className='bg-slate-600'>
+            <div>로그</div>
+          </div>
         </div>
       </div>
     </div>

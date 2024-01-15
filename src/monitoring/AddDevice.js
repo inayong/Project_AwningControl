@@ -329,7 +329,7 @@ const AddDevice = () => {
                   <div className='font-NanumSquareNeoVariable'>{displayLocation.lat && displayLocation.lng ? `${displayLocation.lat} / ${displayLocation.lng}` : ''}</div>
                 </div>
               </div>
-              <div className='flex flex-col justify-center pl-6'>
+              <div className='flex flex-col justify-center pl-20'>
                 {displayAddress.roadAddress || displayAddress.jibunAddress ? (
                   <>
                     <div className='pt-2 text-sm font-NIXGONMVb'>전체 주소</div>

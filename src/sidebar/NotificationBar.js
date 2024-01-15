@@ -8,6 +8,7 @@ import { FaCircle, FaRegObjectUngroup } from "react-icons/fa";
 import { DetailBarState } from '../component/atoms/DetailBarState';
 import { DetailMapDataState } from '../component/atoms/DetailMapDataState ';
 import { FilterMarkerState } from '../component/atoms/FilterMarkerState';
+import WebSocket from '../component/WebSocket';
 
 
 
@@ -160,6 +161,7 @@ const Notification = ({ mapData }) => {
         <div className="p-4">
           <div className="text-lg font-semibold">Notification</div>
           <div>알림 내용</div>
+          {/* <WebSocket /> */}
         </div>
       </div>
       {isMonitoringPage && (

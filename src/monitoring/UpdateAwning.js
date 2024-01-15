@@ -3,14 +3,14 @@ import { SigunguData } from '../data/SigunguData';
 
 const FormSection = ({ labelLeft, labelRight, leftRef, rightRef, leftValue, rightValue, leftName, rightName, leftChange, rightChange }) => {
     return (
-        <div className='flex py-4 pl-3 w-full'>
-            <div className='flex flex-col w-1/2'>
-                <div className=''>{labelLeft}</div>
-                <input className='w-48' name={leftName} ref={leftRef} value={leftValue} onChange={leftChange}></input>
+        <div className='flex w-full'>
+            <div className='flex flex-col w-1/2 space-y-2'>
+                <div className='bg-neutral-100 p-1 font-NanumSquareNeoVariable shadow-md w-1/2 text-center'>{labelLeft}</div>
+                <input className='w-48 bg-transparent outline-none text-center font-ChosunGu' name={leftName} ref={leftRef} value={leftValue} onChange={leftChange}></input>
             </div>
-            <div className='flex flex-col w-1/2'>
-                <div className=''>{labelRight}</div>
-                <input className='w-48' name={rightName} ref={rightRef} value={rightValue} onChange={rightChange}></input>
+            <div className='flex flex-col w-1/2 space-y-2'>
+                <div className='bg-neutral-100 p-1 font-NanumSquareNeoVariable shadow-md w-1/2 text-center'>{labelRight}</div>
+                <input className='w-48 bg-transparent outline-none text-center font-ChosunGu' name={rightName} ref={rightRef} value={rightValue} onChange={rightChange}></input>
             </div>
         </div>
     );
@@ -276,7 +276,7 @@ const UpdateAwning = ({ data, onClose }) => {
         } else {
             alert("수정 항목이 없습니다.")
         }
-        
+
     }
 
     const confirmCancle = () => {
@@ -288,79 +288,81 @@ const UpdateAwning = ({ data, onClose }) => {
 
 
     return (
-        <div className='bg-slate-200 flex h-full flex-col'>
+        <div className='flex h-full flex-col'>
             <div id="map" style={{ width: '100%', height: '200px' }} className='border-4'></div>
-            <div>
+            <div className='pt-3 space-y-3'>
                 <div className='flex'>
                     <div className='flex'>
-                        <div>주소</div>
-                        <input type='text' value={inputAddress} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder='주소 입력' />
+                        <input type='text' value={inputAddress} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder='주소 입력' className='outline-none font-NanumSquareNeoVariable' />
                     </div>
-                    <div>
+                    <div className='font-ChosunGu'>
                         {displayAddress.roadAddress || displayAddress.jibunAddress}
                     </div>
                 </div>
-                <div>
-                    위/경도 {displayLocation.lat === 0 ? formData.latitude : displayLocation.lat} / {displayLocation.lng === 0 ? formData.longitude : displayLocation.lng}
-                    {displayLocation.lat !== 0 && (
-                        <button onClick={locationReset}>reset</button>
-                    )}
+                <div className='flex space-x-5 items-center'>
+                    <div className='bg-neutral-100 p-1 font-NanumSquareNeoVariable shadow-md'>위·경도</div>
+                    <div className='font-ChosunGu'>{displayLocation.lat === 0 ? formData.latitude : displayLocation.lat} / {displayLocation.lng === 0 ? formData.longitude : displayLocation.lng}
+                        {displayLocation.lat !== 0 && (
+                            <button onClick={locationReset} className='ml-5 rounded-full'>reset</button>
+                        )}
+                    </div>
                 </div>
-                {/* <div> */}
-                <div className='flex'>
-                    <div>관리번호</div>
-                    <input type='text' name='managementNumber' ref={manageNum} value={formData.managementNumber} onChange={handleFormChange} />
+                <div className='flex space-x-5 items-center'>
+                    <div className='bg-neutral-100 p-1 font-NanumSquareNeoVariable shadow-md'>관리번호</div>
+                    <input type='text' name='managementNumber' ref={manageNum} value={formData.managementNumber} onChange={handleFormChange} className='font-ChosunGu'/>
                 </div>
-
-                <div className='pr-3 flex pt-3'>
-                    <div>관리구역</div>
-                    <select onChange={handleSelSi} name='managementArea1' ref={selSiRef} value={formData.managementArea1} className='w-32 mr-3'>
-                        <option value=''>시</option>
-                        {si.map((items) => (
-                            <option key={items}>{items}</option>
-                        ))}
-                    </select>
-                    <select onChange={handleSelGu} name='managementArea2' ref={selGuRef} value={formData.managementArea2} className='w-32 mr-3'>
-                        <option value=''>구</option>
-                        {guSel.map((items) => (
-                            <option key={items}>{items}</option>
-                        ))}
-                    </select>
+                <div className='pr-3 flex pt-3 pb-3'>
+                    <div className='flex space-x-5'>
+                        <div className='bg-neutral-100 p-1 font-NanumSquareNeoVariable shadow-md'>관리구역</div>
+                        <select onChange={handleSelSi} name='managementArea1' ref={selSiRef} value={formData.managementArea1} className='w-32 mr-3 font-ChosunGu'>
+                            <option value=''>시</option>
+                            {si.map((items) => (
+                                <option key={items}>{items}</option>
+                            ))}
+                        </select>
+                        <select onChange={handleSelGu} name='managementArea2' ref={selGuRef} value={formData.managementArea2} className='w-32 mr-3 font-ChosunGu'>
+                            <option value=''>구</option>
+                            {guSel.map((items) => (
+                                <option key={items}>{items}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className='flex ml-3 space-x-5'>
+                        <div className='bg-neutral-100 p-1 font-NanumSquareNeoVariable shadow-md'>설치장소</div>
+                        <input name='installationLocationMemo' value={formData.installationLocationMemo} onChange={handleFormChange} className='font-ChosunGu'/>
+                    </div>
                 </div>
-                {/* </div> */}
                 <FormSection labelLeft="기구ID" leftName="deviceId" leftRef={deviceId} leftValue={formData.deviceId} leftChange={handleFormChange} labelRight="제어기ID" rightName="controlId" rightRef={controlId} rightValue={formData.controlId} rightChange={handleFormChange} />
                 <FormSection labelLeft="어닝 열림시간 - 좌(초)" leftName="awningOpenTimeLeft" leftRef={openLeft} leftValue={formData.awningOpenTimeLeft} leftChange={handleFormChange} labelRight="어닝 열림시간 - 우(초)" rightName="awningOpenTimeRight" rightRef={openRight} rightValue={formData.awningOpenTimeRight} rightChange={handleFormChange} />
                 <FormSection labelLeft="풍속 임계값" leftName="windSpeedThreshold" leftRef={windThreshold} leftValue={formData.windSpeedThreshold} leftChange={handleFormChange} labelRight="어닝 재열림 시간(분)" rightName="awningReopenTimeMinutes" rightRef={awningReopen} rightValue={formData.awningReopenTimeMinutes} rightChange={handleFormChange} />
-                <div>
-                    <div>설치장소</div>
-                    <input name='installationLocationMemo' value={formData.installationLocationMemo} onChange={handleFormChange} />
-                </div>
-                <div className='flex'>
-                    <div className='flex flex-col w-1/2'>
-                        <div className=''>설치일자</div>
-                        <input name='startDate' type='date' value={installedDate} onChange={handleFormChange} className='w-48'></input>
+                <div className='flex pt-2'>
+                    <div className='flex flex-col w-1/2 space-y-2'>
+                        <div className='bg-neutral-100 p-1 font-NanumSquareNeoVariable shadow-md w-1/2 text-center'>설치일자</div>
+                        <input name='startDate' type='date' value={installedDate} onChange={handleFormChange} className='w-48 bg-transparent outline-none text-center font-ChosunGu'></input>
                     </div>
-                    <div className='flex flex-col w-1/2'>
-                        <div className=''>계약만료기간</div>
-                        <input type='date' name='finishDate' value={expiredDate} onChange={handleFormChange} className='w-48'></input>
+                    <div className='flex flex-col w-1/2 space-y-2'>
+                        <div className='bg-neutral-100 p-1 font-NanumSquareNeoVariable shadow-md w-1/2 text-center'>계약만료기간</div>
+                        <input type='date' name='finishDate' value={expiredDate} onChange={handleFormChange} className='w-48 bg-transparent outline-none text-center font-ChosunGu'></input>
                     </div>
                 </div>
             </div>
             <div className="flex justify-center mt-4 pt-3">
-                <button onClick={updateConfirm} className="px-3 py-1 bg-red-500 text-white rounded-md">수정</button>
+                <button onClick={updateConfirm} className="px-3 py-1 bg-red-500 text-white rounded-md font-NanumSquareNeoVariable">수정</button>
                 {confirmModal && (
                     <div className="fixed top-0 left-0 z-20 w-full h-full bg-black bg-opacity-25 flex justify-center items-center py-14">
-                        <div className="bg-white p-3 rounded-md">
+                        <div className="bg-white p-3 rounded-md w-1/4 h-1/5 flex flex-col justify-center items-center space-y-5 font-NanumSquareNeoVariable">
                             {changedFields && changedFields.map((item, idx) => (
-                            <div key={idx}>{item}</div>
+                                <div key={idx}>{item} (을)를</div>
                             ))}
                             <div>수정하시겠습니까?</div>
+                            <div className='flex'>
                             <button onClick={handleUpdateSubmit} className="px-3 py-1 bg-red-500 text-white rounded-md">확인</button>
                             <button onClick={confirmCancle} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
+                            </div>
                         </div>
                     </div>
                 )}
-                <button onClick={onClose} className="ml-4 px-3 py-1 bg-gray-300 rounded-md">취소</button>
+                <button onClick={onClose} className="ml-4 px-3 py-1 bg-gray-300 rounded-md font-NanumSquareNeoVariable">취소</button>
             </div>
         </div>
     )
