@@ -42,11 +42,11 @@ const Sidebarcomm = ({ close, setClose }) => {
             <div className='bg-neutral-100 h-screen'>
             {/* <div className={`fixed top-0 left-0 h-screen ${close ? "w-16" : "w-60"} bg-white`}> */}
                 <div className={`flex ${close ? "justify-center" : "justify-end pr-2"} items-center py-5`}>
-                    {close ? null : <div className='pr-9'>어닝 제어 시스템</div>}
+                    {close ? null : <div className='pr-9 font-GmarketSansMedium'>어닝 제어 시스템</div>}
                     <CiIndent onClick={() => setClose(!close)} size={30} className='cursor-pointer' />
                 </div>
                 <div className={`flex ${close ? "justify-center" : "justify-end pr-2"} items-center py-5`}>
-                    {isLogAtom && close ? null : <div className='pr-16'>{isLogAtom}</div>}
+                    {isLogAtom && close ? null : <div className='pr-16 font-NanumBarunpen text-xl'>{isLogAtom}</div>}
                     <CiLogout size={30} color={`${close ? '#6b7280' : 'black'}`} onClick={handleLogout} className='cursor-pointer' />
                 </div>
                 <SideMenu

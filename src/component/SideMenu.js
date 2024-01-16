@@ -30,7 +30,7 @@ const SideMenu = ({ menuName, clickMenu, setClickMenu, close, icon: Icon, label,
                     <div className='flex flex-col'>
                         <div className='flex items-center'>
                             <Icon size={30} className={`${clickMenu === menuName ? ' text-black' : 'text-gray-600'}`} />
-                            <div className='pl-5'>{label}</div>
+                            <div className='pl-5 font-NanumSquareNeoVariable'>{label}</div>
                         </div>
                     </div>
 
@@ -48,9 +48,9 @@ const SideMenu = ({ menuName, clickMenu, setClickMenu, close, icon: Icon, label,
                 <div className='ml-16 w-full'>
                     <button className='flex items-center mb-2 mt-2'>
                         <div>
-                            <GoDash className='mr-2' />
+                            <GoDash className='mr-2 font-ChosunGu' />
                         </div>
-                        <div className='hover:bg-gray-200'>
+                        <div className='hover:bg-gray-200 font-ChosunGu'>
                             회사 1
                         </div>
                     </button>
@@ -58,7 +58,7 @@ const SideMenu = ({ menuName, clickMenu, setClickMenu, close, icon: Icon, label,
                         <div>
                             <GoDash className='mr-2' />
                         </div>
-                        <div className='hover:bg-gray-200'>
+                        <div className='hover:bg-gray-200 font-ChosunGu'>
                             회사 2
                         </div>
                     </button>

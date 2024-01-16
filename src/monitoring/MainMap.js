@@ -60,11 +60,10 @@ const MainMap = ({ mapData }) => {
 
             const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(mapData[0].latitude, mapData[0].longitude),
-                // center: new naver.maps.LatLng(35.747178, 127.9587706),
                 zoom: 10
             });
 
-
+            // const markers = [];
 
             filterMapData.forEach(item => {
                 const position = new naver.maps.LatLng(item.latitude, item.longitude);
@@ -87,7 +86,8 @@ const MainMap = ({ mapData }) => {
 
                 if (markerUrl) {
                     const marker = new naver.maps.Marker({
-                        position: position.destinationPoint(90, 15),
+                        // position: position.destinationPoint(90, 15),
+                        position: position,
                         map: map,
                         icon: {
                             content: `<div style="width: 40px; height: 40px; background-image: url('${markerUrl}'); background-size: cover;"></div>`, //64px
@@ -95,11 +95,12 @@ const MainMap = ({ mapData }) => {
                         }
                     });
 
+                    // markers.push(marker);
+
                     naver.maps.Event.addListener(marker, "click", (e) => {
                         console.log("Marker clicked, moving center to:", position);
-                        map.setCenter(position);
+                        // map.setCenter(marker.getPosition());
                         // map.setCenter(position);
-                        // map.panTo(position);
                         setMarkerOpen({ isOpen: true, markerData: item });
                         setIsDetailBar(true);
                         setDetailMapData(item);
@@ -111,7 +112,8 @@ const MainMap = ({ mapData }) => {
 
             });
         }
-    }, [mapData, setMarkerOpen, filterMapData]);
+    }, [mapData, filterMapData]);
+    // }, [mapData, setMarkerOpen, filterMapData]);
 
     //button
     //control button
