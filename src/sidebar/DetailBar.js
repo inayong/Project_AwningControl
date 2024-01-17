@@ -118,10 +118,10 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
     }
   }
 
-  const formatRepeatDay = (dayStr) => {
-    const days = ["일", "월", "화", "수", "목", "금", "토"];
+  // const formatRepeatDay = (dayStr) => {
+  //   const days = ["일", "월", "화", "수", "목", "금", "토"];
 
-  }
+  // }
 
   // const fetchReserve = () => {
   //   fetch("http://10.125.121.206:8080/user/reserv/add", {
@@ -135,7 +135,16 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
   //   })
   // }
 
-  
+  const [days, setDays] = useState([]);
+  const handleClickDays = (day) => {
+    setDays(item => {
+      if (item.includes(day)) {
+        return item.filter(d => d !== day);
+      } else {
+        return [...item, day];
+      }
+    })
+  }
 
 
   return (
@@ -173,7 +182,8 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                     <div className='flex space-x-3'>
                       <div className='font-NanumSquareNeoVariable'>{item.reservationMethod === 'dayWeek' ? '반복' : '날짜'}</div>
                       {item.reservationMethod === 'dayWeek' ? (
-                      <div className='bg-indigo-200'>{item.repeatDay}</div>
+                      // <div className='bg-indigo-200'>{item.repeatDay}</div>
+                      <div className='font-NanumSquareNeoVariable'>토</div>
                       ) : ''}
                     </div>
                   </div>
@@ -197,13 +207,13 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                 <div className='flex flex-col items-center space-y-3'>
                   <div className='font-ChosunGu font-bold text-lg'>요일 선택</div>
                   <div className='flex space-x-2'>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>일</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>월</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>화</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>수</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>목</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>금</button>
-                    <button className='border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen'>토</button>
+                    <button onClick={() => handleClickDays('일')} className={`${days.includes('일') ? 'bg-blue-100' : ''} border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen`}>일</button>
+                    <button onClick={() => handleClickDays('월')} className={`${days.includes('월') ? 'bg-blue-100' : ''} border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen`}>월</button>
+                    <button onClick={() => handleClickDays('화')} className={`${days.includes('화') ? 'bg-blue-100' : ''} border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen`}>화</button>
+                    <button onClick={() => handleClickDays('수')} className={`${days.includes('수') ? 'bg-blue-100' : ''} border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen`}>수</button>
+                    <button onClick={() => handleClickDays('목')} className={`${days.includes('목') ? 'bg-blue-100' : ''} border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen`}>목</button>
+                    <button onClick={() => handleClickDays('금')} className={`${days.includes('금') ? 'bg-blue-100' : ''} border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen`}>금</button>
+                    <button onClick={() => handleClickDays('토')} className={`${days.includes('토') ? 'bg-blue-100' : ''} border py-2 px-3 hover:bg-gray-100 font-NanumBarunpen`}>토</button>
                   </div>
                 </div>
                 <div className='space-y-3'>

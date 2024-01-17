@@ -9,6 +9,7 @@ import { DetailBarState } from '../component/atoms/DetailBarState';
 import { DetailMapDataState } from '../component/atoms/DetailMapDataState ';
 import { FilterMarkerState } from '../component/atoms/FilterMarkerState';
 import WebSocket from '../component/WebSocket';
+import WebSocketConnect from '../component/WebSocketConnect';
 
 
 
@@ -156,12 +157,11 @@ const Notification = ({ mapData }) => {
           <MdDisplaySettings size={30} className={`${settingOpen ? 'fill-blue-600' : 'fill-stone-600'}`} />
         </button>
       )}
-      <div className={`fixed inset-y-0 right-0 w-96 h-full bg-white shadow-md z-20 transform transition-transform duration-0 ${notiOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
+      <div className={`overflow-auto fixed inset-y-0 right-0 w-96 h-full bg-neutral-100 shadow-md z-20 transform transition-transform duration-0 ${notiOpen ? 'translate-x-0 opacity-100' : 'translate-x-96 opacity-0'}`}
         style={{ height: isDetailBar ? 'calc(100% - 18rem)' : '100%' }}>
-        <div className="p-4">
-          <div className="text-lg font-semibold">Notification</div>
-          <div>알림 내용</div>
-          {/* <WebSocket /> */}
+        <div className="p-10">
+          <div className="text-2xl font-semibold p-5 font-NanumSquareNeoVariable flex justify-center items-cente">Notification</div>
+          <WebSocketConnect />
         </div>
       </div>
       {isMonitoringPage && (
