@@ -42,6 +42,7 @@ const MainMap = ({ mapData }) => {
             return item.batteryCondition === 'normal' && item.lightingCondition === 'normal' && item.motorCondition === 'normal' && item.statusConnected === 'off';
         }
     });
+    
 
 
     useEffect(() => {

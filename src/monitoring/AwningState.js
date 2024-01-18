@@ -296,6 +296,11 @@ const AwningState = () => {
 
   const handleDeviceControl = (action) => {
     const checkedItems = getStateData.filter(item => checkbox[item.deviceId]);
+
+    if (checkedItems.length === 0) {
+      alert("기기를 선택해주세요.");
+      return;
+    }
     const checkedNumbers = checkedItems.map(item => item.managementNumber).join(', ');
     // const message = `'${action}' 작동을 보냈습니다. 관리번호: ${checkedNumbers}`;
     const message = (
@@ -502,7 +507,8 @@ const AwningState = () => {
                 </tr>
               </thead>
               <tbody className='text-sm font-NanumSquareNeoVariable'>
-                {stateData.map((items, index) => (
+                { stateData.length > 0 ? (
+                stateData.map((items, index) => (
                   <tr key={index} className={`${checkbox[items.deviceId] ? 'bg-blue-50' : 'bg-white border-b hover:bg-gray-50'}`}>
                     <td className="w-4 p-4">
                       <div className="flex items-center">
@@ -528,7 +534,12 @@ const AwningState = () => {
                     <TableBody content={items.batteryCondition === 'normal' ? '정상' : '고장'} />
                     <TableBody content={items.awningOpenScheduleTime === null ? '-' : items.awningOpenScheduleTime} />
                   </tr>
-                ))}
+                ))
+                ) : (
+                  <tr>
+                    <td colSpan={18} className='text-center'>검색결과가 없습니다.</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

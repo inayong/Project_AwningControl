@@ -13,19 +13,12 @@ const WebSocketConnect = () => {
   
     ws.onmessage = (event) => {
         const messages = JSON.parse(event.data);
-        console.log(messages)
-        console.log("경고", messages.eventType === '경고')
-
-        // if (messages.eventType2 === '배터리 상태 고장' || messages.eventType3 === '모터 상태 고장') {
+        
             if (messages.eventType === '경고') {
                 setMessage(item => [...item, messages])
-            // setMessage(item => [...item, {
-            //     awningId: messages.awningId,
-            //     eventType2: messages.eventType2,
-            //     eventType3: messages.eventType3,
-            // }])
+            
         }
-        // console.log("set", message)
+        
     }
   
       ws.onerror = (error) => {
@@ -41,9 +34,9 @@ const WebSocketConnect = () => {
       };
     }, []);
 
-    useEffect(() => {
-        console.log("Updated messages:", message);
-      }, [message]); 
+    // useEffect(() => {
+    //     console.log("Updated messages:", message);
+    //   }, [message]); 
   
   
     return (

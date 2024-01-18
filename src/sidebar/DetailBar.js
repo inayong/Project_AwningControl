@@ -220,8 +220,8 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
                   <div className='font-ChosunGu font-bold text-lg'>시간 선택</div>
                   <div className='flex justify-center space-x-5'>
                     <div className='bg-blue-50 rounded-md w-1/5 h-16 flex justify-center p-2'>
-                      <button onClick={() => clickReserveFinish('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
-                      <button onClick={() => clickReserveFinish('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveFinishTime === 'after' ? 'bg-white' : ''}`}>오후</button>
+                      <button onClick={() => clickReserveStart('morning')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'morning' ? 'bg-white' : ''}`}>오전</button>
+                      <button onClick={() => clickReserveStart('after')} className={`w-full rounded-md flex justify-center items-center font-NanumSquareNeoVariable ${reserveStartTime === 'after' ? 'bg-white' : ''}`}>오후</button>
                     </div>
                     <div className='border-2 border-blue-50 rounded-lg w-1/5 h-16 flex justify-center p-2 items-center space-x-5'>
                       <input className='font-NanumBarunpen w-10 flex text-center outline-none' placeholder='00' />

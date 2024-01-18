@@ -20,6 +20,7 @@ import AwningDashBoard from './monitoring/AwningDashBoard';
 import ScrollButton from './component/ScrollButton';
 import WebSocket from './component/WebSocket';
 import WebSocketConnect from './component/WebSocketConnect';
+import UserView from './login/UserView';
 // import mapData from './data/mapData.json';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
       })
         .then(resp => resp.json())
         .then(data => {
+          console.log("data",data)
           setMapData(data);
           console.log("map", data)
         })
@@ -66,14 +68,15 @@ function App() {
           <div>
             <Routes>
               <Route path='/login' element={<LoginPage />} />
-              <Route path='/monitoring' element={<MainMap mapData={mapData} />} />
+              {mapData && <Route path='/monitoring' element={<MainMap mapData={mapData} />} />}
               <Route path='/awningstate' element={<AwningState />} />
               <Route path='/awningstate/detail/:deviceId' element={<AwningDetail />} />
               <Route path='/eventlist' element={<EventList />} />
               <Route path='/adddevice' element={<AddDevice />} />
               <Route path='/dashboard' element={<AwningDashBoard />} />
               <Route path='/test' element={<DisplayTest />} />
-              <Route path='/ws' element={<WebSocketConnect />} />
+              {/* <Route path='/ws' element={<WebSocketConnect />} /> */}
+              <Route path='/user' element={<UserView />} />
             </Routes>
           </div>
         </div>
