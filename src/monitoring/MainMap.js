@@ -43,14 +43,7 @@ const MainMap = ({ mapData }) => {
         }
     });
     
-
-
-    useEffect(() => {
-        setMarkerOpen({ isOpen: false, isOpen2: false })
-        // getData();
-
-    }, [])
-
+    
 
     //지도 불러오기
     useEffect(() => {
@@ -115,6 +108,12 @@ const MainMap = ({ mapData }) => {
         }
     }, [mapData, filterMapData]);
     // }, [mapData, setMarkerOpen, filterMapData]);
+
+    useEffect(() => {
+        setMarkerOpen({ isOpen: false, isOpen2: false })
+        // getData();
+
+    }, [])
 
     //button
     //control button
