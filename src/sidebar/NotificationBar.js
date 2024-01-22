@@ -66,9 +66,9 @@ const Notification = ({ mapData }) => {
 
   }, [markerOpen])
 
-  console.log("clickmarkerdata", currentMarkerData)
-  console.log("setNotiOpen", notiOpen)
-  console.log("isDetailBar", isDetailBar)
+  // console.log("clickmarkerdata", currentMarkerData)
+  // console.log("setNotiOpen", notiOpen)
+  // console.log("isDetailBar", isDetailBar)
 
   useEffect(() => {
     if (settingOpen) {
@@ -91,7 +91,7 @@ const Notification = ({ mapData }) => {
     setCurrentMarkerData(item);
     setDetailMapData(item);
     setIsDetailBar(true);
-    console.log("list-item", item)
+    // console.log("list-item", item)
 
   }
 

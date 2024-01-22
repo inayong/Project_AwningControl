@@ -36,7 +36,7 @@ const AwningDetail = () => {
         .then(resp => resp.json())
         .then((data) => {
           setAwningDetailData(data);
-          console.log("detail", data)
+          // console.log("detail", data)
         })
         .catch(err => console.error(err))
     }

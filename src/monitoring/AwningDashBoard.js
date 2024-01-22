@@ -22,7 +22,7 @@ const AwningDashBoard = () => {
     .then(resp => resp.json())
     .then((data) => {
       setDashBoardData(data);
-      console.log("DBdata", data)
+      // console.log("DBdata", data)
     })
     .catch(err => console.error(err))
   }, [])

@@ -8,7 +8,7 @@ const DisplayTest = () => {
     const [isDetailBar, setIsDetailBar] = useRecoilState(DetailBarState);
 
     useEffect(() => {
-        console.log("mapData", mapData)
+        // console.log("mapData", mapData)
     })
 
     return (

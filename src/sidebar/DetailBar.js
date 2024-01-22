@@ -81,7 +81,7 @@ const ReserveBtnContent = ({ handelResClose, deviceId, reserveMenu, setReserveMe
         .then(resp => resp.json())
         .then(data => {
           setReserveData(data);
-          console.log("reserve", data);
+          // console.log("reserve", data);
         })
         .catch(err => console.error(err));
     }
@@ -417,17 +417,17 @@ const DetailBar = ({ markerData, showControlModal, setShowControlModal, showRese
 
   const clickLightControl = (status) => {
     setLightStatus(status);
-    console.log("lightstatus", status)
+    // console.log("lightstatus", status)
   }
 
   const clickAwningControl = (status) => {
     setAwningStatus(status);
-    console.log("awningstatus", status)
+    // console.log("awningstatus", status)
   }
 
   const clickModeStatus = (status) => {
     setModeStatus(status);
-    console.log("modestatus", status)
+    // console.log("modestatus", status)
   }
 
   useEffect(() => {

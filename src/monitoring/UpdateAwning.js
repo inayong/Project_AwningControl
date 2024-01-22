@@ -91,7 +91,7 @@ const UpdateAwning = ({ data, onClose }) => {
             // console.log("location", location)
             marker.setPosition(clickLatLng);
             // setNewMarker(marker);
-            console.log("clickLatLng", clickLatLng)
+            // console.log("clickLatLng", clickLatLng)
 
             //좌표 => 주소
             naver.maps.Service.reverseGeocode({
@@ -109,7 +109,7 @@ const UpdateAwning = ({ data, onClose }) => {
                     address = result.address;
 
                 setClickAddress(address);
-                console.log("click", address);
+                // console.log("click", address);
                 setDisplayAddress(address);
             });
         });
@@ -125,7 +125,7 @@ const UpdateAwning = ({ data, onClose }) => {
             }
             const result = response.v2,
                 items = result.addresses;
-            console.log("검색 결과", items)
+            // console.log("검색 결과", items)
 
             if (items.length > 1) {
                 alert("주소를 정확히 입력해주세요.")
@@ -140,7 +140,7 @@ const UpdateAwning = ({ data, onClose }) => {
             }
         });
         // console.log("searchLocation", searchLocation)
-        console.log("displayAddress", displayAddress)
+        // console.log("displayAddress", displayAddress)
     };
 
     const handleInputChange = (e) => {
@@ -170,7 +170,7 @@ const UpdateAwning = ({ data, onClose }) => {
         setGuSel(selGu);
     };
 
-    console.log("data.managementArea1", data.managementArea1)
+    // console.log("data.managementArea1", data.managementArea1)
 
     const handleSelGu = (event) => {
         setSelectGu(selGuRef.current.value);
@@ -199,8 +199,8 @@ const UpdateAwning = ({ data, onClose }) => {
     // console.log("displayAddress", displayAddress)
     // console.log("formDatalatitude", formData.latitude)
     // console.log("formDatalongitude", formData.longitude)
-    console.log("formDataArea2", formData.managementArea2)
-    console.log("DataArea2", data.managementArea2)
+    // console.log("formDataArea2", formData.managementArea2)
+    // console.log("DataArea2", data.managementArea2)
 
 
     const locationReset = () => {

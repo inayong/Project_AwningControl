@@ -39,9 +39,9 @@ function App() {
       })
         .then(resp => resp.json())
         .then(data => {
-          console.log("data",data)
+          // console.log("data",data)
           setMapData(data);
-          console.log("map", data)
+          // console.log("map", data)
         })
         .catch(err => console.error(err))
     }
@@ -74,7 +74,7 @@ function App() {
               <Route path='/eventlist' element={<EventList />} />
               <Route path='/adddevice' element={<AddDevice />} />
               <Route path='/dashboard' element={<AwningDashBoard />} />
-              <Route path='/test' element={<DisplayTest />} />
+              {/* <Route path='/test' element={<DisplayTest />} /> */}
               {/* <Route path='/ws' element={<WebSocketConnect />} /> */}
               <Route path='/user' element={<UserView />} />
             </Routes>

@@ -92,7 +92,7 @@ const MainMap = ({ mapData }) => {
                     // markers.push(marker);
 
                     naver.maps.Event.addListener(marker, "click", (e) => {
-                        console.log("Marker clicked, moving center to:", position);
+                        // console.log("Marker clicked, moving center to:", position);
                         // map.setCenter(marker.getPosition());
                         // map.setCenter(position);
                         setMarkerOpen({ isOpen: true, markerData: item });
@@ -100,7 +100,7 @@ const MainMap = ({ mapData }) => {
                         setDetailMapData(item);
                         setMapDataDetail(item);
                         // console.log("isOpen",markerOpen);
-                        console.log("item", item);
+                        // console.log("item", item);
                     })
                 }
 

@@ -17,7 +17,7 @@ const UserView = () => {
         .then(resp => resp.json())
         .then(data => {
           setUserInfo(data);
-          console.log("user", data)
+          // console.log("user", data)
         })
         .catch(err => console.error(err))
     }
@@ -156,7 +156,7 @@ const UserView = () => {
           alert("삭제 완료")
           setUserUpdateModal(false);
           window.location.reload();
-          console.log("id",updateData.loginId)
+          // console.log("id",updateData.loginId)
         } else {
           alert("삭제 실패");
         }

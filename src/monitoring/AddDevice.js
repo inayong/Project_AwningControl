@@ -87,7 +87,7 @@ const AddDevice = () => {
           address = result.address;
 
         setClickAddress(address);
-        console.log("click", address);
+        // console.log("click", address);
         setDisplayAddress(address);
       });
     });
@@ -103,7 +103,7 @@ const AddDevice = () => {
       }
       const result = response.v2,
         items = result.addresses;
-      console.log("검색 결과", items)
+      // console.log("검색 결과", items)
 
       if (items.length > 1) {
         alert("주소를 정확히 입력해주세요.")
@@ -118,7 +118,7 @@ const AddDevice = () => {
       }
     });
     // console.log("searchLocation", searchLocation)
-    console.log("displayAddress", displayAddress)
+    // console.log("displayAddress", displayAddress)
   };
 
   const handleInputChange = (e) => {
